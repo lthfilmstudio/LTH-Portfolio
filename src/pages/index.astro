@@ -182,14 +182,18 @@ function thumbClass(slug: string): string {
 <!-- PORTFOLIO -->
 <section class="portfolio">
   <div class="filter-chips" role="tablist">
-    <button class="chip active" data-filter="all" type="button" role="tab" aria-selected="true">
-      All <span class="chip-count">{works.filter((w) => !(w.categories.length === 1 && w.categories[0] === 'trailer')).length}</span>
-    </button>
     {CATEGORY_ORDER.map((cat) => {
       const count = works.filter((w) => w.categories.includes(cat)).length;
       if (count === 0) return null;
+      const isDefault = cat === 'series';
       return (
-        <button class="chip" data-filter={cat} type="button" role="tab" aria-selected="false">
+        <button
+          class={`chip${isDefault ? ' active' : ''}`}
+          data-filter={cat}
+          type="button"
+          role="tab"
+          aria-selected={isDefault ? 'true' : 'false'}
+        >
           {CATEGORY_LABELS[cat].zh} <span class="chip-en">{CATEGORY_LABELS[cat].en}</span>
           <span class="chip-count">{count}</span>
         </button>
@@ -197,7 +201,7 @@ function thumbClass(slug: string): string {
     })}
   </div>
 
-  <div class="works-grid" data-active-filter="all">
+  <div class="works-grid" data-active-filter="series">
     {works.map((work) => (
       <WorkCard work={work} />
     ))}
