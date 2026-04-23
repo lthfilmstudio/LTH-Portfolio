@@ -1,0 +1,44 @@
+---
+import type { Work } from '../data/works';
+import { CATEGORY_LABELS, firstExternalLink } from '../data/works';
+
+interface Props {
+  work: Work;
+}
+const { work } = Astro.props;
+const href = work.hasDetail ? `/works/${work.slug}/` : firstExternalLink(work);
+const external = !work.hasDetail;
+
+// 分配 15 個 gradient placeholder 之一（slug hash）
+const thumbNum =
+  (work.slug.split('').reduce((a, c) => a + c.charCodeAt(0), 0) % 15) + 1;
+
+// 縮圖中間顯示的短文字：zh 標題前 4 字
+const dataShort = work.titleZh.slice(0, 4);
+
+const categoryLabels = work.categories.map((c) => CATEGORY_LABELS[c]);
+---
+<a
+  class="work-card"
+  href={href ?? '#'}
+  data-categories={work.categories.join(' ')}
+  {...(external ? { target: '_blank', rel: 'noopener' } : {})}
+>
+  <div class={`work-cover thumb th-${thumbNum}`} data-short={dataShort}></div>
+  <div class="work-meta">
+    <div class="work-cats">
+      {categoryLabels.map((c, i) => (
+        <span class="work-cat">
+          {c.zh} <span class="en">{c.en}</span>
+          {i < categoryLabels.length - 1 && <span class="sep"> · </span>}
+        </span>
+      ))}
+    </div>
+    <div class="work-title-zh">{work.titleZh}</div>
+    {work.titleEn && <div class="work-title-en">{work.titleEn}</div>}
+    <div class="work-sub">
+      {work.director && <span class="work-director">{work.director}</span>}
+      {work.year && <span class="work-year">{work.year}</span>}
+    </div>
+  </div>
+</a>

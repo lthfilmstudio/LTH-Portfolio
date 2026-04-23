@@ -1,0 +1,144 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BrandMark from '../../components/BrandMark.astro';
+import { works, CATEGORY_LABELS } from '../../data/works';
+import type { Work, LinkType } from '../../data/works';
+
+export async function getStaticPaths() {
+  return works
+    .filter((w) => w.hasDetail)
+    .map((w) => ({
+      params: { slug: w.slug },
+      props: { work: w },
+    }));
+}
+
+interface Props { work: Work }
+const { work } = Astro.props;
+
+const LINK_LABELS: Record<LinkType, string> = {
+  youtube: 'YouTube',
+  facebook: 'Facebook',
+  netflix: 'Netflix',
+  iqiyi: 'iQIYI',
+  kktv: 'KKTV',
+  catchplay: 'CATCHPLAY',
+  friday: 'friDay',
+  myvideo: 'MyVideo',
+  hakkatv: 'Hakka TV',
+  pts: 'PTS+',
+  hami: 'Hami Video',
+  vimeo: 'Vimeo',
+  link: 'Link',
+};
+
+const thumbNum =
+  (work.slug.split('').reduce((a, c) => a + c.charCodeAt(0), 0) % 15) + 1;
+const dataShort = work.titleZh.slice(0, 4);
+
+const title = `${work.titleZh}${work.titleEn ? ' — ' + work.titleEn : ''} | 林姿嫺 Tzushien Lin`;
+---
+<BaseLayout title={title} description={work.description.slice(0, 150) || title}>
+
+<div class="bokeh-bg"></div>
+
+<nav>
+  <div class="brand">
+    <BrandMark />
+    <div class="brand-text">
+      <span class="brand-zh">林姿嫺</span>
+      <span class="brand-en">Tzushien Lin · Editor</span>
+    </div>
+  </div>
+  <ul>
+    <li><a href="/#works">Works</a></li>
+    <li><a href="/#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<main class="work-detail">
+
+  <a class="back-link" href="/#works">← 返回作品列表 Back to Portfolio</a>
+
+  <header class="work-detail-header">
+    <div class="work-detail-cats">
+      {work.categories.map((c, i) => (
+        <span class="work-cat">
+          {CATEGORY_LABELS[c].zh} <span class="en">{CATEGORY_LABELS[c].en}</span>
+          {i < work.categories.length - 1 && <span class="sep"> · </span>}
+        </span>
+      ))}
+    </div>
+
+    <h1 class="work-detail-title-zh">{work.titleZh}</h1>
+    {work.titleEn && <div class="work-detail-title-en">{work.titleEn}</div>}
+
+    <div class="work-detail-meta">
+      {work.year && <span class="wd-meta-item"><span class="wd-meta-label">Year</span>{work.year}</span>}
+      {work.director && <span class="wd-meta-item"><span class="wd-meta-label">導演 Director</span>{work.director}</span>}
+      {work.writers && <span class="wd-meta-item"><span class="wd-meta-label">編劇 Writer</span>{work.writers}</span>}
+    </div>
+  </header>
+
+  <div class="work-detail-body">
+    <div class={`work-detail-cover thumb th-${thumbNum}`} data-short={dataShort}></div>
+
+    <div class="work-detail-content">
+      {work.description && (
+        <div class="wd-section">
+          <h2 class="wd-section-title">劇情簡介 <span class="en">Synopsis</span></h2>
+          <div class="wd-description">
+            {work.description.split('\n').map((p) => p.trim() && <p>{p}</p>)}
+          </div>
+        </div>
+      )}
+
+      {work.links.length > 0 && (
+        <div class="wd-section">
+          <h2 class="wd-section-title">觀賞連結 <span class="en">Watch</span></h2>
+          <ul class="wd-links">
+            {work.links.map((l) => (
+              <li>
+                <a href={l.url} target="_blank" rel="noopener" class={`wd-link wd-link--${l.type}`}>
+                  <span class="wd-link-type">{LINK_LABELS[l.type]}</span>
+                  <span class="wd-link-url">{l.url.replace(/^https?:\/\/(www\.)?/, '').slice(0, 60)}{l.url.length > 70 ? '…' : ''}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  </div>
+
+</main>
+
+<footer id="contact">
+  <div class="footer-main">
+    <div class="footer-left">
+      <h3>Let's Connect.<span class="en">For new projects and collaborations</span></h3>
+      <div class="contact-info">
+        <a href="mailto:lthfilmstudio@gmail.com">lthfilmstudio@gmail.com</a>
+        <a href="https://lthfilmstudio.com" target="_blank">lthfilmstudio.com</a>
+      </div>
+    </div>
+    <div class="footer-right">
+      <div class="studio-card">
+        <div class="label">Studio · 工作室</div>
+        <div class="studio-name-zh">原本那間剪輯工作室</div>
+        <div class="studio-name-en">LTH Film Studio</div>
+      </div>
+      <div class="social-links">
+        <a href="#">IMDb</a>
+        <a href="#">Line</a>
+        <a href="#">WeChat</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <div>© 2026 Tzushien Lin — All rights reserved</div>
+    <div>Site designed with care for moving image.</div>
+  </div>
+</footer>
+
+</BaseLayout>

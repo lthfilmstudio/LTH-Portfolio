@@ -1,0 +1,183 @@
+/* ===== PORTFOLIO SECTION ===== */
+.portfolio {
+  padding: 0 3rem 8rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Filter chips */
+.filter-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-bottom: 3rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.chip {
+  background: transparent;
+  border: 1px solid var(--line);
+  color: var(--text-dim);
+  font-family: 'Noto Serif TC', serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  padding: 0.55rem 1rem;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 2px;
+}
+
+.chip .chip-en {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.75rem;
+  color: var(--text-faint);
+  margin-left: 0.1rem;
+}
+
+.chip .chip-count {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.68rem;
+  color: var(--text-faint);
+  margin-left: 0.3rem;
+  opacity: 0.7;
+}
+
+.chip:hover {
+  border-color: var(--accent-dim);
+  color: var(--text);
+}
+
+.chip.active {
+  background: var(--panel);
+  border-color: var(--accent-dim);
+  color: var(--accent);
+}
+
+.chip.active .chip-en {
+  color: var(--accent-dim);
+}
+
+.chip.active .chip-count {
+  color: var(--accent);
+  opacity: 1;
+}
+
+/* Works grid */
+.works-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.8rem 1.4rem;
+}
+
+/* Work card */
+.work-card {
+  text-decoration: none;
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  transition: transform 0.4s cubic-bezier(.2,.8,.2,1);
+}
+
+.work-card:hover {
+  transform: translateY(-3px);
+}
+
+.work-cover {
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  filter: grayscale(0.4) brightness(0.88);
+  transition: all 0.5s;
+}
+
+.work-card:hover .work-cover {
+  filter: grayscale(0) brightness(1);
+  border-color: var(--accent-dim);
+}
+
+.work-cover::before {
+  font-size: 0.75rem;
+}
+
+.work-meta {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.work-cats {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 0.3rem;
+}
+
+.work-cats .work-cat .en {
+  font-family: 'Cormorant Garamond', serif;
+  opacity: 0.7;
+  margin-left: 0.15rem;
+}
+
+.work-cats .sep {
+  opacity: 0.5;
+  margin: 0 0.2rem;
+}
+
+.work-title-zh {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 0.92rem;
+  color: var(--text);
+  letter-spacing: 0.04em;
+  line-height: 1.35;
+  transition: color 0.3s;
+}
+
+.work-card:hover .work-title-zh {
+  color: var(--accent);
+}
+
+.work-title-en {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  line-height: 1.35;
+  letter-spacing: 0.02em;
+}
+
+.work-sub {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  margin-top: 0.35rem;
+  font-size: 0.65rem;
+  color: var(--text-faint);
+  letter-spacing: 0.06em;
+}
+
+.work-sub .work-director::before {
+  content: '導演 ';
+  opacity: 0.65;
+}
+
+.work-sub .work-year {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.75rem;
+  margin-left: auto;
+}
+
+/* Filter behaviour: 隱藏非符合類別的 card */
+.works-grid[data-active-filter="feature"] .work-card:not([data-categories~="feature"]),
+.works-grid[data-active-filter="series"] .work-card:not([data-categories~="series"]),
+.works-grid[data-active-filter="trailer"] .work-card:not([data-categories~="trailer"]),
+.works-grid[data-active-filter="short"] .work-card:not([data-categories~="short"]),
+.works-grid[data-active-filter="commercial"] .work-card:not([data-categories~="commercial"]),
+.works-grid[data-active-filter="mv"] .work-card:not([data-categories~="mv"]),
+.works-grid[data-active-filter="tvmovie"] .work-card:not([data-categories~="tvmovie"]) {
+  display: none;
+}

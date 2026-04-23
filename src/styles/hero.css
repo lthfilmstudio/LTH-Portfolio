@@ -2,10 +2,9 @@
 .hero {
   min-height: 100vh;
   padding: 8rem 3rem 4rem;
-  display: grid;
-  grid-template-columns: 2fr 1fr;
-  gap: 5rem;
-  align-items: start;
+  display: block;
+  max-width: 1200px;
+  margin: 0 auto;
   position: relative;
 }
 
