@@ -2,8 +2,11 @@
 .hero {
   min-height: 100vh;
   padding: 8rem 3rem 4rem;
-  display: block;
-  max-width: 1200px;
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 4rem;
+  align-items: start;
+  max-width: 1400px;
   margin: 0 auto;
   position: relative;
 }
@@ -135,6 +138,12 @@
   gap: 1rem;
 }
 
+/* 當 hero 是 2:1 雙欄時，hero-left 沒那麼寬，awards 改成單欄列表避免太擠 */
+.hero-awards-row--stack {
+  grid-template-columns: 1fr;
+  gap: 0.6rem;
+}
+
 .hero-award-item {
   padding: 0.9rem 0.8rem;
   border: 1px solid var(--line-soft);
@@ -258,6 +267,8 @@
   cursor: pointer;
   transition: all 0.4s cubic-bezier(.2,.8,.2,1);
   position: relative;
+  text-decoration: none;
+  color: inherit;
 }
 
 .featured-item:hover {

@@ -8,7 +8,16 @@
   nav ul { gap: 1.2rem; font-size: 0.65rem; }
 
   .hero {
+    grid-template-columns: 1fr;
     padding: 7rem 1.5rem 3rem;
+    gap: 3rem;
+  }
+  .hero-right {
+    border-left: none;
+    border-top: 1px solid var(--line);
+    padding-left: 0;
+    padding-top: 2.5rem;
+    margin-top: 0;
   }
   .hero-profile {
     grid-template-columns: 1fr;
