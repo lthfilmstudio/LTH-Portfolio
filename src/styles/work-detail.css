@@ -141,10 +141,10 @@
 
 .wd-link {
   display: grid;
-  grid-template-columns: 110px 1fr;
-  gap: 1.2rem;
-  align-items: center;
-  padding: 0.8rem 0;
+  grid-template-columns: 20px 1fr auto;
+  gap: 0.9rem;
+  align-items: baseline;
+  padding: 0.75rem 0;
   border-bottom: 1px solid var(--line-soft);
   text-decoration: none;
   color: var(--text);
@@ -156,25 +156,29 @@
   color: var(--accent);
 }
 
-.wd-link-type {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 0.7rem;
+.wd-link-icon {
   color: var(--accent);
+  font-size: 0.7rem;
+  line-height: 1;
+}
+
+.wd-link-label {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 0.95rem;
+  color: var(--text);
+  letter-spacing: 0.04em;
+  line-height: 1.35;
+}
+
+.wd-link:hover .wd-link-label { color: var(--accent); }
+
+.wd-link-source {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.68rem;
+  color: var(--text-faint);
   letter-spacing: 0.2em;
   text-transform: uppercase;
 }
-
-.wd-link-url {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 0.85rem;
-  color: var(--text-dim);
-  letter-spacing: 0.01em;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-.wd-link:hover .wd-link-url { color: var(--text); }
 
 @media screen and (max-width: 960px) {
   .work-detail {

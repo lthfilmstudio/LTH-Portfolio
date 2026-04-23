@@ -12,6 +12,35 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 CSV_PATH = ROOT / "Notion DB/林姿嫺 Tzushien Lin/Professional Portfolio - DB/Projects 1e858e03bb0e81af870cfd0a0053a221.csv"
 OUT_PATH = ROOT / "src/data/works.json"
+# 從 Notion 網頁 scrape 的 markdown，用來抓每個 URL 的顯示標籤
+NOTION_MD = Path("/tmp/notion-full.md")
+
+
+def build_url_label_map() -> dict[str, str]:
+    """從 Notion 網頁 markdown 抽出 [label](url) 對照表。"""
+    if not NOTION_MD.exists():
+        return {}
+    text = NOTION_MD.read_text(encoding="utf-8")
+    # 抓所有 [label](url) — label 不含 ] 和方括號內的巢狀
+    # URL 限 http(s) 開頭
+    pattern = re.compile(r"\[([^\[\]]+?)\]\((https?://[^\s)]+)\)")
+    mapping: dict[str, str] = {}
+    for m in pattern.finditer(text):
+        label, url = m.group(1).strip(), m.group(2).strip()
+        # 清掉 URL 尾巴可能附帶的標點
+        url = url.rstrip(".,;:)")
+        # 跳過圖片 alt 和 Notion 自己的 detail URL（label 通常是中文作品名開頭）
+        if "notion.site" in url:
+            continue
+        if label in ("▶️", ""):
+            continue
+        # 第一個 label 優先（Notion 同 URL 可能出現多次，第一次通常最正確）
+        if url not in mapping:
+            mapping[url] = label
+    return mapping
+
+
+URL_LABEL_MAP = build_url_label_map()
 
 
 def split_title(raw: str) -> tuple[str, str]:
@@ -56,7 +85,11 @@ def parse_links(raw: str) -> list[dict]:
         if url in seen:
             continue
         seen.add(url)
-        links.append(classify_link(url))
+        link = classify_link(url)
+        # 加標籤（若在 Notion 網頁 map 裡有）
+        if url in URL_LABEL_MAP:
+            link["label"] = URL_LABEL_MAP[url]
+        links.append(link)
     return links
 
 

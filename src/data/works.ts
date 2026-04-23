@@ -20,6 +20,7 @@ export type LinkType =
 export interface WorkLink {
   type: LinkType;
   url: string;
+  label?: string;
 }
 
 export interface Work {
