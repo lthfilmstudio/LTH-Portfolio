@@ -36,3 +36,6 @@ dist/
 # 原型階段遺留檔（重構完成後再決定刪除）
 /index.html
 LTH.pdf
+
+# Notion export 備份（不 commit）
+/Notion DB 2026-04-23/
