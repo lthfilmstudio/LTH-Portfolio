@@ -177,6 +177,7 @@ def main():
         writers = r.get("Writers", "").strip().removeprefix("編劇 ").strip()
         description = r.get("Description", "").strip()
         links = parse_links(r.get("Related", ""))
+        slug = slugify(zh, en, year)
 
         # Cover：CSV 可能有多張逗點分隔；實體檔名已 rename 為解碼後的原字元
         # URL 裡空白替換為 %20（browser 會自動處理中文 encoding）
@@ -196,10 +197,15 @@ def main():
             if covers_all:
                 cover = covers_all[0]
 
+        # YouTube 縮圖優先（scripts/fetch-youtube-covers.py 抓的）：畫質通常好過 FB 縮圖
+        # 但保留原 Notion cover 作為 coverOriginal（之後如果用戶要 revert 可以用）
+        yt_thumb = ROOT / "public/stills/covers/yt" / f"{slug}.jpg"
+        cover_original = cover
+        if yt_thumb.exists():
+            cover = f"/stills/covers/yt/{slug}.jpg"
+
         # 決定是否有詳細頁（MV/廣告不做）
         has_detail = not (set(categories) <= {"mv", "commercial"})
-
-        slug = slugify(zh, en, year)
 
         works.append({
             "slug": slug,
@@ -212,6 +218,7 @@ def main():
             "writers": writers,
             "description": description,
             "cover": cover,
+            "coverOriginal": cover_original,
             "covers": covers_all,
             "links": links,
             "hasDetail": has_detail,
