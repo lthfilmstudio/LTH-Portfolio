@@ -139,7 +139,7 @@
 }
 
 /* 當 hero 是 2:1 雙欄時，hero-left 沒那麼寬，awards 改成單欄列表避免太擠 */
-.hero-awards-row--stack {
+.hero-awards-row.hero-awards-row--stack {
   grid-template-columns: 1fr;
   gap: 0.6rem;
 }
