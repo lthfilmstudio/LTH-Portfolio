@@ -191,3 +191,8 @@
 .works-grid[data-active-filter="tvmovie"] .work-card:not([data-categories~="tvmovie"]) {
   display: none;
 }
+
+/* All 預設排除「預告片花」（只有 trailer 單一分類的卡片）*/
+.works-grid[data-active-filter="all"] .work-card[data-categories="trailer"] {
+  display: none;
+}

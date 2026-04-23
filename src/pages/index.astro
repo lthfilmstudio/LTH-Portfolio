@@ -183,7 +183,7 @@ function thumbClass(slug: string): string {
 <section class="portfolio">
   <div class="filter-chips" role="tablist">
     <button class="chip active" data-filter="all" type="button" role="tab" aria-selected="true">
-      All <span class="chip-count">{works.length}</span>
+      All <span class="chip-count">{works.filter((w) => !(w.categories.length === 1 && w.categories[0] === 'trailer')).length}</span>
     </button>
     {CATEGORY_ORDER.map((cat) => {
       const count = works.filter((w) => w.categories.includes(cat)).length;
