@@ -89,18 +89,18 @@
 
 .hero-profile .lead-en {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 0.92rem;
+  font-size: 1rem;
   color: var(--text-dim);
-  line-height: 1.7;
-  margin-bottom: 0.8rem;
+  line-height: 1.85;
+  margin-bottom: 0.9rem;
   letter-spacing: 0.01em;
 }
 
 .hero-profile .sub-en {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 0.85rem;
+  font-size: 0.92rem;
   color: var(--text-faint);
-  line-height: 1.7;
+  line-height: 1.85;
   letter-spacing: 0.01em;
 }
 
