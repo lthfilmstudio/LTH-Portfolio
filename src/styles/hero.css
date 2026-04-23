@@ -136,6 +136,7 @@
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   gap: 1rem;
+  align-items: stretch;
 }
 
 .hero-award-item {
@@ -147,6 +148,8 @@
   grid-template-columns: 40px 1fr;
   gap: 0.7rem;
   align-items: center;
+  height: 100%;
+  box-sizing: border-box;
 }
 
 .hero-award-item:hover {
