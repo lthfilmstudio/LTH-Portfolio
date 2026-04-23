@@ -178,7 +178,8 @@ def main():
         description = r.get("Description", "").strip()
         links = parse_links(r.get("Related", ""))
 
-        # Cover：CSV 可能有多張，取第一張；URL decode；確認檔案存在
+        # Cover：CSV 可能有多張逗點分隔；實體檔名已 rename 為解碼後的原字元
+        # URL 裡空白替換為 %20（browser 會自動處理中文 encoding）
         raw_cover = r.get("Cover", "").strip()
         cover = ""
         covers_all = []
@@ -186,7 +187,7 @@ def main():
             for c in raw_cover.split(","):
                 c = unquote(c.strip())
                 if c and (ROOT / "public/stills/covers" / c).exists():
-                    covers_all.append(f"/stills/covers/{c}")
+                    covers_all.append(f"/stills/covers/{c.replace(' ', '%20')}")
             if covers_all:
                 cover = covers_all[0]
 

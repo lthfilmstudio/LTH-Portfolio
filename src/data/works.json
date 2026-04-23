@@ -245,7 +245,7 @@
     "cover": "/stills/covers/473096089_122107576496711309_452250625718281418_n.jpg",
     "covers": [
       "/stills/covers/473096089_122107576496711309_452250625718281418_n.jpg",
-      "/stills/covers/473096089_122107576496711309_452250625718281418_n 1.jpg"
+      "/stills/covers/473096089_122107576496711309_452250625718281418_n%201.jpg"
     ],
     "links": [
       {
@@ -346,10 +346,8 @@
     "director": "李權洋、王威翔",
     "writers": "蔡岳霖、莊榮祚",
     "description": "",
-    "cover": "/stills/covers/%E4%B8%A6.png",
-    "covers": [
-      "/stills/covers/%E4%B8%A6.png"
-    ],
+    "cover": "",
+    "covers": [],
     "links": [
       {
         "type": "youtube",
@@ -395,10 +393,8 @@
     "director": "許肇任、林志儒",
     "writers": "杜政哲、林晏如",
     "description": "獲金鐘獎戲劇節目獎、導演獎、男女主角獎、男配角獎、新人獎，入圍編劇獎、剪輯獎、造型設計獎、女配角獎。\n\n高嘉岳突然回家了，離家多年卻豪不客氣地闖進高家的日常，大家心裡都巴不得嘉岳趕快離開。唯獨姪子丞佑喜歡找嘉岳相處，因為他覺得嘉岳是個很不一樣的大人。\n嘉岳發現不單只有自己，每個人的人生都好難好難，爸媽感情失和、二弟在家中一直沒有歸屬感、三弟對未來很茫然，但他們還是跌跌撞撞地在人生道路上前進著。",
-    "cover": "/stills/covers/%E6%9C%89%E7%94%9F%E4%B9%8B%E5%B9%B4.jpg",
-    "covers": [
-      "/stills/covers/%E6%9C%89%E7%94%9F%E4%B9%8B%E5%B9%B4.jpg"
-    ],
+    "cover": "",
+    "covers": [],
     "links": [
       {
         "type": "youtube",
@@ -1006,9 +1002,9 @@
     "director": "陳銘章",
     "writers": "施定柔",
     "description": "豆瓣8.9，獲安徽衞視國劇盛典年度電視劇獎項。",
-    "cover": "/stills/covers/Screenshot_2024-09-03_at_20.02.19 1.png",
+    "cover": "/stills/covers/Screenshot_2024-09-03_at_20.02.19%201.png",
     "covers": [
-      "/stills/covers/Screenshot_2024-09-03_at_20.02.19 1.png"
+      "/stills/covers/Screenshot_2024-09-03_at_20.02.19%201.png"
     ],
     "links": [
       {
@@ -1394,9 +1390,9 @@
     "director": "比爾賈",
     "writers": "",
     "description": "",
-    "cover": "/stills/covers/s 1.png",
+    "cover": "/stills/covers/s%201.png",
     "covers": [
-      "/stills/covers/s 1.png"
+      "/stills/covers/s%201.png"
     ],
     "links": [
       {
@@ -1544,9 +1540,9 @@
     "director": "比爾賈",
     "writers": "",
     "description": "",
-    "cover": "/stills/covers/f 1.png",
+    "cover": "/stills/covers/f%201.png",
     "covers": [
-      "/stills/covers/f 1.png"
+      "/stills/covers/f%201.png"
     ],
     "links": [
       {
