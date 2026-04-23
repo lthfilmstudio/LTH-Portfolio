@@ -145,11 +145,17 @@
   transition: all 0.4s cubic-bezier(.2,.8,.2,1);
   cursor: pointer;
   display: grid;
-  grid-template-columns: 40px 1fr;
-  gap: 0.7rem;
-  align-items: center;
+  grid-template-columns: 38px 1fr;
+  column-gap: 0.7rem;
+  row-gap: 0.5rem;
+  align-items: start;
   height: 100%;
   box-sizing: border-box;
+}
+
+.hero-award-item .award-meta {
+  grid-column: 1 / -1;
+  margin-bottom: 0.1rem;
 }
 
 .hero-award-item:hover {
@@ -158,8 +164,10 @@
 }
 
 .hero-award-thumb {
-  width: 40px;
-  height: 56px;
+  width: 38px;
+  height: auto;
+  align-self: stretch;
+  min-height: 64px;
 }
 
 .hero-award-item:hover .hero-award-thumb {
@@ -205,10 +213,11 @@
 
 .award-work {
   font-family: 'Noto Serif TC', serif;
-  font-size: 1.05rem;
+  font-size: 0.8rem;
   color: var(--text);
   letter-spacing: 0.05em;
-  margin-bottom: 0.25rem;
+  margin-bottom: 0.3rem;
+  line-height: 1.3;
   transition: color 0.3s;
 }
 
