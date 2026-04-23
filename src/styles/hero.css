@@ -215,19 +215,38 @@
 .hero-award-item:hover .award-work { color: var(--accent); }
 
 .award-work .work-en {
+  display: block;
   font-family: 'Cormorant Garamond', serif;
-  font-size: 0.85rem;
+  font-size: 0.72rem;
   color: var(--text-dim);
-  margin-left: 0.5rem;
+  margin-top: 0.15rem;
   font-weight: 300;
+  letter-spacing: 0.02em;
+  line-height: 1.2;
 }
 
 .hero-award-item:hover .work-en { color: var(--text); }
 
 .award-name-sm {
   font-size: 0.68rem;
-  color: var(--text-faint);
   letter-spacing: 0.1em;
+  line-height: 1.4;
+  margin-top: 0.4rem;
+}
+
+.award-name-sm .award-name-zh {
+  display: block;
+  color: var(--text-dim);
+  font-family: 'Noto Serif TC', serif;
+}
+
+.award-name-sm .award-name-en {
+  display: block;
+  color: var(--text-faint);
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  margin-top: 0.1rem;
 }
 
 /* HERO RIGHT — SELECTED WORK */
