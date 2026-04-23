@@ -91,9 +91,19 @@
   aspect-ratio: 3 / 4;
   position: sticky;
   top: 5rem;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  background: var(--panel);
 }
 
 .work-detail-cover::before { font-size: 1.2rem; }
+
+.work-detail-cover--image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
 
 .work-detail-content {
   display: flex;

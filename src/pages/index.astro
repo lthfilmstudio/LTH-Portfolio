@@ -153,7 +153,13 @@ function thumbClass(slug: string): string {
     <div class="featured-list">
       {selectedWorks.map((w, i) => (
         <a class="featured-item" href={w.hasDetail ? `/works/${w.slug}/` : '#'}>
-          <div class={`thumb featured-thumb ${thumbClass(w.slug)}`} data-short={w.titleZh.slice(0, 4)}></div>
+          {w.cover ? (
+            <div class="featured-thumb featured-thumb--image">
+              <img src={w.cover} alt={`${w.titleZh} ${w.titleEn}`.trim()} loading="lazy" />
+            </div>
+          ) : (
+            <div class={`thumb featured-thumb ${thumbClass(w.slug)}`} data-short={w.titleZh.slice(0, 4)}></div>
+          )}
           <span class="idx">{String(i + 1).padStart(2, '0')}</span>
           <span class="title">
             <span class="title-zh">{w.titleZh}</span>

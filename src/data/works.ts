@@ -34,6 +34,7 @@ export interface Work {
   writers: string;
   description: string;
   cover: string;
+  covers: string[];
   links: WorkLink[];
   hasDetail: boolean;
 }

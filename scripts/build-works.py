@@ -8,6 +8,7 @@ import json
 import re
 import sys
 from pathlib import Path
+from urllib.parse import unquote
 
 ROOT = Path(__file__).resolve().parent.parent
 CSV_PATH = ROOT / "Notion DB/林姿嫺 Tzushien Lin/Professional Portfolio - DB/Projects 1e858e03bb0e81af870cfd0a0053a221.csv"
@@ -176,7 +177,18 @@ def main():
         writers = r.get("Writers", "").strip().removeprefix("編劇 ").strip()
         description = r.get("Description", "").strip()
         links = parse_links(r.get("Related", ""))
-        cover = r.get("Cover", "").strip()
+
+        # Cover：CSV 可能有多張，取第一張；URL decode；確認檔案存在
+        raw_cover = r.get("Cover", "").strip()
+        cover = ""
+        covers_all = []
+        if raw_cover:
+            for c in raw_cover.split(","):
+                c = unquote(c.strip())
+                if c and (ROOT / "public/stills/covers" / c).exists():
+                    covers_all.append(f"/stills/covers/{c}")
+            if covers_all:
+                cover = covers_all[0]
 
         # 決定是否有詳細頁（MV/廣告不做）
         has_detail = not (set(categories) <= {"mv", "commercial"})
@@ -194,6 +206,7 @@ def main():
             "writers": writers,
             "description": description,
             "cover": cover,
+            "covers": covers_all,
             "links": links,
             "hasDetail": has_detail,
         })

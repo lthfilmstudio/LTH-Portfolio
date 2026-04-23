@@ -9,11 +9,9 @@ const { work } = Astro.props;
 const href = work.hasDetail ? `/works/${work.slug}/` : firstExternalLink(work);
 const external = !work.hasDetail;
 
-// 分配 15 個 gradient placeholder 之一（slug hash）
+// 沒有 cover 時 fallback 到 15 個 gradient placeholder
 const thumbNum =
   (work.slug.split('').reduce((a, c) => a + c.charCodeAt(0), 0) % 15) + 1;
-
-// 縮圖中間顯示的短文字：zh 標題前 4 字
 const dataShort = work.titleZh.slice(0, 4);
 
 const categoryLabels = work.categories.map((c) => CATEGORY_LABELS[c]);
@@ -24,7 +22,13 @@ const categoryLabels = work.categories.map((c) => CATEGORY_LABELS[c]);
   data-categories={work.categories.join(' ')}
   {...(external ? { target: '_blank', rel: 'noopener' } : {})}
 >
-  <div class={`work-cover thumb th-${thumbNum}`} data-short={dataShort}></div>
+  {work.cover ? (
+    <div class="work-cover work-cover--image">
+      <img src={work.cover} alt={`${work.titleZh} ${work.titleEn}`.trim()} loading="lazy" />
+    </div>
+  ) : (
+    <div class={`work-cover thumb th-${thumbNum}`} data-short={dataShort}></div>
+  )}
   <div class="work-meta">
     <div class="work-cats">
       {categoryLabels.map((c, i) => (

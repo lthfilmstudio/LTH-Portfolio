@@ -107,7 +107,13 @@ const workSchema = {
   </header>
 
   <div class="work-detail-body">
-    <div class={`work-detail-cover thumb th-${thumbNum}`} data-short={dataShort}></div>
+    {work.cover ? (
+      <div class="work-detail-cover work-detail-cover--image">
+        <img src={work.cover} alt={`${work.titleZh} ${work.titleEn}`.trim()} />
+      </div>
+    ) : (
+      <div class={`work-detail-cover thumb th-${thumbNum}`} data-short={dataShort}></div>
+    )}
 
     <div class="work-detail-content">
       {work.description && (

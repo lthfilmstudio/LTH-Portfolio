@@ -305,6 +305,25 @@
   height: 80px;
 }
 
+.featured-thumb--image {
+  overflow: hidden;
+  border: 1px solid var(--line);
+  filter: grayscale(0.45) brightness(0.9);
+  transition: all 0.4s;
+}
+
+.featured-thumb--image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.featured-item:hover .featured-thumb--image {
+  filter: grayscale(0) brightness(1);
+  border-color: var(--accent-dim);
+}
+
 .featured-item:hover .featured-thumb {
   filter: grayscale(0) brightness(1);
   border-color: var(--accent-dim);
