@@ -3,7 +3,7 @@
   min-height: 100vh;
   padding: 8rem 3rem 4rem;
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 2fr 1fr;
   gap: 5rem;
   align-items: start;
   position: relative;
