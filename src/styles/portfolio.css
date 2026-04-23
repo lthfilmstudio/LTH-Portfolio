@@ -5,10 +5,11 @@
   margin: 0 auto;
 }
 
-/* Filter chips */
+/* Filter chips — 與下方 grid 同寬，撐滿 container */
 .filter-chips {
   display: flex;
   flex-wrap: wrap;
+  justify-content: space-between;
   gap: 0.6rem;
   margin-bottom: 3rem;
   padding-bottom: 2rem;
