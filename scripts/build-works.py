@@ -197,11 +197,13 @@ def main():
             if covers_all:
                 cover = covers_all[0]
 
-        # YouTube 縮圖優先（scripts/fetch-youtube-covers.py 抓的）：畫質通常好過 FB 縮圖
-        # 但保留原 Notion cover 作為 coverOriginal（之後如果用戶要 revert 可以用）
-        yt_thumb = ROOT / "public/stills/covers/yt" / f"{slug}.jpg"
+        # 海報優先順序：官方（Wikipedia）> YouTube 縮圖 > Notion cover
         cover_original = cover
-        if yt_thumb.exists():
+        official = ROOT / "public/stills/covers/official" / f"{slug}.jpg"
+        yt_thumb = ROOT / "public/stills/covers/yt" / f"{slug}.jpg"
+        if official.exists():
+            cover = f"/stills/covers/official/{slug}.jpg"
+        elif yt_thumb.exists():
             cover = f"/stills/covers/yt/{slug}.jpg"
 
         # 決定是否有詳細頁（MV/廣告不做）
