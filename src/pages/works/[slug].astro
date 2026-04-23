@@ -37,8 +37,34 @@ const thumbNum =
 const dataShort = work.titleZh.slice(0, 4);
 
 const title = `${work.titleZh}${work.titleEn ? ' — ' + work.titleEn : ''} | 林姿嫺 Tzushien Lin`;
+
+const description = work.description
+  ? work.description.replace(/\s+/g, ' ').slice(0, 158)
+  : `${work.titleZh} ${work.titleEn} — 由林姿嫺剪輯。${CATEGORY_LABELS[work.primaryCategory].zh} · ${work.year}。`;
+
+// Schema.org CreativeWork
+const workSchema = {
+  '@context': 'https://schema.org',
+  '@type':
+    work.primaryCategory === 'feature'
+      ? 'Movie'
+      : work.primaryCategory === 'series'
+        ? 'TVSeries'
+        : work.primaryCategory === 'short'
+          ? 'Movie'
+          : work.primaryCategory === 'tvmovie'
+            ? 'TVMovie'
+            : 'CreativeWork',
+  name: work.titleZh,
+  alternateName: work.titleEn || undefined,
+  datePublished: work.year || undefined,
+  description: work.description || undefined,
+  director: work.director ? { '@type': 'Person', name: work.director } : undefined,
+  editor: { '@type': 'Person', name: '林姿嫺 Tzushien Lin' },
+  author: work.writers ? { '@type': 'Person', name: work.writers } : undefined,
+};
 ---
-<BaseLayout title={title} description={work.description.slice(0, 150) || title}>
+<BaseLayout title={title} description={description} schemaJsonLd={workSchema}>
 
 <div class="bokeh-bg"></div>
 

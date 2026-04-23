@@ -4,6 +4,29 @@ import BrandMark from '../components/BrandMark.astro';
 import WorkCard from '../components/WorkCard.astro';
 import { works, CATEGORY_LABELS, CATEGORY_ORDER } from '../data/works';
 
+// Schema.org Person — 讓 Google 搜尋結果顯示獎項、職稱
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: '林姿嫺',
+  alternateName: 'Tzushien Lin',
+  jobTitle: '剪輯指導 Supervising Editor',
+  description: '電影／劇集剪輯指導，兩度金鐘獎最佳剪輯得主',
+  url: 'https://lthfilmstudio.com',
+  sameAs: ['https://www.imdb.com/name/nm6202567/'],
+  worksFor: {
+    '@type': 'Organization',
+    name: '原本那間剪輯工作室 LTH Film Studio',
+    url: 'https://lthfilmstudio.com',
+  },
+  award: [
+    '第 57 屆金鐘獎戲劇類剪輯獎（茶金 Gold Leaf, 2022）',
+    '第 45 屆金鐘獎剪輯獎（牽紙鷂的手 The Kite Soaring, 2010）',
+    '第 59 屆金鐘獎戲劇類剪輯獎入圍（有生之年 Living, 2024）',
+  ],
+  knowsLanguage: ['zh-TW', 'nan-TW', 'en', 'hak-TW', 'th'],
+};
+
 // Nalin 精選的 6 部代表作（hero 右欄）
 const selectedSlugs = [
   'the-photo-from-1977-2025',
@@ -22,7 +45,7 @@ function thumbClass(slug: string): string {
   return `th-${n}`;
 }
 ---
-<BaseLayout>
+<BaseLayout schemaJsonLd={personSchema}>
 
 <div class="bokeh-bg"></div>
 
