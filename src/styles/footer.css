@@ -25,7 +25,6 @@ footer {
 
 .footer-left h3 .en {
   font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
   display: block;
   color: var(--accent);
   font-size: 0.65em;
@@ -44,7 +43,6 @@ footer {
   text-decoration: none;
   font-family: 'Cormorant Garamond', serif;
   font-size: 1.05rem;
-  font-style: italic;
   border-bottom: 1px solid var(--accent-dim);
   padding-bottom: 0.3rem;
   width: fit-content;
@@ -86,7 +84,6 @@ footer {
 
 .studio-card .studio-name-en {
   font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
   font-size: 0.85rem;
   color: var(--accent);
   letter-spacing: 0.05em;
