@@ -69,11 +69,13 @@
   opacity: 0.55;
 }
 
-/* HERO PROFILE (moved from about section) */
+/* HERO PROFILE — 4 格 grid: [lead-zh | lead-en] [sub-zh | sub-en]
+   同一 row 的兩欄互相對齊（第二段中英從同一 Y 座標開始）*/
 .hero-profile {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2.5rem;
+  column-gap: 2.5rem;
+  row-gap: 1rem;
   margin-bottom: 3rem;
   padding-bottom: 2.5rem;
   border-bottom: 1px solid var(--line);
@@ -85,7 +87,6 @@
   font-size: 0.9rem;
   line-height: 1.75;
   letter-spacing: 0.08em;
-  margin-bottom: 1rem;
 }
 
 .hero-profile .sub-zh {
@@ -94,7 +95,6 @@
   font-size: 0.82rem;
   line-height: 1.75;
   letter-spacing: 0.05em;
-  margin-bottom: 1.5rem;
 }
 
 .hero-profile .lead-en {
@@ -102,7 +102,6 @@
   font-size: 1rem;
   color: var(--text);
   line-height: 1.65;
-  margin-bottom: 0.9rem;
   letter-spacing: 0.01em;
 }
 
