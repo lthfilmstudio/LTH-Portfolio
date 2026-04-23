@@ -1,0 +1,61 @@
+/* ===== PLACEHOLDER GRADIENTS (shared) ===== */
+.th-1 { background: linear-gradient(135deg, #3d2817 0%, #1a1410 50%, #6b3a1f 100%); }
+.th-2 { background: linear-gradient(180deg, #8b6534 0%, #c49a5e 40%, #2a1f15 100%); }
+.th-3 { background: linear-gradient(135deg, #a33333 0%, #5a1a1a 60%, #2a0f0f 100%); }
+.th-4 { background: linear-gradient(135deg, #d98a2a 0%, #a85c2a 50%, #3a1f0f 100%); }
+.th-5 { background: linear-gradient(180deg, #2a4560 0%, #1a2a3a 50%, #6b8aaa 100%); }
+.th-6 { background: linear-gradient(135deg, #2d3a35 0%, #1a1f1d 50%, #5a6b60 100%); }
+.th-7 { background: linear-gradient(180deg, #8a7544 0%, #c9a961 40%, #3a2e15 100%); }
+.th-8 { background: linear-gradient(135deg, #2a3a2a 0%, #1a2a1a 50%, #4a5a3a 100%); }
+.th-9 { background: linear-gradient(135deg, #1a2a3a 0%, #0f1a2a 50%, #2a3a4a 100%); }
+.th-10 { background: linear-gradient(180deg, #5a3a2a 0%, #3a2418 50%, #8a5a3a 100%); }
+.th-11 { background: linear-gradient(135deg, #4a2a3a 0%, #2a1a2a 50%, #6a3a5a 100%); }
+.th-12 { background: linear-gradient(180deg, #3a5a4a 0%, #1a3a2a 50%, #5a8a6a 100%); }
+.th-13 { background: linear-gradient(135deg, #6a4a2a 0%, #3a2418 50%, #9a6a3a 100%); }
+.th-14 { background: linear-gradient(180deg, #2a3a5a 0%, #1a2438 50%, #4a5a8a 100%); }
+.th-15 { background: linear-gradient(135deg, #8a5a3a 0%, #4a2a18 50%, #c98a5a 100%); }
+
+/* Generic thumbnail noise overlay + label */
+.thumb {
+  background-size: cover;
+  background-position: center;
+  border: 1px solid var(--line);
+  filter: grayscale(0.45) brightness(0.9);
+  transition: all 0.4s;
+  position: relative;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.thumb::before {
+  content: attr(data-short);
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Noto Serif TC', serif;
+  color: rgba(255, 255, 255, 0.3);
+  font-size: 0.55rem;
+  text-align: center;
+  padding: 0.2rem;
+  letter-spacing: 0.05em;
+  line-height: 1.2;
+}
+
+.thumb::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  opacity: 0.3;
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+/* Film poster gradients (used in sections.css .film-poster) */
+.pst-1 { background: linear-gradient(135deg, #3d2817 0%, #1a1410 50%, #6b3a1f 100%); }
+.pst-2 { background: linear-gradient(180deg, #8b6534 0%, #c49a5e 40%, #2a1f15 100%); }
+.pst-3 { background: linear-gradient(135deg, #2d3a35 0%, #1a1f1d 50%, #5a6b60 100%); }
+.pst-4 { background: linear-gradient(135deg, #a85c2a 0%, #d4801f 40%, #1a0f08 100%); }
+.pst-5 { background: linear-gradient(180deg, #2a4560 0%, #1a2a3a 50%, #6b8aaa 100%); }

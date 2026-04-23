@@ -1,0 +1,400 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import BrandMark from '../components/BrandMark.astro';
+---
+<BaseLayout>
+
+<div class="bokeh-bg"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="brand">
+    <BrandMark />
+    <div class="brand-text">
+      <span class="brand-zh">林姿嫺</span>
+      <span class="brand-en">Tzushien Lin · Editor</span>
+    </div>
+  </div>
+  <ul>
+    <li><a href="#works">Works</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <h1>林姿嫺</h1>
+    <div class="en-name">Tzushien Lin</div>
+
+    <div class="hero-titles">
+      <span class="role-zh">電影 / 劇集 剪輯指導</span>
+      <span class="role-en">Feature Film & Series Editor</span>
+    </div>
+
+    <div class="hero-profile">
+      <p class="lead-zh">以《茶金》、《牽紙鷂的手》兩度榮獲金鐘獎最佳剪輯獎，並以《有生之年》入圍金鐘獎最佳剪輯獎。</p>
+      <p class="sub-zh">近期作品包括《那張照片裡的我們》、《我們與惡的距離 II》、《拜六禮拜》、《人浮於愛》、《夏日最後的祕密》等。現成立「原本那間剪輯工作室」。</p>
+
+      <div class="profile-divider"></div>
+
+      <p class="lead-en"><em>A two-time Golden Bell Award winner for Best Editing in a Drama Series, for Gold Leaf and The Kite Soaring, and a nominee for Best Editing for Living.</em></p>
+      <p class="sub-en"><em>Recent works include The Photo from 1977, The World Between Us II: After the Flames, Holiday, Adrift in Love, and Summer Blue Hour. Founder of LTH Film Studio.</em></p>
+
+      <div class="hero-lang">
+        <div class="hero-lang-label">Languages · 語言</div>
+        <div class="hero-lang-list">
+          <span>Mandarin<span class="level">Native</span></span>
+          <span>Taiwanese<span class="level">Native</span></span>
+          <span>English<span class="level">Conversant</span></span>
+          <span>Hakka<span class="level">Basic</span></span>
+          <span>Thai<span class="level">Basic</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-awards-label">
+      <span>Awards & Recognition</span>
+      <span>得獎入圍</span>
+    </div>
+
+    <div class="hero-award-item win">
+      <div class="thumb hero-award-thumb th-7" data-short="茶金"></div>
+      <div class="hero-award-body">
+        <div class="award-meta">
+          <span class="award-status-sm"><span class="dot"></span> Winner · 獲獎</span>
+          <span class="award-yr">2022</span>
+        </div>
+        <div class="award-work">茶金 <span class="work-en">Gold Leaf</span></div>
+        <div class="award-name-sm">金鐘獎 最佳剪輯獎 · Golden Bell Awards</div>
+      </div>
+    </div>
+
+    <div class="hero-award-item win">
+      <div class="thumb hero-award-thumb th-8" data-short="牽紙鷂"></div>
+      <div class="hero-award-body">
+        <div class="award-meta">
+          <span class="award-status-sm"><span class="dot"></span> Winner · 獲獎</span>
+          <span class="award-yr">2019</span>
+        </div>
+        <div class="award-work">牽紙鷂的手 <span class="work-en">The Kite Soaring</span></div>
+        <div class="award-name-sm">金鐘獎 最佳剪輯獎 · Golden Bell Awards</div>
+      </div>
+    </div>
+
+    <div class="hero-award-item nom">
+      <div class="thumb hero-award-thumb th-5" data-short="有生之年"></div>
+      <div class="hero-award-body">
+        <div class="award-meta">
+          <span class="award-status-sm"><span class="dot"></span> Nominee · 入圍</span>
+          <span class="award-yr">2024</span>
+        </div>
+        <div class="award-work">有生之年 <span class="work-en">Living</span></div>
+        <div class="award-name-sm">金鐘獎 最佳剪輯獎 · Golden Bell Awards</div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="hero-right">
+    <div class="featured-label">
+      <span>Selected Work</span>
+      <span>2019 — 2025</span>
+    </div>
+
+    <div class="featured-list">
+      <div class="featured-item">
+        <div class="thumb featured-thumb th-1" data-short="那張照片"></div>
+        <span class="idx">01</span>
+        <span class="title">
+          <span class="title-zh">那張照片裡的我們</span>
+          <span class="title-en">The Photo from 1977</span>
+        </span>
+        <span class="year">2025</span>
+      </div>
+      <div class="featured-item">
+        <div class="thumb featured-thumb th-4" data-short="與惡 II"></div>
+        <span class="idx">02</span>
+        <span class="title">
+          <span class="title-zh">我們與惡的距離 II</span>
+          <span class="title-en">The World Between Us: After the Flames</span>
+        </span>
+        <span class="year">2025</span>
+      </div>
+      <div class="featured-item">
+        <div class="thumb featured-thumb th-5" data-short="有生之年"></div>
+        <span class="idx">03</span>
+        <span class="title">
+          <span class="title-zh">有生之年 <span class="award-tag nom">Nom.</span></span>
+          <span class="title-en">Living</span>
+        </span>
+        <span class="year">2023</span>
+      </div>
+      <div class="featured-item">
+        <div class="thumb featured-thumb th-2" data-short="拜六禮拜"></div>
+        <span class="idx">04</span>
+        <span class="title">
+          <span class="title-zh">拜六禮拜</span>
+          <span class="title-en">Holiday</span>
+        </span>
+        <span class="year">2024</span>
+      </div>
+      <div class="featured-item">
+        <div class="thumb featured-thumb th-3" data-short="人浮於愛"></div>
+        <span class="idx">05</span>
+        <span class="title">
+          <span class="title-zh">人浮於愛</span>
+          <span class="title-en">Adrift in Love</span>
+        </span>
+        <span class="year">2024</span>
+      </div>
+      <div class="featured-item">
+        <div class="thumb featured-thumb th-6" data-short="夏日祕密"></div>
+        <span class="idx">06</span>
+        <span class="title">
+          <span class="title-zh">夏日最後的祕密</span>
+          <span class="title-en">Summer Blue Hour</span>
+        </span>
+        <span class="year">2023</span>
+      </div>
+      <div class="featured-item">
+        <div class="thumb featured-thumb th-7" data-short="茶金"></div>
+        <span class="idx">07</span>
+        <span class="title">
+          <span class="title-zh">茶金 <span class="award-tag">Win</span></span>
+          <span class="title-en">Gold Leaf</span>
+        </span>
+        <span class="year">2021</span>
+      </div>
+      <div class="featured-item">
+        <div class="thumb featured-thumb th-8" data-short="牽紙鷂的手"></div>
+        <span class="idx">08</span>
+        <span class="title">
+          <span class="title-zh">牽紙鷂的手 <span class="award-tag">Win</span></span>
+          <span class="title-en">The Kite Soaring</span>
+        </span>
+        <span class="year">2019</span>
+      </div>
+    </div>
+  </aside>
+</section>
+
+<!-- FEATURE FILMS -->
+<div class="section-divider" id="works">
+  <span class="num">01 / Feature Films</span>
+  <div class="line"></div>
+  <h2>電影剪輯作品<span class="en">Feature Film Credits</span></h2>
+</div>
+
+<section class="film-grid">
+  <div class="film-card">
+    <div class="film-poster pst-1" data-title="那張照片裡的我們"></div>
+    <div class="film-title">那張照片裡的我們</div>
+    <div class="film-title-en">The Photo from 1977</div>
+    <div class="film-director">湯昇榮 · 鄭乃方</div>
+  </div>
+  <div class="film-card">
+    <div class="film-poster pst-3" data-title="夏日最後的祕密"></div>
+    <div class="film-title">夏日最後的祕密</div>
+    <div class="film-title-en">Summer Blue Hour</div>
+    <div class="film-director">邱晧洲</div>
+  </div>
+  <div class="film-card">
+    <div class="film-poster pst-5" data-title="甜．祕密"></div>
+    <div class="film-title">甜．祕密</div>
+    <div class="film-title-en">Together</div>
+    <div class="film-director">許肇任</div>
+  </div>
+  <div class="film-card">
+    <div class="film-poster pst-4" data-title="做工的人 電影版"></div>
+    <div class="film-title">做工的人 電影版</div>
+    <div class="film-title-en">Workers: The Movie</div>
+    <div class="film-director">鄭芬芬</div>
+  </div>
+  <div class="film-card">
+    <div class="film-poster pst-2" data-title="痴情男子漢"></div>
+    <div class="film-title">痴情男子漢</div>
+    <div class="film-title-en">All Because of Love</div>
+    <div class="film-director">連奕琦</div>
+  </div>
+</section>
+
+<!-- CREDITS SECTION -->
+<div class="section-divider">
+  <span class="num">02 / Series & Short Films</span>
+  <div class="line"></div>
+  <h2>劇集．短片．電視電影<span class="en">Series, Short Film & TV Movie</span></h2>
+</div>
+
+<section class="credits-block">
+  <div class="credits-col">
+    <h3>劇集 <span class="en">Series</span></h3>
+    <ul>
+      <li>
+        <div class="thumb cred-thumb th-4" data-short="與惡 II"></div>
+        <div class="cred-body"><span class="work">我們與惡的距離 II</span><span class="dir">林君陽</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-2" data-short="拜六禮拜"></div>
+        <div class="cred-body"><span class="work">拜六禮拜</span><span class="dir">杜政哲</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-5" data-short="有生之年"></div>
+        <div class="cred-body"><span class="work">有生之年</span><span class="dir">許肇任 · 林志儒</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-3" data-short="人浮於愛"></div>
+        <div class="cred-body"><span class="work">人浮於愛</span><span class="dir">徐輔軍</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-7" data-short="茶金"></div>
+        <div class="cred-body"><span class="work">茶金</span><span class="dir">林君陽</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-10" data-short="牛車來去"></div>
+        <div class="cred-body"><span class="work">牛車來去</span><span class="dir">李岳峰 · 張志鴻</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-13" data-short="百味小廚神"></div>
+        <div class="cred-body"><span class="work">百味小廚神</span><span class="dir">李權洋 · 王威翔</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-11" data-short="她們創業"></div>
+        <div class="cred-body"><span class="work">她們創業的那些鳥事</span><span class="dir">馮家瑞 · 許肇任 · 林志儒</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-1" data-short="憤怒的菩薩"></div>
+        <div class="cred-body"><span class="work">憤怒的菩薩</span><span class="dir">許肇任</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-15" data-short="酸甜之味"></div>
+        <div class="cred-body"><span class="work">酸甜之味</span><span class="dir">許肇任</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-3" data-short="醉後愛你"></div>
+        <div class="cred-body"><span class="work">醉後決定愛上你</span><span class="dir">陳銘章</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-8" data-short="牽紙鷂"></div>
+        <div class="cred-body"><span class="work">牽紙鷂的手</span><span class="dir">許肇任 · 林志儒</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-14" data-short="1949等你"></div>
+        <div class="cred-body"><span class="work">我在一九四九，等你</span><span class="dir">陳銘章 · 鄧安寧</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-12" data-short="回首留蘭香"></div>
+        <div class="cred-body"><span class="work">回首留蘭香</span><span class="dir">許肇任</span></div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="credits-col">
+    <h3>劇集 <span class="en">Series</span><span class="cont">cont.</span></h3>
+    <ul>
+      <li>
+        <div class="thumb cred-thumb th-9" data-short="未來等你"></div>
+        <div class="cred-body"><span class="work">我在未來等你</span><span class="dir">薛凌</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-2" data-short="王瀝川"></div>
+        <div class="cred-body"><span class="work">遇見王瀝川</span><span class="dir">陳銘章</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-11" data-short="彩虹重力"></div>
+        <div class="cred-body"><span class="work">彩虹的重力</span><span class="dir">林清振</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-4" data-short="克拉戀人"></div>
+        <div class="cred-body"><span class="work">克拉戀人</span><span class="dir">陳銘章</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-5" data-short="漂洋過海"></div>
+        <div class="cred-body"><span class="work">漂洋過海來看你</span><span class="dir">陳銘章</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-7" data-short="利先生"></div>
+        <div class="cred-body"><span class="work">遇見愛情的利先生</span><span class="dir">陳銘章</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-10" data-short="熱血高校"></div>
+        <div class="cred-body"><span class="work">熱血高校</span><span class="dir">許肇任</span></div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="credits-col">
+    <h3>短片．電視電影 <span class="en">Short & TV Movie</span></h3>
+    <ul>
+      <li>
+        <div class="thumb cred-thumb th-6" data-short="混濁"></div>
+        <div class="cred-body"><span class="work">百年原殤：混濁</span><span class="dir">勒嘎・舒米</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-8" data-short="抉擇"></div>
+        <div class="cred-body"><span class="work">百年原殤：抉擇</span><span class="dir">蘇弘恩</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-12" data-short="虹霧"></div>
+        <div class="cred-body"><span class="work">百年原殤：虹霧</span><span class="dir">簡學彬</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-13" data-short="返來呷飯"></div>
+        <div class="cred-body"><span class="work">返來呷飯</span><span class="dir">龔萬祥</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-3" data-short="滾石愛情"></div>
+        <div class="cred-body"><span class="work">滾石愛情故事：愛情、愛我別走</span><span class="dir">陳銘章</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-15" data-short="應屆退休"></div>
+        <div class="cred-body"><span class="work">應屆退休生</span><span class="dir">林子平</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-1" data-short="不死搖滾"></div>
+        <div class="cred-body"><span class="work">不死搖滾夢</span><span class="dir">邱晧洲</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-14" data-short="SNEILA"></div>
+        <div class="cred-body"><span class="work">SNEILA: You Will Never Know</span><span class="dir">Peilin Kuo</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-11" data-short="竹林傳奇"></div>
+        <div class="cred-body"><span class="work">竹林傳奇</span><span class="dir">Peilin Kuo</span></div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer id="contact">
+  <div class="footer-main">
+    <div class="footer-left">
+      <h3>Let's Connect.<span class="en">For new projects and collaborations</span></h3>
+      <div class="contact-info">
+        <a href="mailto:lthfilmstudio@gmail.com">lthfilmstudio@gmail.com</a>
+        <a href="https://lthfilmstudio.com" target="_blank">lthfilmstudio.com</a>
+      </div>
+    </div>
+
+    <div class="footer-right">
+      <div class="studio-card">
+        <div class="label">Studio · 工作室</div>
+        <div class="studio-name-zh">原本那間剪輯工作室</div>
+        <div class="studio-name-en">LTH Film Studio</div>
+      </div>
+
+      <div class="social-links">
+        <a href="#">IMDb</a>
+        <a href="#">Line</a>
+        <a href="#">WeChat</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div>© 2026 Tzushien Lin — All rights reserved</div>
+    <div>Site designed with care for moving image.</div>
+  </div>
+</footer>
+
+</BaseLayout>

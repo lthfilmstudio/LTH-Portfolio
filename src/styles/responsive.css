@@ -1,0 +1,25 @@
+/* ===== RESPONSIVE ===== */
+@media screen and (max-width: 960px) {
+  nav { padding: 1.2rem 1.5rem; }
+  nav ul { gap: 1.2rem; font-size: 0.65rem; }
+  .hero {
+    grid-template-columns: 1fr;
+    padding: 7rem 1.5rem 3rem;
+    gap: 3rem;
+  }
+  .hero-right {
+    border-left: none;
+    border-top: 1px solid var(--line);
+    padding-left: 0;
+    padding-top: 3rem;
+  }
+  .section-divider, .film-grid, .credits-block, .about, footer {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
+  .film-grid { grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }
+  .credits-block { grid-template-columns: 1fr; gap: 2.5rem; }
+  .about { grid-template-columns: 1fr; gap: 3rem; }
+  .footer-main { grid-template-columns: 1fr; gap: 3rem; }
+  .footer-bottom { flex-direction: column; gap: 1rem; }
+}

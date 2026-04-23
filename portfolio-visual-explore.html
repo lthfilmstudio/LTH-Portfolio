@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>林姿嫺 Tzushien Lin — Feature Film & Series Editor</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Inter:wght@300;400;500;600&family=Noto+Serif+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0908;
+    --bg-soft: #121110;
+    --panel: #1a1816;
+    --panel-2: #201d1a;
+    --text: #ebe4d6;
+    --text-dim: #8a8378;
+    --text-faint: #4a453e;
+    --accent: #c9a961;
+    --accent-dim: #8a7544;
+    --line: #2a2723;
+    --line-soft: #1f1d1a;
+    --logo: #3a2e28;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', 'Noto Serif TC', sans-serif;
+    font-weight: 300;
+    line-height: 1.6;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ===== BOKEH BACKGROUND ===== */
+  .bokeh-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: radial-gradient(ellipse at 20% 30%, rgba(180, 140, 70, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 70%, rgba(120, 100, 60, 0.06) 0%, transparent 50%),
+                radial-gradient(ellipse at 50% 50%, rgba(60, 50, 35, 0.1) 0%, transparent 70%),
+                var(--bg);
+  }
+
+  .bokeh-bg::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image:
+      radial-gradient(circle at 15% 20%, rgba(201, 169, 97, 0.15) 0%, transparent 2%),
+      radial-gradient(circle at 85% 30%, rgba(201, 169, 97, 0.1) 0%, transparent 1.5%),
+      radial-gradient(circle at 25% 75%, rgba(201, 169, 97, 0.08) 0%, transparent 1.2%),
+      radial-gradient(circle at 70% 85%, rgba(201, 169, 97, 0.12) 0%, transparent 2%),
+      radial-gradient(circle at 45% 40%, rgba(201, 169, 97, 0.06) 0%, transparent 1%),
+      radial-gradient(circle at 90% 60%, rgba(201, 169, 97, 0.1) 0%, transparent 1.8%);
+    filter: blur(1.5px);
+  }
+
+  /* ===== PLACEHOLDER GRADIENTS (shared) ===== */
+  .th-1 { background: linear-gradient(135deg, #3d2817 0%, #1a1410 50%, #6b3a1f 100%); }
+  .th-2 { background: linear-gradient(180deg, #8b6534 0%, #c49a5e 40%, #2a1f15 100%); }
+  .th-3 { background: linear-gradient(135deg, #a33333 0%, #5a1a1a 60%, #2a0f0f 100%); }
+  .th-4 { background: linear-gradient(135deg, #d98a2a 0%, #a85c2a 50%, #3a1f0f 100%); }
+  .th-5 { background: linear-gradient(180deg, #2a4560 0%, #1a2a3a 50%, #6b8aaa 100%); }
+  .th-6 { background: linear-gradient(135deg, #2d3a35 0%, #1a1f1d 50%, #5a6b60 100%); }
+  .th-7 { background: linear-gradient(180deg, #8a7544 0%, #c9a961 40%, #3a2e15 100%); }
+  .th-8 { background: linear-gradient(135deg, #2a3a2a 0%, #1a2a1a 50%, #4a5a3a 100%); }
+  .th-9 { background: linear-gradient(135deg, #1a2a3a 0%, #0f1a2a 50%, #2a3a4a 100%); }
+  .th-10 { background: linear-gradient(180deg, #5a3a2a 0%, #3a2418 50%, #8a5a3a 100%); }
+  .th-11 { background: linear-gradient(135deg, #4a2a3a 0%, #2a1a2a 50%, #6a3a5a 100%); }
+  .th-12 { background: linear-gradient(180deg, #3a5a4a 0%, #1a3a2a 50%, #5a8a6a 100%); }
+  .th-13 { background: linear-gradient(135deg, #6a4a2a 0%, #3a2418 50%, #9a6a3a 100%); }
+  .th-14 { background: linear-gradient(180deg, #2a3a5a 0%, #1a2438 50%, #4a5a8a 100%); }
+  .th-15 { background: linear-gradient(135deg, #8a5a3a 0%, #4a2a18 50%, #c98a5a 100%); }
+
+  /* Generic thumbnail noise overlay + label */
+  .thumb {
+    background-size: cover;
+    background-position: center;
+    border: 1px solid var(--line);
+    filter: grayscale(0.45) brightness(0.9);
+    transition: all 0.4s;
+    position: relative;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .thumb::before {
+    content: attr(data-short);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Noto Serif TC', serif;
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 0.55rem;
+    text-align: center;
+    padding: 0.2rem;
+    letter-spacing: 0.05em;
+    line-height: 1.2;
+  }
+
+  .thumb::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    opacity: 0.3;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+
+  /* ===== NAV ===== */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    padding: 0.9rem 3rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 100;
+    font-size: 0.6rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    backdrop-filter: blur(12px) saturate(1.1);
+    background: rgba(10, 9, 8, 0.55);
+    border-bottom: 1px solid var(--line-soft);
+  }
+
+  nav .brand {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+
+  nav .brand-mark {
+    width: 18px;
+    height: 18px;
+    transition: opacity 0.3s;
+  }
+
+  nav .brand:hover .brand-mark {
+    opacity: 0.85;
+  }
+
+  nav .brand-text {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  nav .brand-zh {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.58rem;
+    letter-spacing: 0.25em;
+    color: var(--text);
+    text-transform: none;
+  }
+
+  nav .brand-en {
+    font-size: 0.5rem;
+    letter-spacing: 0.3em;
+    color: var(--text-dim);
+  }
+
+  nav ul {
+    display: flex;
+    list-style: none;
+    gap: 1.5rem;
+  }
+
+  nav a {
+    color: var(--text);
+    text-decoration: none;
+    transition: color 0.3s;
+  }
+
+  nav a:hover { color: var(--accent); }
+
+  /* ===== HERO ===== */
+  .hero {
+    min-height: 100vh;
+    padding: 8rem 3rem 4rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    align-items: start;
+    position: relative;
+  }
+
+  .hero-left { position: relative; padding-top: 2rem; }
+
+  .hero h1 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(1.2rem, 2.2vw, 1.7rem);
+    font-weight: 400;
+    line-height: 1.15;
+    letter-spacing: 0.12em;
+    margin-bottom: 0.3rem;
+    color: var(--text);
+  }
+
+  .hero .en-name {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: clamp(0.7rem, 1vw, 0.85rem);
+    font-style: italic;
+    color: var(--text-dim);
+    font-weight: 300;
+    letter-spacing: 0.08em;
+    margin-bottom: 1.8rem;
+  }
+
+  .hero-titles {
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .hero-titles .role-zh {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.2em;
+    color: var(--text);
+  }
+
+  .hero-titles .role-en {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.9rem;
+    font-style: italic;
+    color: var(--text-dim);
+    letter-spacing: 0.05em;
+  }
+
+  /* HERO PROFILE (moved from about section) */
+  .hero-profile {
+    margin-bottom: 3rem;
+    padding-bottom: 2.5rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .hero-profile .lead-zh {
+    font-family: 'Noto Serif TC', serif;
+    color: var(--text);
+    font-size: 0.9rem;
+    line-height: 1.9;
+    letter-spacing: 0.08em;
+    margin-bottom: 1rem;
+  }
+
+  .hero-profile .sub-zh {
+    font-family: 'Noto Serif TC', serif;
+    color: var(--text-dim);
+    font-size: 0.82rem;
+    line-height: 1.9;
+    letter-spacing: 0.05em;
+    margin-bottom: 1.5rem;
+  }
+
+  .profile-divider {
+    width: 32px;
+    height: 1px;
+    background: var(--accent-dim);
+    margin: 1.5rem 0;
+  }
+
+  .hero-profile .lead-en {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.92rem;
+    color: var(--text-dim);
+    line-height: 1.7;
+    margin-bottom: 0.8rem;
+    letter-spacing: 0.01em;
+  }
+
+  .hero-profile .sub-en {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    color: var(--text-faint);
+    line-height: 1.7;
+    letter-spacing: 0.01em;
+  }
+
+  .hero-lang {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--line-soft);
+  }
+
+  .hero-lang-label {
+    font-size: 0.6rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 0.9rem;
+  }
+
+  .hero-lang-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.9rem 1.6rem;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--text-dim);
+    font-size: 0.82rem;
+  }
+
+  .hero-lang-list span {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+  }
+
+  .hero-lang-list .level {
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+    font-family: 'Inter', sans-serif;
+    font-style: normal;
+  }
+
+  /* HERO AWARDS */
+  .hero-awards-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .hero-awards-label span:last-child {
+    font-family: 'Noto Serif TC', serif;
+    letter-spacing: 0.3em;
+    text-transform: none;
+  }
+
+  .hero-award-item {
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--line-soft);
+    transition: all 0.4s cubic-bezier(.2,.8,.2,1);
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: 48px 1fr;
+    gap: 0.9rem;
+    align-items: center;
+  }
+
+  .hero-award-item:hover {
+    padding-left: 0.4rem;
+    border-bottom-color: var(--accent-dim);
+  }
+
+  .hero-award-thumb {
+    width: 48px;
+    height: 68px;
+  }
+
+  .hero-award-item:hover .hero-award-thumb {
+    filter: grayscale(0) brightness(1);
+    border-color: var(--accent-dim);
+  }
+
+  .hero-award-body { min-width: 0; }
+
+  .award-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.4rem;
+  }
+
+  .award-status-sm {
+    font-size: 0.58rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    color: var(--accent);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .hero-award-item.nom .award-status-sm { color: var(--text-dim); }
+
+  .award-status-sm .dot {
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+
+  .hero-award-item.nom .award-status-sm .dot { background: var(--text-dim); }
+
+  .award-yr {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.78rem;
+    color: var(--text-faint);
+  }
+
+  .award-work {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1.05rem;
+    color: var(--text);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.25rem;
+    transition: color 0.3s;
+  }
+
+  .hero-award-item:hover .award-work { color: var(--accent); }
+
+  .award-work .work-en {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--text-dim);
+    margin-left: 0.5rem;
+    font-weight: 300;
+  }
+
+  .hero-award-item:hover .work-en { color: var(--text); }
+
+  .award-name-sm {
+    font-size: 0.68rem;
+    color: var(--text-faint);
+    letter-spacing: 0.1em;
+  }
+
+  /* HERO RIGHT — SELECTED WORK */
+  .hero-right {
+    border-left: 1px solid var(--line);
+    padding-left: 3rem;
+    padding-top: 2rem;
+  }
+
+  .featured-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .featured-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .featured-item {
+    padding: 0.9rem 0;
+    border-bottom: 1px solid var(--line-soft);
+    display: grid;
+    grid-template-columns: 56px auto 1fr auto;
+    gap: 1rem;
+    align-items: center;
+    cursor: pointer;
+    transition: all 0.4s cubic-bezier(.2,.8,.2,1);
+    position: relative;
+  }
+
+  .featured-item:hover {
+    padding-left: 0.4rem;
+    border-bottom-color: var(--accent-dim);
+  }
+
+  .featured-thumb {
+    width: 56px;
+    height: 80px;
+  }
+
+  .featured-item:hover .featured-thumb {
+    filter: grayscale(0) brightness(1);
+    border-color: var(--accent-dim);
+  }
+
+  .featured-item .idx {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.75rem;
+    color: var(--text-faint);
+    letter-spacing: 0.1em;
+  }
+
+  .featured-item .title {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+  }
+
+  .featured-item .title-zh {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.92rem;
+    color: var(--text);
+    letter-spacing: 0.05em;
+    transition: color 0.3s;
+  }
+
+  .featured-item:hover .title-zh { color: var(--accent); }
+
+  .featured-item .title-en {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.75rem;
+    font-style: italic;
+    color: var(--text-dim);
+    letter-spacing: 0.02em;
+  }
+
+  .featured-item .year {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.8rem;
+    color: var(--text-faint);
+  }
+
+  .featured-item .award-tag {
+    display: inline-block;
+    font-size: 0.55rem;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-transform: uppercase;
+    border: 1px solid var(--accent-dim);
+    padding: 1px 6px;
+    margin-left: 0.4rem;
+    vertical-align: middle;
+    border-radius: 2px;
+  }
+
+  .featured-item .award-tag.nom {
+    color: var(--text-dim);
+    border-color: var(--text-faint);
+  }
+
+  /* ===== SECTION DIVIDER ===== */
+  .section-divider {
+    padding: 7rem 3rem 3.5rem;
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: baseline;
+    gap: 2rem;
+    border-top: 1px solid var(--line);
+  }
+
+  .section-divider .num {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.3em;
+    color: var(--text-faint);
+    text-transform: uppercase;
+  }
+
+  .section-divider .line { height: 1px; background: var(--line); }
+
+  .section-divider h2 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(1.2rem, 2.2vw, 1.7rem);
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    color: var(--text);
+  }
+
+  .section-divider h2 .en {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--text-dim);
+    font-size: 0.75em;
+    margin-left: 0.8rem;
+    letter-spacing: 0.02em;
+  }
+
+  /* ===== FEATURE FILM GRID ===== */
+  .film-grid {
+    padding: 0 3rem 6rem;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.2rem;
+    max-width: 1000px;
+    margin: 0 auto;
+  }
+
+  .film-card { cursor: pointer; }
+
+  .film-poster {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    background-size: cover;
+    background-position: center;
+    filter: grayscale(0.4) brightness(0.9);
+    transition: all 0.5s;
+    margin-bottom: 0.8rem;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--line);
+  }
+
+  .film-card:hover .film-poster {
+    filter: grayscale(0) brightness(1);
+    border-color: var(--accent-dim);
+  }
+
+  .film-poster::before {
+    content: attr(data-title);
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Noto Serif TC', serif;
+    color: rgba(255, 255, 255, 0.25);
+    font-size: 0.8rem;
+    text-align: center;
+    padding: 0.5rem;
+    letter-spacing: 0.08em;
+    line-height: 1.4;
+  }
+
+  .film-poster::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.3 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    opacity: 0.3;
+    mix-blend-mode: overlay;
+    pointer-events: none;
+  }
+
+  .pst-1 { background: linear-gradient(135deg, #3d2817 0%, #1a1410 50%, #6b3a1f 100%); }
+  .pst-2 { background: linear-gradient(180deg, #8b6534 0%, #c49a5e 40%, #2a1f15 100%); }
+  .pst-3 { background: linear-gradient(135deg, #2d3a35 0%, #1a1f1d 50%, #5a6b60 100%); }
+  .pst-4 { background: linear-gradient(135deg, #a85c2a 0%, #d4801f 40%, #1a0f08 100%); }
+  .pst-5 { background: linear-gradient(180deg, #2a4560 0%, #1a2a3a 50%, #6b8aaa 100%); }
+
+  .film-card .film-title {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.82rem;
+    color: var(--text);
+    letter-spacing: 0.05em;
+    margin-bottom: 0.15rem;
+    transition: color 0.3s;
+    line-height: 1.3;
+  }
+
+  .film-card:hover .film-title { color: var(--accent); }
+
+  .film-card .film-title-en {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.72rem;
+    color: var(--text-dim);
+    margin-bottom: 0.3rem;
+    line-height: 1.3;
+  }
+
+  .film-card .film-director {
+    font-size: 0.62rem;
+    color: var(--text-faint);
+    letter-spacing: 0.08em;
+  }
+
+  /* ===== CREDITS (with thumbs now) ===== */
+  .credits-block {
+    padding: 0 3rem 8rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 3rem;
+  }
+
+  .credits-col h3 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.82rem;
+    color: var(--accent);
+    letter-spacing: 0.25em;
+    margin-bottom: 0.3rem;
+    padding-bottom: 1.2rem;
+    border-bottom: 1px solid var(--accent-dim);
+    font-weight: 500;
+  }
+
+  .credits-col h3 .en {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    color: var(--text-dim);
+    font-size: 0.85rem;
+    margin-left: 0.6rem;
+    letter-spacing: 0.05em;
+    font-weight: 300;
+  }
+
+  .credits-col h3 .cont {
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--text-faint);
+    font-style: italic;
+    font-size: 0.75rem;
+    margin-left: 0.3rem;
+    letter-spacing: 0.02em;
+    font-weight: 300;
+  }
+
+  .credits-col ul {
+    list-style: none;
+    margin-top: 1.2rem;
+  }
+
+  .credits-col li {
+    display: grid;
+    grid-template-columns: 36px 1fr;
+    gap: 0.8rem;
+    align-items: center;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid var(--line-soft);
+    transition: padding 0.3s;
+    cursor: pointer;
+  }
+
+  .credits-col li:hover {
+    padding-left: 0.4rem;
+  }
+
+  .credits-col li:hover .cred-thumb {
+    filter: grayscale(0) brightness(1);
+    border-color: var(--accent-dim);
+  }
+
+  .cred-thumb {
+    width: 36px;
+    height: 50px;
+  }
+
+  .cred-thumb::before {
+    font-size: 0.48rem;
+  }
+
+  .cred-body {
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+  }
+
+  .credits-col .work {
+    font-family: 'Noto Serif TC', serif;
+    color: var(--text);
+    font-size: 0.85rem;
+    letter-spacing: 0.03em;
+    transition: color 0.3s;
+    line-height: 1.3;
+  }
+
+  .credits-col li:hover .work { color: var(--accent); }
+
+  .credits-col .dir {
+    font-size: 0.66rem;
+    color: var(--text-faint);
+    letter-spacing: 0.08em;
+  }
+
+  .credits-col .dir::before {
+    content: '導演 ';
+    color: var(--text-faint);
+    opacity: 0.6;
+  }
+
+  /* Legacy about section styles (section removed) - kept as no-op */
+  .about, .about-left, .about-right { display: none; }
+
+  /* ===== FOOTER ===== */
+  footer {
+    padding: 7rem 3rem 3rem;
+    border-top: 1px solid var(--line);
+    background: var(--bg);
+    position: relative;
+  }
+
+  .footer-main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 5rem;
+    margin-bottom: 5rem;
+  }
+
+  .footer-left h3 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(1.3rem, 2.2vw, 1.7rem);
+    font-weight: 400;
+    line-height: 1.3;
+    color: var(--text);
+    margin-bottom: 2rem;
+    letter-spacing: 0.08em;
+  }
+
+  .footer-left h3 .en {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    display: block;
+    color: var(--accent);
+    font-size: 0.65em;
+    margin-top: 0.5rem;
+    letter-spacing: 0.02em;
+  }
+
+  .contact-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .contact-info a {
+    color: var(--text);
+    text-decoration: none;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.05rem;
+    font-style: italic;
+    border-bottom: 1px solid var(--accent-dim);
+    padding-bottom: 0.3rem;
+    width: fit-content;
+    transition: color 0.3s, border-color 0.3s;
+  }
+
+  .contact-info a:hover {
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  .footer-right {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .studio-card {
+    padding: 1.5rem;
+    border: 1px solid var(--line);
+    background: var(--panel);
+  }
+
+  .studio-card .label {
+    font-size: 0.62rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin-bottom: 1rem;
+  }
+
+  .studio-card .studio-name-zh {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1rem;
+    color: var(--text);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.2rem;
+  }
+
+  .studio-card .studio-name-en {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+  }
+
+  .social-links {
+    display: flex;
+    gap: 0.8rem;
+  }
+
+  .social-links a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border: 1px solid var(--line);
+    color: var(--text-dim);
+    text-decoration: none;
+    font-size: 0.62rem;
+    letter-spacing: 0.15em;
+    transition: all 0.3s;
+  }
+
+  .social-links a:hover {
+    border-color: var(--accent-dim);
+    color: var(--accent);
+  }
+
+  .footer-bottom {
+    display: flex;
+    justify-content: space-between;
+    padding-top: 2.5rem;
+    border-top: 1px solid var(--line);
+    font-size: 0.68rem;
+    color: var(--text-faint);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  /* ===== RESPONSIVE ===== */
+  @media (max-width: 960px) {
+    nav { padding: 1.2rem 1.5rem; }
+    nav ul { gap: 1.2rem; font-size: 0.65rem; }
+    .hero {
+      grid-template-columns: 1fr;
+      padding: 7rem 1.5rem 3rem;
+      gap: 3rem;
+    }
+    .hero-right {
+      border-left: none;
+      border-top: 1px solid var(--line);
+      padding-left: 0;
+      padding-top: 3rem;
+    }
+    .section-divider, .film-grid, .credits-block, .about, footer {
+      padding-left: 1.5rem;
+      padding-right: 1.5rem;
+    }
+    .film-grid { grid-template-columns: repeat(2, 1fr); gap: 1.2rem; }
+    .credits-block { grid-template-columns: 1fr; gap: 2.5rem; }
+    .about { grid-template-columns: 1fr; gap: 3rem; }
+    .footer-main { grid-template-columns: 1fr; gap: 3rem; }
+    .footer-bottom { flex-direction: column; gap: 1rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bokeh-bg"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="brand">
+    <svg class="brand-mark" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+      <g fill="#3a2e28">
+        <path d="M50,50 Q52,18 40,10 Q48,22 50,50 Z" transform="rotate(0 50 50)"/>
+        <path d="M50,50 Q52,18 40,10 Q48,22 50,50 Z" transform="rotate(30 50 50)"/>
+        <path d="M50,50 Q52,18 40,10 Q48,22 50,50 Z" transform="rotate(60 50 50)"/>
+        <path d="M50,50 Q52,18 40,10 Q48,22 50,50 Z" transform="rotate(90 50 50)"/>
+        <path d="M50,50 Q52,18 40,10 Q48,22 50,50 Z" transform="rotate(120 50 50)"/>
+        <path d="M50,50 Q52,18 40,10 Q48,22 50,50 Z" transform="rotate(150 50 50)"/>
+        <path d="M50,50 Q52,18 40,10 Q48,22 50,50 Z" transform="rotate(180 50 50)"/>
+        <path d="M50,50 Q52,18 40,10 Q48,22 50,50 Z" transform="rotate(210 50 50)"/>
+        <path d="M50,50 Q52,18 40,10 Q48,22 50,50 Z" transform="rotate(240 50 50)"/>
+        <path d="M50,50 Q52,18 40,10 Q48,22 50,50 Z" transform="rotate(270 50 50)"/>
+        <path d="M50,50 Q52,18 40,10 Q48,22 50,50 Z" transform="rotate(300 50 50)"/>
+        <path d="M50,50 Q52,18 40,10 Q48,22 50,50 Z" transform="rotate(330 50 50)"/>
+        <circle cx="50" cy="50" r="6" fill="#0a0908"/>
+      </g>
+    </svg>
+    <div class="brand-text">
+      <span class="brand-zh">林姿嫺</span>
+      <span class="brand-en">Tzushien Lin · Editor</span>
+    </div>
+  </div>
+  <ul>
+    <li><a href="#works">Works</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-left">
+    <h1>林姿嫺</h1>
+    <div class="en-name">Tzushien Lin</div>
+
+    <div class="hero-titles">
+      <span class="role-zh">電影 / 劇集 剪輯指導</span>
+      <span class="role-en">Feature Film & Series Editor</span>
+    </div>
+
+    <!-- Profile (moved from About) -->
+    <div class="hero-profile">
+      <p class="lead-zh">以《茶金》、《牽紙鷂的手》兩度榮獲金鐘獎最佳剪輯獎，並以《有生之年》入圍金鐘獎最佳剪輯獎。</p>
+      <p class="sub-zh">近期作品包括《那張照片裡的我們》、《我們與惡的距離 II》、《拜六禮拜》、《人浮於愛》、《夏日最後的祕密》等。現成立「原本那間剪輯工作室」。</p>
+
+      <div class="profile-divider"></div>
+
+      <p class="lead-en"><em>A two-time Golden Bell Award winner for Best Editing in a Drama Series, for Gold Leaf and The Kite Soaring, and a nominee for Best Editing for Living.</em></p>
+      <p class="sub-en"><em>Recent works include The Photo from 1977, The World Between Us II: After the Flames, Holiday, Adrift in Love, and Summer Blue Hour. Founder of LTH Film Studio.</em></p>
+
+      <div class="hero-lang">
+        <div class="hero-lang-label">Languages · 語言</div>
+        <div class="hero-lang-list">
+          <span>Mandarin<span class="level">Native</span></span>
+          <span>Taiwanese<span class="level">Native</span></span>
+          <span>English<span class="level">Conversant</span></span>
+          <span>Hakka<span class="level">Basic</span></span>
+          <span>Thai<span class="level">Basic</span></span>
+        </div>
+      </div>
+    </div>
+
+    <div class="hero-awards-label">
+      <span>Awards & Recognition</span>
+      <span>得獎入圍</span>
+    </div>
+
+    <div class="hero-award-item win">
+      <div class="thumb hero-award-thumb th-7" data-short="茶金"></div>
+      <div class="hero-award-body">
+        <div class="award-meta">
+          <span class="award-status-sm"><span class="dot"></span> Winner · 獲獎</span>
+          <span class="award-yr">2022</span>
+        </div>
+        <div class="award-work">茶金 <span class="work-en">Gold Leaf</span></div>
+        <div class="award-name-sm">金鐘獎 最佳剪輯獎 · Golden Bell Awards</div>
+      </div>
+    </div>
+
+    <div class="hero-award-item win">
+      <div class="thumb hero-award-thumb th-8" data-short="牽紙鷂"></div>
+      <div class="hero-award-body">
+        <div class="award-meta">
+          <span class="award-status-sm"><span class="dot"></span> Winner · 獲獎</span>
+          <span class="award-yr">2019</span>
+        </div>
+        <div class="award-work">牽紙鷂的手 <span class="work-en">The Kite Soaring</span></div>
+        <div class="award-name-sm">金鐘獎 最佳剪輯獎 · Golden Bell Awards</div>
+      </div>
+    </div>
+
+    <div class="hero-award-item nom">
+      <div class="thumb hero-award-thumb th-5" data-short="有生之年"></div>
+      <div class="hero-award-body">
+        <div class="award-meta">
+          <span class="award-status-sm"><span class="dot"></span> Nominee · 入圍</span>
+          <span class="award-yr">2024</span>
+        </div>
+        <div class="award-work">有生之年 <span class="work-en">Living</span></div>
+        <div class="award-name-sm">金鐘獎 最佳剪輯獎 · Golden Bell Awards</div>
+      </div>
+    </div>
+  </div>
+
+  <aside class="hero-right">
+    <div class="featured-label">
+      <span>Selected Work</span>
+      <span>2019 — 2025</span>
+    </div>
+
+    <div class="featured-list">
+      <div class="featured-item">
+        <div class="thumb featured-thumb th-1" data-short="那張照片"></div>
+        <span class="idx">01</span>
+        <span class="title">
+          <span class="title-zh">那張照片裡的我們</span>
+          <span class="title-en">The Photo from 1977</span>
+        </span>
+        <span class="year">2025</span>
+      </div>
+      <div class="featured-item">
+        <div class="thumb featured-thumb th-4" data-short="與惡 II"></div>
+        <span class="idx">02</span>
+        <span class="title">
+          <span class="title-zh">我們與惡的距離 II</span>
+          <span class="title-en">The World Between Us: After the Flames</span>
+        </span>
+        <span class="year">2025</span>
+      </div>
+      <div class="featured-item">
+        <div class="thumb featured-thumb th-5" data-short="有生之年"></div>
+        <span class="idx">03</span>
+        <span class="title">
+          <span class="title-zh">有生之年 <span class="award-tag nom">Nom.</span></span>
+          <span class="title-en">Living</span>
+        </span>
+        <span class="year">2023</span>
+      </div>
+      <div class="featured-item">
+        <div class="thumb featured-thumb th-2" data-short="拜六禮拜"></div>
+        <span class="idx">04</span>
+        <span class="title">
+          <span class="title-zh">拜六禮拜</span>
+          <span class="title-en">Holiday</span>
+        </span>
+        <span class="year">2024</span>
+      </div>
+      <div class="featured-item">
+        <div class="thumb featured-thumb th-3" data-short="人浮於愛"></div>
+        <span class="idx">05</span>
+        <span class="title">
+          <span class="title-zh">人浮於愛</span>
+          <span class="title-en">Adrift in Love</span>
+        </span>
+        <span class="year">2024</span>
+      </div>
+      <div class="featured-item">
+        <div class="thumb featured-thumb th-6" data-short="夏日祕密"></div>
+        <span class="idx">06</span>
+        <span class="title">
+          <span class="title-zh">夏日最後的祕密</span>
+          <span class="title-en">Summer Blue Hour</span>
+        </span>
+        <span class="year">2023</span>
+      </div>
+      <div class="featured-item">
+        <div class="thumb featured-thumb th-7" data-short="茶金"></div>
+        <span class="idx">07</span>
+        <span class="title">
+          <span class="title-zh">茶金 <span class="award-tag">Win</span></span>
+          <span class="title-en">Gold Leaf</span>
+        </span>
+        <span class="year">2021</span>
+      </div>
+      <div class="featured-item">
+        <div class="thumb featured-thumb th-8" data-short="牽紙鷂的手"></div>
+        <span class="idx">08</span>
+        <span class="title">
+          <span class="title-zh">牽紙鷂的手 <span class="award-tag">Win</span></span>
+          <span class="title-en">The Kite Soaring</span>
+        </span>
+        <span class="year">2019</span>
+      </div>
+    </div>
+  </aside>
+</section>
+
+<!-- FEATURE FILMS -->
+<div class="section-divider" id="works">
+  <span class="num">01 / Feature Films</span>
+  <div class="line"></div>
+  <h2>電影剪輯作品<span class="en">Feature Film Credits</span></h2>
+</div>
+
+<section class="film-grid">
+  <div class="film-card">
+    <div class="film-poster pst-1" data-title="那張照片裡的我們"></div>
+    <div class="film-title">那張照片裡的我們</div>
+    <div class="film-title-en">The Photo from 1977</div>
+    <div class="film-director">湯昇榮 · 鄭乃方</div>
+  </div>
+  <div class="film-card">
+    <div class="film-poster pst-3" data-title="夏日最後的祕密"></div>
+    <div class="film-title">夏日最後的祕密</div>
+    <div class="film-title-en">Summer Blue Hour</div>
+    <div class="film-director">邱晧洲</div>
+  </div>
+  <div class="film-card">
+    <div class="film-poster pst-5" data-title="甜．祕密"></div>
+    <div class="film-title">甜．祕密</div>
+    <div class="film-title-en">Together</div>
+    <div class="film-director">許肇任</div>
+  </div>
+  <div class="film-card">
+    <div class="film-poster pst-4" data-title="做工的人 電影版"></div>
+    <div class="film-title">做工的人 電影版</div>
+    <div class="film-title-en">Workers: The Movie</div>
+    <div class="film-director">鄭芬芬</div>
+  </div>
+  <div class="film-card">
+    <div class="film-poster pst-2" data-title="痴情男子漢"></div>
+    <div class="film-title">痴情男子漢</div>
+    <div class="film-title-en">All Because of Love</div>
+    <div class="film-director">連奕琦</div>
+  </div>
+</section>
+
+<!-- CREDITS SECTION -->
+<div class="section-divider">
+  <span class="num">02 / Series & Short Films</span>
+  <div class="line"></div>
+  <h2>劇集．短片．電視電影<span class="en">Series, Short Film & TV Movie</span></h2>
+</div>
+
+<section class="credits-block">
+  <div class="credits-col">
+    <h3>劇集 <span class="en">Series</span></h3>
+    <ul>
+      <li>
+        <div class="thumb cred-thumb th-4" data-short="與惡 II"></div>
+        <div class="cred-body"><span class="work">我們與惡的距離 II</span><span class="dir">林君陽</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-2" data-short="拜六禮拜"></div>
+        <div class="cred-body"><span class="work">拜六禮拜</span><span class="dir">杜政哲</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-5" data-short="有生之年"></div>
+        <div class="cred-body"><span class="work">有生之年</span><span class="dir">許肇任 · 林志儒</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-3" data-short="人浮於愛"></div>
+        <div class="cred-body"><span class="work">人浮於愛</span><span class="dir">徐輔軍</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-7" data-short="茶金"></div>
+        <div class="cred-body"><span class="work">茶金</span><span class="dir">林君陽</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-10" data-short="牛車來去"></div>
+        <div class="cred-body"><span class="work">牛車來去</span><span class="dir">李岳峰 · 張志鴻</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-13" data-short="百味小廚神"></div>
+        <div class="cred-body"><span class="work">百味小廚神</span><span class="dir">李權洋 · 王威翔</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-11" data-short="她們創業"></div>
+        <div class="cred-body"><span class="work">她們創業的那些鳥事</span><span class="dir">馮家瑞 · 許肇任 · 林志儒</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-1" data-short="憤怒的菩薩"></div>
+        <div class="cred-body"><span class="work">憤怒的菩薩</span><span class="dir">許肇任</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-15" data-short="酸甜之味"></div>
+        <div class="cred-body"><span class="work">酸甜之味</span><span class="dir">許肇任</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-3" data-short="醉後愛你"></div>
+        <div class="cred-body"><span class="work">醉後決定愛上你</span><span class="dir">陳銘章</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-8" data-short="牽紙鷂"></div>
+        <div class="cred-body"><span class="work">牽紙鷂的手</span><span class="dir">許肇任 · 林志儒</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-14" data-short="1949等你"></div>
+        <div class="cred-body"><span class="work">我在一九四九，等你</span><span class="dir">陳銘章 · 鄧安寧</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-12" data-short="回首留蘭香"></div>
+        <div class="cred-body"><span class="work">回首留蘭香</span><span class="dir">許肇任</span></div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="credits-col">
+    <h3>劇集 <span class="en">Series</span><span class="cont">cont.</span></h3>
+    <ul>
+      <li>
+        <div class="thumb cred-thumb th-9" data-short="未來等你"></div>
+        <div class="cred-body"><span class="work">我在未來等你</span><span class="dir">薛凌</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-2" data-short="王瀝川"></div>
+        <div class="cred-body"><span class="work">遇見王瀝川</span><span class="dir">陳銘章</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-11" data-short="彩虹重力"></div>
+        <div class="cred-body"><span class="work">彩虹的重力</span><span class="dir">林清振</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-4" data-short="克拉戀人"></div>
+        <div class="cred-body"><span class="work">克拉戀人</span><span class="dir">陳銘章</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-5" data-short="漂洋過海"></div>
+        <div class="cred-body"><span class="work">漂洋過海來看你</span><span class="dir">陳銘章</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-7" data-short="利先生"></div>
+        <div class="cred-body"><span class="work">遇見愛情的利先生</span><span class="dir">陳銘章</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-10" data-short="熱血高校"></div>
+        <div class="cred-body"><span class="work">熱血高校</span><span class="dir">許肇任</span></div>
+      </li>
+    </ul>
+  </div>
+
+  <div class="credits-col">
+    <h3>短片．電視電影 <span class="en">Short & TV Movie</span></h3>
+    <ul>
+      <li>
+        <div class="thumb cred-thumb th-6" data-short="混濁"></div>
+        <div class="cred-body"><span class="work">百年原殤：混濁</span><span class="dir">勒嘎・舒米</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-8" data-short="抉擇"></div>
+        <div class="cred-body"><span class="work">百年原殤：抉擇</span><span class="dir">蘇弘恩</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-12" data-short="虹霧"></div>
+        <div class="cred-body"><span class="work">百年原殤：虹霧</span><span class="dir">簡學彬</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-13" data-short="返來呷飯"></div>
+        <div class="cred-body"><span class="work">返來呷飯</span><span class="dir">龔萬祥</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-3" data-short="滾石愛情"></div>
+        <div class="cred-body"><span class="work">滾石愛情故事：愛情、愛我別走</span><span class="dir">陳銘章</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-15" data-short="應屆退休"></div>
+        <div class="cred-body"><span class="work">應屆退休生</span><span class="dir">林子平</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-1" data-short="不死搖滾"></div>
+        <div class="cred-body"><span class="work">不死搖滾夢</span><span class="dir">邱晧洲</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-14" data-short="SNEILA"></div>
+        <div class="cred-body"><span class="work">SNEILA: You Will Never Know</span><span class="dir">Peilin Kuo</span></div>
+      </li>
+      <li>
+        <div class="thumb cred-thumb th-11" data-short="竹林傳奇"></div>
+        <div class="cred-body"><span class="work">竹林傳奇</span><span class="dir">Peilin Kuo</span></div>
+      </li>
+    </ul>
+  </div>
+</section>
+
+<!-- About section content moved into hero; keeping only works sections now -->
+
+<!-- FOOTER -->
+<footer id="contact">
+  <div class="footer-main">
+    <div class="footer-left">
+      <h3>Let's Connect.<span class="en">For new projects and collaborations</span></h3>
+      <div class="contact-info">
+        <a href="mailto:lthfilmstudio@gmail.com">lthfilmstudio@gmail.com</a>
+        <a href="https://lthfilmstudio.com" target="_blank">lthfilmstudio.com</a>
+      </div>
+    </div>
+
+    <div class="footer-right">
+      <div class="studio-card">
+        <div class="label">Studio · 工作室</div>
+        <div class="studio-name-zh">原本那間剪輯工作室</div>
+        <div class="studio-name-en">LTH Film Studio</div>
+      </div>
+
+      <div class="social-links">
+        <a href="#">IMDb</a>
+        <a href="#">Line</a>
+        <a href="#">WeChat</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <div>© 2026 Tzushien Lin — All rights reserved</div>
+    <div>Site designed with care for moving image.</div>
+  </div>
+</footer>
+
+</body>
+</html>

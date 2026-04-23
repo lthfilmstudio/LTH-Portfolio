@@ -1,0 +1,38 @@
+# dependencies
+node_modules/
+
+# logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# build output
+dist/
+.astro/
+
+# environment
+.env
+.env.production
+.env.local
+.env.*.local
+
+# macOS
+.DS_Store
+
+# editor
+.vscode/*
+!.vscode/extensions.json
+.idea/
+
+# Claude Code 本機設定
+.claude/settings.local.json
+.claude/cache/
+.claude/todos/
+
+# misc
+*.log
+
+# 原型階段遺留檔（重構完成後再決定刪除）
+/index.html
+LTH.pdf

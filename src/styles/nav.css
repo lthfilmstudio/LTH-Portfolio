@@ -1,0 +1,66 @@
+/* ===== NAV ===== */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  padding: 0.9rem 3rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 100;
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  backdrop-filter: blur(12px) saturate(1.1);
+  background: rgba(10, 9, 8, 0.55);
+  border-bottom: 1px solid var(--line-soft);
+}
+
+nav .brand {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+nav .brand-mark {
+  width: 18px;
+  height: 18px;
+  transition: opacity 0.3s;
+}
+
+nav .brand:hover .brand-mark {
+  opacity: 0.85;
+}
+
+nav .brand-text {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+nav .brand-zh {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.25em;
+  color: var(--text);
+  text-transform: none;
+}
+
+nav .brand-en {
+  font-size: 0.5rem;
+  letter-spacing: 0.3em;
+  color: var(--text-dim);
+}
+
+nav ul {
+  display: flex;
+  list-style: none;
+  gap: 1.5rem;
+}
+
+nav a {
+  color: var(--text);
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+nav a:hover { color: var(--accent); }

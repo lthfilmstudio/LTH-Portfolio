@@ -1,0 +1,359 @@
+/* ===== HERO ===== */
+.hero {
+  min-height: 100vh;
+  padding: 8rem 3rem 4rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  align-items: start;
+  position: relative;
+}
+
+.hero-left { position: relative; padding-top: 2rem; }
+
+.hero h1 {
+  font-family: 'Noto Serif TC', serif;
+  font-size: clamp(1.2rem, 2.2vw, 1.7rem);
+  font-weight: 400;
+  line-height: 1.15;
+  letter-spacing: 0.12em;
+  margin-bottom: 0.3rem;
+  color: var(--text);
+}
+
+.hero .en-name {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(0.7rem, 1vw, 0.85rem);
+  font-style: italic;
+  color: var(--text-dim);
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  margin-bottom: 1.8rem;
+}
+
+.hero-titles {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-bottom: 2.5rem;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.hero-titles .role-zh {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.2em;
+  color: var(--text);
+}
+
+.hero-titles .role-en {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--text-dim);
+  letter-spacing: 0.05em;
+}
+
+/* HERO PROFILE (moved from about section) */
+.hero-profile {
+  margin-bottom: 3rem;
+  padding-bottom: 2.5rem;
+  border-bottom: 1px solid var(--line);
+}
+
+.hero-profile .lead-zh {
+  font-family: 'Noto Serif TC', serif;
+  color: var(--text);
+  font-size: 0.9rem;
+  line-height: 1.9;
+  letter-spacing: 0.08em;
+  margin-bottom: 1rem;
+}
+
+.hero-profile .sub-zh {
+  font-family: 'Noto Serif TC', serif;
+  color: var(--text-dim);
+  font-size: 0.82rem;
+  line-height: 1.9;
+  letter-spacing: 0.05em;
+  margin-bottom: 1.5rem;
+}
+
+.profile-divider {
+  width: 32px;
+  height: 1px;
+  background: var(--accent-dim);
+  margin: 1.5rem 0;
+}
+
+.hero-profile .lead-en {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.92rem;
+  color: var(--text-dim);
+  line-height: 1.7;
+  margin-bottom: 0.8rem;
+  letter-spacing: 0.01em;
+}
+
+.hero-profile .sub-en {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.85rem;
+  color: var(--text-faint);
+  line-height: 1.7;
+  letter-spacing: 0.01em;
+}
+
+.hero-lang {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line-soft);
+}
+
+.hero-lang-label {
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 0.9rem;
+}
+
+.hero-lang-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.9rem 1.6rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  color: var(--text-dim);
+  font-size: 0.82rem;
+}
+
+.hero-lang-list span {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.hero-lang-list .level {
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  font-family: 'Inter', sans-serif;
+  font-style: normal;
+}
+
+/* HERO AWARDS */
+.hero-awards-label {
+  font-size: 0.62rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hero-awards-label span:last-child {
+  font-family: 'Noto Serif TC', serif;
+  letter-spacing: 0.3em;
+  text-transform: none;
+}
+
+.hero-award-item {
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--line-soft);
+  transition: all 0.4s cubic-bezier(.2,.8,.2,1);
+  cursor: pointer;
+  display: grid;
+  grid-template-columns: 48px 1fr;
+  gap: 0.9rem;
+  align-items: center;
+}
+
+.hero-award-item:hover {
+  padding-left: 0.4rem;
+  border-bottom-color: var(--accent-dim);
+}
+
+.hero-award-thumb {
+  width: 48px;
+  height: 68px;
+}
+
+.hero-award-item:hover .hero-award-thumb {
+  filter: grayscale(0) brightness(1);
+  border-color: var(--accent-dim);
+}
+
+.hero-award-body { min-width: 0; }
+
+.award-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.4rem;
+}
+
+.award-status-sm {
+  font-size: 0.58rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--accent);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.hero-award-item.nom .award-status-sm { color: var(--text-dim); }
+
+.award-status-sm .dot {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.hero-award-item.nom .award-status-sm .dot { background: var(--text-dim); }
+
+.award-yr {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.78rem;
+  color: var(--text-faint);
+}
+
+.award-work {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 1.05rem;
+  color: var(--text);
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+  transition: color 0.3s;
+}
+
+.hero-award-item:hover .award-work { color: var(--accent); }
+
+.award-work .work-en {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin-left: 0.5rem;
+  font-weight: 300;
+}
+
+.hero-award-item:hover .work-en { color: var(--text); }
+
+.award-name-sm {
+  font-size: 0.68rem;
+  color: var(--text-faint);
+  letter-spacing: 0.1em;
+}
+
+/* HERO RIGHT — SELECTED WORK */
+.hero-right {
+  border-left: 1px solid var(--line);
+  padding-left: 3rem;
+  padding-top: 2rem;
+}
+
+.featured-label {
+  font-size: 0.62rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.featured-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.featured-item {
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--line-soft);
+  display: grid;
+  grid-template-columns: 56px auto 1fr auto;
+  gap: 1rem;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(.2,.8,.2,1);
+  position: relative;
+}
+
+.featured-item:hover {
+  padding-left: 0.4rem;
+  border-bottom-color: var(--accent-dim);
+}
+
+.featured-thumb {
+  width: 56px;
+  height: 80px;
+}
+
+.featured-item:hover .featured-thumb {
+  filter: grayscale(0) brightness(1);
+  border-color: var(--accent-dim);
+}
+
+.featured-item .idx {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.75rem;
+  color: var(--text-faint);
+  letter-spacing: 0.1em;
+}
+
+.featured-item .title {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.featured-item .title-zh {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 0.92rem;
+  color: var(--text);
+  letter-spacing: 0.05em;
+  transition: color 0.3s;
+}
+
+.featured-item:hover .title-zh { color: var(--accent); }
+
+.featured-item .title-en {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.75rem;
+  font-style: italic;
+  color: var(--text-dim);
+  letter-spacing: 0.02em;
+}
+
+.featured-item .year {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.8rem;
+  color: var(--text-faint);
+}
+
+.featured-item .award-tag {
+  display: inline-block;
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  color: var(--accent);
+  text-transform: uppercase;
+  border: 1px solid var(--accent-dim);
+  padding: 1px 6px;
+  margin-left: 0.4rem;
+  vertical-align: middle;
+  border-radius: 2px;
+}
+
+.featured-item .award-tag.nom {
+  color: var(--text-dim);
+  border-color: var(--text-faint);
+}
