@@ -30,26 +30,23 @@ import BrandMark from '../components/BrandMark.astro';
     <div class="hero-titles">
       <span class="role-zh">電影 / 劇集 剪輯指導</span>
       <span class="role-en">Feature Film & Series Editor</span>
+      <div class="hero-langs-inline">
+        <span>Mandarin</span>
+        <span>Taiwanese</span>
+        <span>English</span>
+        <span>Hakka</span>
+        <span>Thai</span>
+      </div>
     </div>
 
     <div class="hero-profile">
-      <p class="lead-zh">以《茶金》、《牽紙鷂的手》兩度榮獲金鐘獎最佳剪輯獎，並以《有生之年》入圍金鐘獎最佳剪輯獎。</p>
-      <p class="sub-zh">近期作品包括《那張照片裡的我們》、《我們與惡的距離 II》、《拜六禮拜》、《人浮於愛》、《夏日最後的祕密》等。現成立「原本那間剪輯工作室」。</p>
-
-      <div class="profile-divider"></div>
-
-      <p class="lead-en">A two-time Golden Bell Award winner for Best Editing in a Drama Series, for Gold Leaf and The Kite Soaring, and a nominee for Best Editing for Living.</p>
-      <p class="sub-en">Recent works include The Photo from 1977, The World Between Us II: After the Flames, Holiday, Adrift in Love, and Summer Blue Hour. Founder of LTH Film Studio.</p>
-
-      <div class="hero-lang">
-        <div class="hero-lang-label">Languages · 語言</div>
-        <div class="hero-lang-list">
-          <span>Mandarin<span class="level">Native</span></span>
-          <span>Taiwanese<span class="level">Native</span></span>
-          <span>English<span class="level">Conversant</span></span>
-          <span>Hakka<span class="level">Basic</span></span>
-          <span>Thai<span class="level">Basic</span></span>
-        </div>
+      <div class="hero-profile-zh">
+        <p class="lead-zh">以《茶金》、《牽紙鷂的手》兩度榮獲金鐘獎最佳剪輯獎，並以《有生之年》入圍金鐘獎最佳剪輯獎。</p>
+        <p class="sub-zh">近期作品包括《那張照片裡的我們》、《我們與惡的距離 II》、《拜六禮拜》、《人浮於愛》、《夏日最後的祕密》等。現成立「原本那間剪輯工作室」。</p>
+      </div>
+      <div class="hero-profile-en">
+        <p class="lead-en">A two-time Golden Bell Award winner for Best Editing in a Drama Series, for Gold Leaf and The Kite Soaring, and a nominee for Best Editing for Living.</p>
+        <p class="sub-en">Recent works include The Photo from 1977, The World Between Us II: After the Flames, Holiday, Adrift in Love, and Summer Blue Hour. Founder of LTH Film Studio.</p>
       </div>
     </div>
 
@@ -58,39 +55,41 @@ import BrandMark from '../components/BrandMark.astro';
       <span>得獎入圍</span>
     </div>
 
-    <div class="hero-award-item win">
-      <div class="thumb hero-award-thumb th-7" data-short="茶金"></div>
-      <div class="hero-award-body">
-        <div class="award-meta">
-          <span class="award-status-sm"><span class="dot"></span> Winner · 獲獎</span>
-          <span class="award-yr">2022</span>
+    <div class="hero-awards-row">
+      <div class="hero-award-item win">
+        <div class="thumb hero-award-thumb th-7" data-short="茶金"></div>
+        <div class="hero-award-body">
+          <div class="award-meta">
+            <span class="award-status-sm"><span class="dot"></span> Winner · 獲獎</span>
+            <span class="award-yr">2022</span>
+          </div>
+          <div class="award-work">茶金 <span class="work-en">Gold Leaf</span></div>
+          <div class="award-name-sm">金鐘獎 最佳剪輯獎 · Golden Bell Awards</div>
         </div>
-        <div class="award-work">茶金 <span class="work-en">Gold Leaf</span></div>
-        <div class="award-name-sm">金鐘獎 最佳剪輯獎 · Golden Bell Awards</div>
       </div>
-    </div>
 
-    <div class="hero-award-item win">
-      <div class="thumb hero-award-thumb th-8" data-short="牽紙鷂"></div>
-      <div class="hero-award-body">
-        <div class="award-meta">
-          <span class="award-status-sm"><span class="dot"></span> Winner · 獲獎</span>
-          <span class="award-yr">2019</span>
+      <div class="hero-award-item win">
+        <div class="thumb hero-award-thumb th-8" data-short="牽紙鷂"></div>
+        <div class="hero-award-body">
+          <div class="award-meta">
+            <span class="award-status-sm"><span class="dot"></span> Winner · 獲獎</span>
+            <span class="award-yr">2019</span>
+          </div>
+          <div class="award-work">牽紙鷂的手 <span class="work-en">The Kite Soaring</span></div>
+          <div class="award-name-sm">金鐘獎 最佳剪輯獎 · Golden Bell Awards</div>
         </div>
-        <div class="award-work">牽紙鷂的手 <span class="work-en">The Kite Soaring</span></div>
-        <div class="award-name-sm">金鐘獎 最佳剪輯獎 · Golden Bell Awards</div>
       </div>
-    </div>
 
-    <div class="hero-award-item nom">
-      <div class="thumb hero-award-thumb th-5" data-short="有生之年"></div>
-      <div class="hero-award-body">
-        <div class="award-meta">
-          <span class="award-status-sm"><span class="dot"></span> Nominee · 入圍</span>
-          <span class="award-yr">2024</span>
+      <div class="hero-award-item nom">
+        <div class="thumb hero-award-thumb th-5" data-short="有生之年"></div>
+        <div class="hero-award-body">
+          <div class="award-meta">
+            <span class="award-status-sm"><span class="dot"></span> Nominee · 入圍</span>
+            <span class="award-yr">2024</span>
+          </div>
+          <div class="award-work">有生之年 <span class="work-en">Living</span></div>
+          <div class="award-name-sm">金鐘獎 最佳剪輯獎 · Golden Bell Awards</div>
         </div>
-        <div class="award-work">有生之年 <span class="work-en">Living</span></div>
-        <div class="award-name-sm">金鐘獎 最佳剪輯獎 · Golden Bell Awards</div>
       </div>
     </div>
   </div>

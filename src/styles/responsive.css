@@ -13,6 +13,16 @@
     padding-left: 0;
     padding-top: 3rem;
   }
+  .hero-profile {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding-bottom: 1.5rem;
+    margin-bottom: 2rem;
+  }
+  .hero-awards-row {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
   .section-divider, .film-grid, .credits-block, .about, footer {
     padding-left: 1.5rem;
     padding-right: 1.5rem;
