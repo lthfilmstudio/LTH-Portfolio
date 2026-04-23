@@ -185,7 +185,12 @@ def main():
         covers_all = []
         if raw_cover:
             for c in raw_cover.split(","):
-                c = unquote(c.strip())
+                c = c.strip()
+                # 連續 unquote 直到穩定（Notion 有時雙層編碼）
+                prev = None
+                while prev != c:
+                    prev = c
+                    c = unquote(c)
                 if c and (ROOT / "public/stills/covers" / c).exists():
                     covers_all.append(f"/stills/covers/{c.replace(' ', '%20')}")
             if covers_all:

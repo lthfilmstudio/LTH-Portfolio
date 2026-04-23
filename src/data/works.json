@@ -346,8 +346,10 @@
     "director": "李權洋、王威翔",
     "writers": "蔡岳霖、莊榮祚",
     "description": "",
-    "cover": "",
-    "covers": [],
+    "cover": "/stills/covers/並.png",
+    "covers": [
+      "/stills/covers/並.png"
+    ],
     "links": [
       {
         "type": "youtube",
@@ -393,8 +395,10 @@
     "director": "許肇任、林志儒",
     "writers": "杜政哲、林晏如",
     "description": "獲金鐘獎戲劇節目獎、導演獎、男女主角獎、男配角獎、新人獎，入圍編劇獎、剪輯獎、造型設計獎、女配角獎。\n\n高嘉岳突然回家了，離家多年卻豪不客氣地闖進高家的日常，大家心裡都巴不得嘉岳趕快離開。唯獨姪子丞佑喜歡找嘉岳相處，因為他覺得嘉岳是個很不一樣的大人。\n嘉岳發現不單只有自己，每個人的人生都好難好難，爸媽感情失和、二弟在家中一直沒有歸屬感、三弟對未來很茫然，但他們還是跌跌撞撞地在人生道路上前進著。",
-    "cover": "",
-    "covers": [],
+    "cover": "/stills/covers/有生之年.jpg",
+    "covers": [
+      "/stills/covers/有生之年.jpg"
+    ],
     "links": [
       {
         "type": "youtube",
