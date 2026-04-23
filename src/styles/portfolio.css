@@ -89,7 +89,7 @@
 
 .work-cover {
   width: 100%;
-  aspect-ratio: 1 / 1;
+  aspect-ratio: 16 / 9;
   filter: grayscale(0.3) brightness(0.92);
   transition: all 0.5s;
   overflow: hidden;

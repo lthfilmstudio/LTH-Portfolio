@@ -285,7 +285,7 @@
   padding: 0.9rem 0;
   border-bottom: 1px solid var(--line-soft);
   display: grid;
-  grid-template-columns: 56px auto 1fr auto;
+  grid-template-columns: 72px auto 1fr auto;
   gap: 1rem;
   align-items: center;
   cursor: pointer;
@@ -301,8 +301,9 @@
 }
 
 .featured-thumb {
-  width: 56px;
-  height: 80px;
+  width: 72px;
+  height: 40px;
+  aspect-ratio: 16 / 9;
 }
 
 .featured-thumb--image {
