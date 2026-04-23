@@ -340,20 +340,3 @@
   color: var(--text-faint);
 }
 
-.featured-item .award-tag {
-  display: inline-block;
-  font-size: 0.55rem;
-  letter-spacing: 0.2em;
-  color: var(--accent);
-  text-transform: uppercase;
-  border: 1px solid var(--accent-dim);
-  padding: 1px 6px;
-  margin-left: 0.4rem;
-  vertical-align: middle;
-  border-radius: 2px;
-}
-
-.featured-item .award-tag.nom {
-  color: var(--text-dim);
-  border-color: var(--text-faint);
-}
