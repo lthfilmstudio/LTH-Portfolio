@@ -11,6 +11,7 @@ pnpm-debug.log*
 dist/
 .astro/
 .wrangler/
+tmp/
 
 # environment
 .env
