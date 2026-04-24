@@ -30,7 +30,8 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
 
   const { slug, imageBase64 } = body;
   if (!slug || !imageBase64) return json({ error: 'missing slug or imageBase64' }, 400);
-  if (!/^[a-z0-9-]+$/.test(slug)) return json({ error: 'invalid slug' }, 400);
+  // Allow Unicode letters/digits + hyphen. Reject separators and dots to prevent path traversal.
+  if (!/^[\p{L}\p{N}\-]+$/u.test(slug)) return json({ error: 'invalid slug' }, 400);
 
   const imageContent = imageBase64.replace(/^data:image\/[a-z]+;base64,/, '');
   const imagePath = `public/stills/covers/official/${slug}.jpg`;
@@ -106,7 +107,14 @@ class GitHub {
   }
 
   private async call(method: string, path: string, body?: unknown) {
-    const res = await fetch(`${this.apiBase}${path}`, {
+    // Percent-encode each path segment (preserve slashes) so non-ASCII slugs work.
+    const [rawPath, query = ''] = path.split('?');
+    const encodedPath = rawPath
+      .split('/')
+      .map((seg) => (seg ? encodeURIComponent(seg) : seg))
+      .join('/');
+    const url = `${this.apiBase}${encodedPath}${query ? '?' + query : ''}`;
+    const res = await fetch(url, {
       method,
       headers: this.headers,
       body: body ? JSON.stringify(body) : undefined,
