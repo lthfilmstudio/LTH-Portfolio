@@ -19,23 +19,28 @@
     "links": [
       {
         "type": "facebook",
-        "url": "https://www.facebook.com/theworldbetweenus2019"
+        "url": "https://www.facebook.com/theworldbetweenus2019",
+        "label": "官方Facebook"
       },
       {
         "type": "youtube",
-        "url": "https://www.youtube.com/watch?v=eMIlVu0ho2I"
+        "url": "https://www.youtube.com/watch?v=eMIlVu0ho2I",
+        "label": "前導預告 Teaser"
       },
       {
         "type": "youtube",
-        "url": "https://www.youtube.com/watch?v=mpXdQwrz1uo"
+        "url": "https://www.youtube.com/watch?v=mpXdQwrz1uo",
+        "label": "正式預告 Trailer"
       },
       {
         "type": "youtube",
-        "url": "https://youtu.be/V6aWZC6dT94?si=YFx-TtOEiO9PzJH0"
+        "url": "https://youtu.be/V6aWZC6dT94?si=YFx-TtOEiO9PzJH0",
+        "label": "前導片花 Teaser"
       },
       {
         "type": "youtube",
-        "url": "https://youtu.be/Z1HTxQ2WjPs?si=JMmVIN1a7BZ3xkz3"
+        "url": "https://youtu.be/Z1HTxQ2WjPs?si=JMmVIN1a7BZ3xkz3",
+        "label": "前導花絮 Making of"
       }
     ],
     "hasDetail": true
