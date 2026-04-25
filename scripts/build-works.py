@@ -157,11 +157,40 @@ def slugify(zh: str, en: str, year: str) -> str:
     return s[:80]
 
 
+CATEGORY_PRIORITY = ["feature", "series", "tvmovie", "short", "mv", "commercial", "trailer"]
+
+
+def merge_into(existing: dict, new: dict) -> None:
+    """同 slug 兩筆合併（Notion 把預告片花拆成獨立列造成的）。"""
+    for cat in new["categories"]:
+        if cat not in existing["categories"]:
+            existing["categories"].append(cat)
+    existing["categories"].sort(key=lambda c: CATEGORY_PRIORITY.index(c) if c in CATEGORY_PRIORITY else 99)
+    existing["primaryCategory"] = existing["categories"][0]
+
+    seen_urls = {l["url"] for l in existing["links"]}
+    for l in new["links"]:
+        if l["url"] not in seen_urls:
+            existing["links"].append(l)
+            seen_urls.add(l["url"])
+
+    if len(new["description"]) > len(existing["description"]):
+        existing["description"] = new["description"]
+    if not existing["director"] and new["director"]:
+        existing["director"] = new["director"]
+    if not existing["writers"] and new["writers"]:
+        existing["writers"] = new["writers"]
+    for c in new["covers"]:
+        if c not in existing["covers"]:
+            existing["covers"].append(c)
+    existing["hasDetail"] = existing["hasDetail"] or new["hasDetail"]
+
+
 def main():
     with open(CSV_PATH, encoding="utf-8-sig") as f:
         rows = list(csv.DictReader(f))
 
-    works = []
+    works_by_slug: dict[str, dict] = {}
     for idx, r in enumerate(rows):
         raw_title = r.get("Projects", "").strip()
         if not raw_title:
@@ -209,7 +238,7 @@ def main():
         # 決定是否有詳細頁（MV/廣告不做）
         has_detail = not (set(categories) <= {"mv", "commercial"})
 
-        works.append({
+        entry = {
             "slug": slug,
             "titleZh": zh,
             "titleEn": en,
@@ -224,7 +253,14 @@ def main():
             "covers": covers_all,
             "links": links,
             "hasDetail": has_detail,
-        })
+        }
+
+        if slug in works_by_slug:
+            merge_into(works_by_slug[slug], entry)
+        else:
+            works_by_slug[slug] = entry
+
+    works = list(works_by_slug.values())
 
     # 年份 desc 排序
     works.sort(key=lambda w: (w["year"] or "0"), reverse=True)
