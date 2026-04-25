@@ -505,9 +505,9 @@
   transition: -webkit-text-stroke-color 0.4s, transform 0.4s;
   align-self: end;
   font-style: italic;
-  /* align-self: end 對齊 line-box 底，line-height 0.7 下 baseline 在 line-box 底上方
-     約 0.06em。微往下推讓字形底貼齊海報底（0.13 太多，0 太少，0.06 剛好）。 */
-  transform: translateY(0.06em);
+  /* align-self: end 對齊 line-box 底，line-height 0.7 下 baseline 在 line-box 底略上方。
+     0.06em 還偏低，縮到 0.02em 字形底貼齊海報底。 */
+  transform: translateY(0.02em);
 }
 
 .featured-item:hover .featured-num {
