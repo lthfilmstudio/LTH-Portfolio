@@ -196,3 +196,14 @@
   display: none;
 }
 
+/* MV / 廣告 — YouTube 截圖比例（16:9）+ 較大格 */
+.works-grid[data-active-filter="mv"],
+.works-grid[data-active-filter="commercial"] {
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2.5rem 1.5rem;
+}
+.works-grid[data-active-filter="mv"] .work-cover,
+.works-grid[data-active-filter="commercial"] .work-cover {
+  aspect-ratio: 16 / 9;
+}
+

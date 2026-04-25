@@ -248,6 +248,11 @@ const LINK_TYPES = [
         position: relative;
         overflow: hidden;
       }
+      /* MV / 廣告 → 16:9 縮圖（YouTube 截圖比例） */
+      .card[data-primary="mv"] .thumb,
+      .card[data-primary="commercial"] .thumb {
+        aspect-ratio: 16 / 9;
+      }
       .card .thumb img {
         width: 100%;
         height: 100%;
@@ -489,6 +494,10 @@ const LINK_TYPES = [
         flex-shrink: 0;
         position: relative;
         overflow: hidden;
+      }
+      .cover-block.is-wide .preview {
+        width: 130px;
+        aspect-ratio: 16 / 9;
       }
       .cover-block .preview img { width: 100%; height: 100%; object-fit: cover; display: block; }
       .cover-block .preview .empty {
@@ -814,6 +823,7 @@ const LINK_TYPES = [
           card.className = 'card';
           card.dataset.idx = String(idx);
           card.dataset.slug = w.slug;
+          card.dataset.primary = w.primaryCategory || '';
           card.innerHTML = `
             <span class="drag-handle" title="拖動排序">⋮⋮</span>
             ${isNew ? '<span class="badge-new">NEW</span>' : ''}
@@ -1013,13 +1023,14 @@ const LINK_TYPES = [
 
           <fieldset>
             <legend>海報</legend>
-            <div class="cover-block">
+            <div class="cover-block ${(d.primaryCategory === 'mv' || d.primaryCategory === 'commercial') ? 'is-wide' : ''}">
               <div class="preview">
                 ${d.cover ? `<img src="${d.cover}" alt="cover" />` : '<span class="empty">無</span>'}
               </div>
               <div class="info">
                 ${isOfficial ? '<div class="official">✓ 官方海報</div>' : ''}
                 ${d.cover ? escapeHtml(d.cover) : '尚未上傳海報'}
+                ${(d.primaryCategory === 'mv' || d.primaryCategory === 'commercial') ? '<div style="font-size: 0.65rem; color: var(--text-faint); margin-top: 0.3rem;">封面比例：16:9（YouTube 截圖）</div>' : ''}
               </div>
               <button type="button" class="btn" id="f-upload-poster" ${drawerMode === 'new' ? 'disabled title="新增作品請先儲存後再上傳海報"' : ''}>
                 ${d.cover ? '替換海報' : '上傳海報'}
@@ -1124,12 +1135,11 @@ const LINK_TYPES = [
             if (drawerMode === 'new') return;
             // Need slug to exist on server (= already saved). Warn if dirty.
             const slug = drawerDraft.slug;
-            const orig = works[drawerIdx];
             if (!originalSlugs.has(slug)) {
               showToast('請先「套用變更」+「全部存檔」後再上傳海報', 'err', 5000);
               return;
             }
-            openUploadModal(slug, drawerDraft.titleZh);
+            openUploadModal(slug, drawerDraft.titleZh, drawerDraft.primaryCategory);
           });
         }
 
@@ -1350,6 +1360,7 @@ const LINK_TYPES = [
       let cropper = null;
       let currentSlug = '';
       let currentTitle = '';
+      let currentRatio = 2 / 3; // 預設海報比例；MV/廣告 切 16/9
       let cropperReady = null;
 
       function ensureCropper() {
@@ -1363,11 +1374,13 @@ const LINK_TYPES = [
         return cropperReady;
       }
 
-      function openUploadModal(slug, title) {
+      function openUploadModal(slug, title, primaryCategory) {
         currentSlug = slug;
         currentTitle = title;
+        currentRatio = (primaryCategory === 'mv' || primaryCategory === 'commercial') ? 16 / 9 : 2 / 3;
+        const ratioLabel = currentRatio === 16 / 9 ? '16:9（YouTube 截圖）' : '2:3（電影海報）';
         mTitle.textContent = `上傳海報 — ${title}`;
-        mSlug.textContent = `slug: ${slug}  →  public/stills/covers/official/${slug}.jpg`;
+        mSlug.textContent = `slug: ${slug}  →  比例 ${ratioLabel}`;
         mCrop.setAttribute('data-open', 'false');
         mSubmit.disabled = true;
         mFile.value = '';
@@ -1401,7 +1414,7 @@ const LINK_TYPES = [
           mCrop.setAttribute('data-open', 'true');
           if (cropper) cropper.destroy();
           cropper = new Cropper(mImg, {
-            aspectRatio: 2 / 3,
+            aspectRatio: currentRatio,
             viewMode: 1,
             autoCropArea: 1,
             movable: true,
