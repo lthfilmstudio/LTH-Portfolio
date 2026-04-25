@@ -125,11 +125,11 @@ const workSchema = {
         </div>
       )}
 
-      {work.links.length > 0 && (
+      {(work.links?.length ?? 0) > 0 && (
         <div class="wd-section">
           <h2 class="wd-section-title">觀賞連結 <span class="en">Watch</span></h2>
           <ul class="wd-links">
-            {work.links.map((l) => (
+            {work.links!.map((l) => (
               <li>
                 <a href={l.url} target="_blank" rel="noopener" class={`wd-link wd-link--${l.type}`}>
                   <span class="wd-link-icon" aria-hidden="true">▶</span>
