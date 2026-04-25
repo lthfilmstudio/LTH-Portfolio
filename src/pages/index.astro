@@ -90,30 +90,6 @@ function thumbClass(slug: string): string {
       <p class="sub-zh">近期作品包括《那張照片裡的我們》、《我們與惡的距離 II》、《拜六禮拜》、《人浮於愛》、《夏日最後的祕密》等。現成立「原本那間剪輯工作室」。</p>
       <p class="sub-en">Recent works include The Photo from 1977, The World Between Us II: After the Flames, Holiday, Adrift in Love, and Summer Blue Hour. Founder of LTH Film Studio.</p>
     </div>
-
-    <div class="featured-label">
-      <span>Selected Works</span>
-      <span>精選作品</span>
-    </div>
-
-    <div class="featured-list">
-      {selectedWorks.map((w, i) => (
-        <a class="featured-item" href={w.hasDetail ? `/works/${w.slug}/` : '#'}>
-          <span class="featured-num" aria-hidden="true">{i + 1}</span>
-          {w.cover ? (
-            <div class="featured-thumb featured-thumb--image">
-              <img src={w.cover} alt={`${w.titleZh} ${w.titleEn}`.trim()} loading="lazy" />
-            </div>
-          ) : (
-            <div class={`thumb featured-thumb ${thumbClass(w.slug)}`} data-short={w.titleZh.slice(0, 4)}></div>
-          )}
-          <span class="title">
-            <span class="title-zh">{w.titleZh}</span>
-            {w.titleEn && <span class="title-en">{w.titleEn}</span>}
-          </span>
-        </a>
-      ))}
-    </div>
   </div>
 
   <aside class="hero-right">
@@ -169,6 +145,30 @@ function thumbClass(slug: string): string {
       </div>
     </div>
   </aside>
+
+  <div class="featured-label">
+    <span>Selected Works</span>
+    <span>精選作品</span>
+  </div>
+
+  <div class="featured-list">
+    {selectedWorks.map((w, i) => (
+      <a class="featured-item" href={w.hasDetail ? `/works/${w.slug}/` : '#'}>
+        <span class="featured-num" aria-hidden="true">{i + 1}</span>
+        {w.cover ? (
+          <div class="featured-thumb featured-thumb--image">
+            <img src={w.cover} alt={`${w.titleZh} ${w.titleEn}`.trim()} loading="lazy" />
+          </div>
+        ) : (
+          <div class={`thumb featured-thumb ${thumbClass(w.slug)}`} data-short={w.titleZh.slice(0, 4)}></div>
+        )}
+        <span class="title">
+          <span class="title-zh">{w.titleZh}</span>
+          {w.titleEn && <span class="title-en">{w.titleEn}</span>}
+        </span>
+      </a>
+    ))}
+  </div>
 </section>
 
 <!-- PORTFOLIO SECTION DIVIDER -->

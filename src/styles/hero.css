@@ -275,8 +275,9 @@
 }
 
 /* ===== SELECTED WORKS — HBO Top 10 風 ===== */
-/* 在 hero-left 底下，水平 scroll，每個 item = 巨大 outline 數字 + 2:3 海報 */
+/* 跨滿 hero 兩欄，水平 scroll，每個 item = 巨大 outline 數字 + 2:3 海報 */
 .featured-label {
+  grid-column: 1 / -1;
   font-size: 0.62rem;
   letter-spacing: 0.35em;
   text-transform: uppercase;
@@ -295,6 +296,7 @@
 }
 
 .featured-list {
+  grid-column: 1 / -1;
   display: flex;
   gap: 1.5rem;
   overflow-x: auto;
