@@ -144,7 +144,8 @@
   justify-content: space-between;
 }
 
-.hero-awards-label span:last-child {
+/* 中文標籤覆寫（只有兩個 span 時才生效，移除中文後不影響） */
+.hero-awards-label span + span {
   font-family: 'Noto Serif TC', serif;
   letter-spacing: 0.3em;
   text-transform: none;
@@ -262,7 +263,7 @@
   gap: 0.5rem;
 }
 
-.hero-award-item.nom .award-status-sm { color: var(--text-dim); }
+.hero-award-item.nom .award-status-sm { color: var(--text); }
 
 .award-status-sm .dot {
   width: 4px;
@@ -271,12 +272,12 @@
   background: var(--accent);
 }
 
-.hero-award-item.nom .award-status-sm .dot { background: var(--text-dim); }
+.hero-award-item.nom .award-status-sm .dot { background: var(--text); }
 
 .award-yr {
   font-family: 'Cormorant Garamond', serif;
   font-size: 0.78rem;
-  color: var(--text-faint);
+  color: var(--text-dim);
 }
 
 .award-work {
@@ -296,7 +297,7 @@
   display: inline;
   font-family: 'Cormorant Garamond', serif;
   font-size: 0.7rem;
-  color: var(--text-dim);
+  color: var(--text);
   margin-left: 0.4em;
   font-weight: 300;
   letter-spacing: 0.02em;
@@ -315,13 +316,13 @@
 /* 中英同行：兩者都 inline，中間用 · 分隔（CSS pseudo） */
 .award-name-sm .award-name-zh {
   display: inline;
-  color: var(--text-dim);
+  color: var(--text);
   font-family: 'Noto Serif TC', serif;
 }
 
 .award-name-sm .award-name-en {
   display: inline;
-  color: var(--text-faint);
+  color: var(--text-dim);
   font-family: 'Cormorant Garamond', serif;
   font-size: 0.62rem;
   letter-spacing: 0.06em;
@@ -393,7 +394,8 @@
   justify-content: space-between;
 }
 
-.featured-label span:last-child {
+/* 中文標籤覆寫（只有兩個 span 時才生效，移除中文後不影響） */
+.featured-label span + span {
   font-family: 'Noto Serif TC', serif;
   letter-spacing: 0.3em;
   text-transform: none;
