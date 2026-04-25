@@ -139,8 +139,8 @@
   column-gap: 2.5rem;
   row-gap: 1rem;
   margin-bottom: 0;
-  padding-bottom: 1.5rem;
-  border-bottom: 1px solid var(--line);
+  padding-bottom: 0;
+  /* 橫線改放在 featured-label 上方，跨左右兩欄 */
 }
 
 .hero-profile .lead-zh {
@@ -429,8 +429,10 @@
   letter-spacing: 0.35em;
   text-transform: uppercase;
   color: var(--text-faint);
-  margin-top: 2.5rem;
+  margin-top: 1.5rem;
   margin-bottom: 1.2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--line); /* 跨左右兩欄的分隔線 */
   display: flex;
   align-items: center;
   justify-content: space-between;
