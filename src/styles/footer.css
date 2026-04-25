@@ -43,15 +43,12 @@ footer {
   text-decoration: none;
   font-family: 'Cormorant Garamond', serif;
   font-size: 1.05rem;
-  border-bottom: 1px solid var(--accent-dim);
-  padding-bottom: 0.3rem;
   width: fit-content;
-  transition: color 0.3s, border-color 0.3s;
+  transition: color 0.3s;
 }
 
 .contact-info a:hover {
   color: var(--accent);
-  border-color: var(--accent);
 }
 
 .footer-right {
