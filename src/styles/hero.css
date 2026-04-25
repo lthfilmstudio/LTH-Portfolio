@@ -506,6 +506,8 @@
   align-self: end;
   /* line-height 0.7 緊貼 lining 數字 cap-height，align-self end 讓字形底貼齊海報底 */
   font-style: italic;
+  /* italic Cormorant 數字底有斜體 serif 突出 baseline，往上推 ~0.06em 視覺對齊海報底 */
+  transform: translateY(-0.06em);
 }
 
 .featured-item:hover .featured-num {
