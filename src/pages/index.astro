@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import BrandMark from '../components/BrandMark.astro';
 import WorkCard from '../components/WorkCard.astro';
 import { works, CATEGORY_LABELS, CATEGORY_ORDER } from '../data/works';
+import awards from '../data/awards.json';
 
 // Schema.org Person — 讓 Google 搜尋結果顯示獎項、職稱
 const personSchema = {
@@ -94,56 +95,22 @@ function thumbClass(slug: string): string {
     </div>
 
     <div class="hero-awards-row">
-      <div class="hero-award-item win">
-        <div class="award-meta">
-          <span class="award-status-sm"><span class="dot"></span> 獲獎 · Winner</span>
-          <span class="award-yr">2022</span>
-        </div>
-        <div class="hero-award-thumb">
-          <img src="/stills/covers/official/gold-leaf-2022.jpg" alt="茶金 Gold Leaf 海報" loading="lazy" />
-        </div>
-        <div class="hero-award-body">
-          <div class="award-work">茶金<span class="work-en">Gold Leaf</span></div>
-          <div class="award-name-sm">
-            <span class="award-name-zh">金鐘獎 最佳剪輯獎</span>
-            <span class="award-name-en">Golden Bell Awards</span>
+      {awards.map((a) => (
+        <div class={`hero-award-item ${a.status}`}>
+          <div class="award-bg" style={`background-image: url('${a.poster}')`} aria-hidden="true"></div>
+          <div class="award-content">
+            <div class="award-meta">
+              <span class="award-status-sm"><span class="dot"></span> {a.statusZh} · {a.statusEn}</span>
+              <span class="award-yr">{a.year}</span>
+            </div>
+            <div class="award-work">{a.workZh}<span class="work-en">{a.workEn}</span></div>
+            <div class="award-name-sm">
+              <span class="award-name-zh">{a.awardZh}</span>
+              <span class="award-name-en">{a.awardEn}</span>
+            </div>
           </div>
         </div>
-      </div>
-
-      <div class="hero-award-item win">
-        <div class="award-meta">
-          <span class="award-status-sm"><span class="dot"></span> 獲獎 · Winner</span>
-          <span class="award-yr">2019</span>
-        </div>
-        <div class="hero-award-thumb">
-          <img src="/stills/covers/yt/the-kite-soaring-2010.jpg" alt="牽紙鷂的手 The Kite Soaring 海報" loading="lazy" />
-        </div>
-        <div class="hero-award-body">
-          <div class="award-work">牽紙鷂的手<span class="work-en">The Kite Soaring</span></div>
-          <div class="award-name-sm">
-            <span class="award-name-zh">金鐘獎 最佳剪輯獎</span>
-            <span class="award-name-en">Golden Bell Awards</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="hero-award-item nom">
-        <div class="award-meta">
-          <span class="award-status-sm"><span class="dot"></span> 入圍 · Nominee</span>
-          <span class="award-yr">2024</span>
-        </div>
-        <div class="hero-award-thumb">
-          <img src="/stills/covers/official/living-2023.jpg" alt="有生之年 Living 海報" loading="lazy" />
-        </div>
-        <div class="hero-award-body">
-          <div class="award-work">有生之年<span class="work-en">Living</span></div>
-          <div class="award-name-sm">
-            <span class="award-name-zh">金鐘獎 最佳剪輯獎</span>
-            <span class="award-name-en">Golden Bell Awards</span>
-          </div>
-        </div>
-      </div>
+      ))}
     </div>
   </aside>
 

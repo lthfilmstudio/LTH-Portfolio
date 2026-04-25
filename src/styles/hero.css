@@ -158,58 +158,47 @@
 }
 
 .hero-award-item {
-  padding: 0.7rem 0.7rem;
+  position: relative;
+  padding: 0.7rem 0.9rem;
   border: 1px solid var(--line-soft);
-  transition: all 0.4s cubic-bezier(.2,.8,.2,1);
+  transition: border-color 0.4s, transform 0.4s cubic-bezier(.2,.8,.2,1);
   cursor: pointer;
-  display: grid;
-  grid-template-columns: 56px 1fr;
-  column-gap: 0.8rem;
-  row-gap: 0.35rem;
-  align-items: start;
+  overflow: hidden;
   box-sizing: border-box;
 }
 
-.hero-award-item .award-meta {
-  grid-column: 1 / -1;
-  margin-bottom: 0.1rem;
+.hero-award-item .award-bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  opacity: 0.12;
+  filter: grayscale(0.4) blur(0.5px);
+  transition: opacity 0.5s, filter 0.5s;
+  pointer-events: none;
+}
+
+.hero-award-item .award-content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
 }
 
 .hero-award-item:hover {
   border-color: var(--accent-dim);
-  transform: translateY(-2px);
+  transform: translateX(-2px);
 }
 
-.hero-award-thumb {
-  width: 56px;
-  aspect-ratio: 2 / 3;
-  overflow: hidden;
-  border: 1px solid var(--line);
-  background: #000;
-  align-self: start;
-  transition: border-color 0.4s, filter 0.4s;
-  filter: grayscale(0.3) brightness(0.95);
+.hero-award-item:hover .award-bg {
+  opacity: 0.45;
+  filter: grayscale(0) blur(0);
 }
 
-.hero-award-thumb img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: center top;
-  display: block;
-  transition: transform 0.6s cubic-bezier(.2,.8,.2,1);
+.hero-award-item .award-meta {
+  margin-bottom: 0.1rem;
 }
-
-.hero-award-item:hover .hero-award-thumb {
-  filter: grayscale(0) brightness(1);
-  border-color: var(--accent-dim);
-}
-
-.hero-award-item:hover .hero-award-thumb img {
-  transform: scale(1.05);
-}
-
-.hero-award-body { min-width: 0; }
 
 .award-meta {
   display: flex;
@@ -322,7 +311,7 @@
   flex-direction: column;
   grid-template-columns: none;
   gap: 0.8rem;
-  max-height: 290px;
+  max-height: 330px;
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 0.5rem;
