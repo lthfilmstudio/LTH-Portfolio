@@ -188,6 +188,7 @@ const LINK_TYPES = [
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
         gap: 1.2rem;
+        align-items: start; /* 卡片保持自然高度，避免被同 row 高的卡撐起來變空殼 */
       }
       .card {
         background: var(--panel);
@@ -247,6 +248,11 @@ const LINK_TYPES = [
         background: var(--bg);
         position: relative;
         overflow: hidden;
+      }
+      /* MV / 廣告 → 16:9 縮圖（YouTube 截圖比例） */
+      .card[data-primary="mv"] .thumb,
+      .card[data-primary="commercial"] .thumb {
+        aspect-ratio: 16 / 9;
       }
       .card .thumb img {
         width: 100%;
