@@ -340,8 +340,11 @@
   font-size: clamp(6rem, 13vw, 11rem);
   font-weight: 400;
   line-height: 0.8;
+  /* 強制等高數字（lining figures），預設 old-style 高低不齊很不舒服 */
+  font-variant-numeric: lining-nums tabular-nums;
+  font-feature-settings: "lnum" 1, "tnum" 1;
   color: transparent;
-  -webkit-text-stroke: 2px rgba(255, 255, 255, 0.6);
+  -webkit-text-stroke: 2px rgba(177, 172, 165, 0.5); /* 比照 --text-dim 暖灰，亮度低 */
   letter-spacing: -0.04em;
   margin-right: -0.8rem; /* 數字往海報左邊延伸，部分被海報蓋住 */
   z-index: 0;
