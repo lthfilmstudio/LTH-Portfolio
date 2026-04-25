@@ -391,7 +391,6 @@
 
 .hero-right .hero-awards-label {
   margin-bottom: 1rem;
-  margin-top: auto; /* 標題+awards 一起推到底，中間不留大空白 */
 }
 
 /* 右欄直排 + 垂直 scroll；max-height 限制不要主導 row 高度 */
