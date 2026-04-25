@@ -499,7 +499,7 @@
   color: transparent;
   -webkit-text-stroke: 2px rgba(177, 172, 165, 0.25); /* 比照 --text-dim 暖灰，亮度低 */
   letter-spacing: -0.04em;
-  margin-right: -1.5rem; /* 數字往海報左邊延伸，部分被海報蓋住 */
+  margin-right: -0.8rem; /* 數字往海報左邊延伸，部分被海報蓋住 */
   z-index: 0;
   user-select: none;
   transition: -webkit-text-stroke-color 0.4s, transform 0.4s;
