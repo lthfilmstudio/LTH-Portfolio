@@ -504,10 +504,11 @@
   user-select: none;
   transition: -webkit-text-stroke-color 0.4s, transform 0.4s;
   align-self: end;
-  /* line-height 0.7 緊貼 lining 數字 cap-height，align-self end 讓字形底貼齊海報底 */
   font-style: italic;
-  /* italic Cormorant 數字底有斜體 serif 突出 baseline，往上推 ~0.06em 視覺對齊海報底 */
-  transform: translateY(-0.06em);
+  /* align-self: end 對齊 line-box 底，但 line-height 0.7 下 baseline 落在 line-box 底
+     上方約 0.13em（字形底＝baseline，無 descender）。要讓字形視覺底真的貼到海報底，
+     往下推 ~0.13em 補回那段距離。 */
+  transform: translateY(0.13em);
 }
 
 .featured-item:hover .featured-num {
