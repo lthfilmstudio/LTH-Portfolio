@@ -197,8 +197,8 @@ function thumbClass(slug: string): string {
           <input type="text" name="name" required autocomplete="name" />
         </label>
         <label class="form-field">
-          <span class="form-label">公司或單位名 Company</span>
-          <input type="text" name="company" autocomplete="organization" />
+          <span class="form-label">公司或單位名 Company *</span>
+          <input type="text" name="company" required autocomplete="organization" />
         </label>
       </div>
       <label class="form-field">
@@ -267,8 +267,8 @@ function thumbClass(slug: string): string {
       const company = String(fd.get('company') || '').trim();
       const message = String(fd.get('message') || '').trim();
 
-      if (!name || !email || !message) {
-        status.textContent = '請填妥姓名、Email、跟訊息內容。';
+      if (!name || !company || !email || !message) {
+        status.textContent = '請填妥所有欄位。';
         status.dataset.kind = 'err';
         return;
       }
@@ -301,7 +301,7 @@ function thumbClass(slug: string): string {
         });
         // 因為是 no-cors，永遠 resolve，假設成功
         form.reset();
-        status.innerHTML = '✓ 訊息已送出，Nalin 會盡快回覆你。<br/><span style="font-size: 0.78em; opacity: 0.7;">Thanks — your message is on its way.</span>';
+        status.innerHTML = '✓ 訊息已送出，會盡快回覆您。<br/><span style="font-size: 0.78em; opacity: 0.7;">Thanks — your message is on its way.</span>';
         status.dataset.kind = 'ok';
       } catch (err) {
         status.textContent = '送出失敗，請稍後再試或直接寄信到 lthfilmstudio@gmail.com';
