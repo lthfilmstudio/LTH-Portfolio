@@ -253,13 +253,6 @@ const LINK_TYPES = [
         filter: grayscale(0.2);
         -webkit-user-drag: none;
         user-drag: none;
-        pointer-events: none;
-      }
-      .card .thumb, .card .info, .card .info * {
-        pointer-events: none;
-      }
-      .card .drag-handle, .card .badge-new {
-        pointer-events: auto;
       }
       .card .thumb .empty {
         position: absolute;
@@ -823,7 +816,7 @@ const LINK_TYPES = [
             <span class="drag-handle" title="拖動排序">⋮⋮</span>
             ${isNew ? '<span class="badge-new">NEW</span>' : ''}
             <div class="thumb">
-              ${w.cover ? `<img src="${w.cover}" alt="${escapeHtml(w.titleZh)}" loading="lazy" />` : '<span class="empty">無海報</span>'}
+              ${w.cover ? `<img src="${w.cover}" alt="${escapeHtml(w.titleZh)}" loading="lazy" draggable="false" />` : '<span class="empty">無海報</span>'}
             </div>
             <div class="info">
               <span class="title-zh">${escapeHtml(w.titleZh) || '(未命名)'}</span>
@@ -1243,22 +1236,29 @@ const LINK_TYPES = [
       // ============================================================
       // Event delegation on grid — more robust than per-card listeners
       let dragSrcIdx = -1;
+      let dragSrcSlug = '';
       grid.addEventListener('dragstart', (e) => {
         const card = e.target.closest('.card');
         if (!card) return;
         dragSrcIdx = +card.dataset.idx;
+        dragSrcSlug = works[dragSrcIdx] && works[dragSrcIdx].titleZh || '';
         card.classList.add('dragging');
         document.body.classList.add('is-dragging');
         if (e.dataTransfer) {
           e.dataTransfer.effectAllowed = 'move';
           e.dataTransfer.setData('text/plain', String(dragSrcIdx));
         }
+        showToast(`🟡 開始拖動：${dragSrcSlug}（idx ${dragSrcIdx}）`, 'ok', 2000);
       });
       grid.addEventListener('dragend', (e) => {
         const card = e.target.closest('.card');
         if (card) card.classList.remove('dragging');
         document.body.classList.remove('is-dragging');
         grid.querySelectorAll('.drop-target').forEach((el) => el.classList.remove('drop-target'));
+        // Reset only if drop didn't happen
+        if (dragSrcIdx !== -1) {
+          showToast(`⚠️ 拖動取消（沒放到任何卡片上）`, 'err', 3000);
+        }
         dragSrcIdx = -1;
       });
       grid.addEventListener('dragover', (e) => {
