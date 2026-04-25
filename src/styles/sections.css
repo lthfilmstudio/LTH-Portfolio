@@ -5,7 +5,6 @@
   grid-template-columns: auto 1fr auto;
   align-items: baseline;
   gap: 2rem;
-  border-top: 1px solid var(--line);
 }
 
 .section-divider .num {
