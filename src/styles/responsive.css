@@ -28,11 +28,14 @@
     gap: 0.6rem;
   }
   .featured-thumb {
-    width: 150px;
+    width: 100px;
+  }
+  .featured-item .title {
+    width: 100px;
   }
   .featured-num {
-    font-size: clamp(7rem, 22vw, 11rem);
-    margin-right: -0.8rem;
+    font-size: clamp(5rem, 16vw, 8rem);
+    margin-right: -0.6rem;
   }
   .hero-profile {
     grid-template-columns: 1fr;
