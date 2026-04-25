@@ -428,7 +428,8 @@
   display: grid;
   grid-template-columns: auto auto;
   grid-template-rows: auto auto;
-  align-items: end;
+  align-items: start; /* 海報 / 數字回到 row 1 頂端，避免 stretch 把短標題的卡片海報下推 */
+  align-content: start;
   gap: 0;
   position: relative;
   cursor: pointer;
