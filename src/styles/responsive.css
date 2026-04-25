@@ -11,6 +11,9 @@
   nav { padding: 1.2rem 1.5rem; }
   nav ul { gap: 1.2rem; font-size: 0.65rem; }
 
+  /* 手機隱藏 scroll-cue：hero 內容塞滿一欄，箭頭會卡在 Selected Works 中間，反而干擾 */
+  .scroll-cue { display: none; }
+
   .hero {
     grid-template-columns: 1fr;
     padding: 7rem 1.5rem 3rem;
