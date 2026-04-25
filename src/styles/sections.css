@@ -1,6 +1,6 @@
 /* ===== SECTION DIVIDER ===== */
 .section-divider {
-  padding: 7rem 3rem 3.5rem;
+  padding: 1rem 3rem 1rem;
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: baseline;
