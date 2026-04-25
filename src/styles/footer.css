@@ -74,38 +74,41 @@ footer {
   letter-spacing: 0.02em;
 }
 
-/* META — 工作室 / 網址 / IMDb 一行小字 */
+/* META — 工作室 logo + IMDb */
 .footer-meta {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
   align-items: center;
-  gap: 1rem;
-  flex-wrap: wrap;
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 0.82rem;
-  letter-spacing: 0.05em;
-  color: var(--text-faint);
+  gap: 1.6rem;
   margin-bottom: 4rem;
 }
 
-.footer-meta .studio {
-  font-family: 'Noto Serif TC', serif;
-  font-size: 0.85rem;
-  letter-spacing: 0.1em;
-  color: var(--text-dim);
+.footer-logo {
+  width: clamp(220px, 28vw, 320px);
+  height: auto;
+  opacity: 0.78;
+  transition: opacity 0.3s;
+  user-select: none;
 }
 
-.footer-meta a {
-  color: var(--text-dim);
-  text-decoration: none;
-  transition: color 0.3s;
-}
+.footer-logo:hover { opacity: 1; }
 
-.footer-meta a:hover { color: var(--accent); }
-
-.footer-meta .dot {
+.footer-imdb {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
   color: var(--text-faint);
-  opacity: 0.45;
+  text-decoration: none;
+  padding: 0.4rem 0.9rem;
+  border: 1px solid var(--line);
+  border-radius: 2px;
+  transition: all 0.3s;
+}
+
+.footer-imdb:hover {
+  border-color: var(--accent-dim);
+  color: var(--accent);
 }
 
 /* BOTTOM — 版權 */
