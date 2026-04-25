@@ -5,10 +5,16 @@
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 0 4rem; /* row gap 0 — Selected Works 緊貼 hero-left 底，不留空 */
-  align-items: start;
+  align-items: stretch; /* hero-right 拉滿 hero-left 高度，awards 底對齊 hero-profile 底 */
   max-width: 1400px;
   margin: 0 auto;
   position: relative;
+}
+
+/* Selected Works 區塊不要被 stretch 撐高，回到 start */
+.hero > .featured-label,
+.hero > .featured-list {
+  align-self: start;
 }
 
 .hero-left { position: relative; padding-top: 0; min-width: 0; }
@@ -150,7 +156,6 @@
   column-gap: 0.8rem;
   row-gap: 0.35rem;
   align-items: start;
-  height: 100%;
   box-sizing: border-box;
 }
 
@@ -289,20 +294,24 @@
   border-left: 1px solid var(--line);
   padding-left: 3rem;
   padding-top: 1.5rem; /* 對齊 h1 林姿嫺的 margin-top */
+  padding-bottom: 0;
   min-width: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .hero-right .hero-awards-label {
   margin-bottom: 1rem;
+  margin-top: auto; /* 標題+awards 一起推到底，中間不留大空白 */
 }
 
-/* 右欄直排 + 垂直 scroll（卡住高度，Selected Works 才能上移） */
+/* 右欄直排 + 垂直 scroll；max-height 限制不要主導 row 高度 */
 .hero-right .hero-awards-row {
   display: flex;
   flex-direction: column;
   grid-template-columns: none;
   gap: 0.8rem;
-  max-height: 200px;
+  max-height: 290px;
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 0.5rem;
