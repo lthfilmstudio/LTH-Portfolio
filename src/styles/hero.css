@@ -263,7 +263,7 @@
   gap: 0.5rem;
 }
 
-.hero-award-item.nom .award-status-sm { color: var(--text); }
+.hero-award-item.nom .award-status-sm { color: var(--accent); }
 
 .award-status-sm .dot {
   width: 4px;
@@ -272,7 +272,7 @@
   background: var(--accent);
 }
 
-.hero-award-item.nom .award-status-sm .dot { background: var(--text); }
+.hero-award-item.nom .award-status-sm .dot { background: var(--accent); }
 
 .award-yr {
   font-family: 'Cormorant Garamond', serif;
