@@ -56,9 +56,9 @@ footer {
 }
 
 .footer-cta:hover {
-  background: var(--accent);
+  background: rgba(201, 169, 97, 0.08);
   border-color: var(--accent);
-  color: var(--bg);
+  color: var(--accent);
   transform: translateY(-2px);
 }
 
