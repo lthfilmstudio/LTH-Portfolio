@@ -7,39 +7,37 @@ footer {
   text-align: center;
 }
 
-/* HERO — 置中聚焦在 CTA */
+/* HERO — logo 當 section opener，下方副標一句話 + 表單 */
 .footer-hero {
   max-width: 720px;
   margin: 0 auto 4.5rem;
 }
 
-.footer-eyebrow {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 0.7rem;
-  letter-spacing: 0.4em;
-  color: var(--text-faint);
-  text-transform: uppercase;
-  margin-bottom: 1.5rem;
-}
-
-.footer-title {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: clamp(2.5rem, 6vw, 4.2rem);
-  font-weight: 400;
-  line-height: 1;
-  letter-spacing: 0.02em;
-  color: var(--text);
-  margin: 0 0 1rem;
+.footer-logo {
+  display: block;
+  width: clamp(280px, 36vw, 420px);
+  height: auto;
+  margin: 0 auto 2.4rem;
+  opacity: 0.9;
+  user-select: none;
 }
 
 .footer-sub {
-  font-family: 'Noto Serif TC', serif;
-  font-size: 0.92rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
   color: var(--text-dim);
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   line-height: 1.7;
   margin: 0 0 2.8rem;
+}
+
+.footer-sub .zh {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 0.85rem;
+  color: var(--text-faint);
+  letter-spacing: 0.18em;
+  display: inline-block;
+  margin-top: 0.3rem;
 }
 
 /* CONTACT FORM */
@@ -147,42 +145,6 @@ footer {
 .contact-form .form-status[data-kind="ok"] { color: var(--ok, #6fb07f); }
 .contact-form .form-status[data-kind="err"] { color: var(--danger, #d66a54); }
 
-/* META — 工作室 logo + IMDb */
-.footer-meta {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 1.6rem;
-  margin-bottom: 4rem;
-}
-
-.footer-logo {
-  width: clamp(220px, 28vw, 320px);
-  height: auto;
-  opacity: 0.78;
-  transition: opacity 0.3s;
-  user-select: none;
-}
-
-.footer-logo:hover { opacity: 1; }
-
-.footer-imdb {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 0.7rem;
-  letter-spacing: 0.25em;
-  text-transform: uppercase;
-  color: var(--text-faint);
-  text-decoration: none;
-  padding: 0.4rem 0.9rem;
-  border: 1px solid var(--line);
-  border-radius: 2px;
-  transition: all 0.3s;
-}
-
-.footer-imdb:hover {
-  border-color: var(--accent-dim);
-  color: var(--accent);
-}
 
 /* BOTTOM — 版權 */
 .footer-bottom {
