@@ -95,7 +95,7 @@
   grid-template-columns: 1fr 1fr;
   column-gap: 2.5rem;
   row-gap: 1rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0;
   padding-bottom: 1.5rem;
   border-bottom: 1px solid var(--line);
 }
@@ -160,7 +160,7 @@
 
 .hero-award-item {
   position: relative;
-  padding: 0.7rem 0.9rem;
+  padding: 0.5rem 0.9rem;
   border: 1px solid var(--line-soft);
   transition: border-color 0.4s, transform 0.4s cubic-bezier(.2,.8,.2,1);
   cursor: pointer;
@@ -356,8 +356,8 @@
   display: flex;
   flex-direction: column;
   grid-template-columns: none;
-  gap: 0.8rem;
-  max-height: 330px;
+  gap: 0.4rem;
+  max-height: 290px;
   overflow-y: auto;
   overflow-x: hidden;
   padding-right: 0.5rem;
