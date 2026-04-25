@@ -4,6 +4,7 @@ import BrandMark from '../components/BrandMark.astro';
 import WorkCard from '../components/WorkCard.astro';
 import { works, CATEGORY_LABELS, CATEGORY_ORDER } from '../data/works';
 import awards from '../data/awards.json';
+import selectedSlugs from '../data/selected.json';
 
 // Schema.org Person — 讓 Google 搜尋結果顯示獎項、職稱
 const personSchema = {
@@ -28,16 +29,8 @@ const personSchema = {
   knowsLanguage: ['zh-TW', 'nan-TW', 'en', 'hak-TW', 'th'],
 };
 
-// Nalin 精選的 6 部代表作（hero 右欄）
-const selectedSlugs = [
-  'the-photo-from-1977-2025',
-  'the-world-between-us-after-the-flames-2025',
-  'living-2023',
-  'gold-leaf-2022',
-  'holiday-2025',
-  'summer-blue-hour-2025',
-];
-const selectedWorks = selectedSlugs
+// Nalin 精選代表作 — 來源 src/data/selected.json，由 /admin/selected 後台維護
+const selectedWorks = (selectedSlugs as string[])
   .map((s) => works.find((w) => w.slug === s))
   .filter((w): w is NonNullable<typeof w> => Boolean(w));
 

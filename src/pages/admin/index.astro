@@ -1,9 +1,11 @@
 ---
 import works from '../../data/works.json';
 import awards from '../../data/awards.json';
+import selected from '../../data/selected.json';
 
 const worksCount = (works as unknown[]).length;
 const awardsCount = (awards as unknown[]).length;
+const selectedCount = (selected as unknown[]).length;
 
 type AdminLink = {
   href: string;
@@ -29,6 +31,14 @@ const links: AdminLink[] = [
     en: 'Awards',
     desc: '新增 / 編輯獲獎入圍紀錄、調整海報底圖位置',
     count: `${awardsCount} 筆紀錄`,
+    ready: true,
+  },
+  {
+    href: '/admin/selected/',
+    zh: '精選作品',
+    en: 'Selected Works',
+    desc: '挑選首頁 hero 區的代表作清單，拖拉排序、增刪',
+    count: `${selectedCount} 部`,
     ready: true,
   },
 ];

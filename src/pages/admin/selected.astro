@@ -1,0 +1,650 @@
+---
+import works from '../../data/works.json';
+import selectedSlugs from '../../data/selected.json';
+
+type Work = {
+  slug: string;
+  titleZh: string;
+  titleEn?: string;
+  year?: string;
+  cover?: string;
+  primaryCategory: string;
+  categories: string[];
+};
+
+const allWorks = works as Work[];
+const initialSlugs = selectedSlugs as string[];
+
+const CATEGORY_ZH: Record<string, string> = {
+  feature: '電影',
+  series: '劇集',
+  short: '短片',
+  tvmovie: '電視電影',
+  trailer: '預告片花',
+  commercial: '廣告',
+  mv: '音樂錄影帶',
+};
+---
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LTH Portfolio Admin · 精選作品</title>
+    <style is:global>
+      :root {
+        --bg: #0a0908;
+        --surface: #141311;
+        --panel: #1a1816;
+        --line: #2a2824;
+        --text: #ece9e1;
+        --text-dim: #a9a399;
+        --text-faint: #6a655c;
+        --accent: #c9a961;
+        --accent-dim: #8a7544;
+        --danger: #d66a54;
+        --ok: #6fb07f;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: -apple-system, "Noto Sans TC", sans-serif;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      header.admin-header {
+        padding: 1.2rem 2rem;
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        position: sticky;
+        top: 0;
+        background: rgba(10, 9, 8, 0.92);
+        backdrop-filter: blur(12px);
+        z-index: 30;
+      }
+      header.admin-header h1 {
+        font-size: 1rem;
+        margin: 0;
+        letter-spacing: 0.1em;
+        font-weight: 500;
+      }
+      header.admin-header .meta {
+        color: var(--text-faint);
+        font-size: 0.75rem;
+        margin-left: auto;
+      }
+      .save-bar {
+        position: sticky;
+        top: 56px;
+        z-index: 25;
+        padding: 0.7rem 2rem;
+        background: var(--surface);
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      .save-bar .status { color: var(--text-faint); font-size: 0.78rem; }
+      .save-bar .status.dirty { color: var(--accent); }
+      .save-bar .spacer { flex: 1; }
+      .btn {
+        background: transparent;
+        border: 1px solid var(--line);
+        color: var(--text-dim);
+        padding: 0.45rem 1rem;
+        font-family: inherit;
+        font-size: 0.8rem;
+        letter-spacing: 0.08em;
+        cursor: pointer;
+        border-radius: 2px;
+        transition: all 0.2s;
+      }
+      .btn:hover:not(:disabled) { border-color: var(--accent-dim); color: var(--text); }
+      .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+      .btn.primary { border-color: var(--accent); color: var(--accent); }
+      .btn.primary:hover:not(:disabled) { background: var(--accent); color: var(--bg); }
+      .btn.danger { border-color: var(--danger); color: var(--danger); }
+      .btn.danger:hover:not(:disabled) { background: var(--danger); color: var(--bg); }
+
+      main {
+        padding: 2rem;
+        max-width: 880px;
+        margin: 0 auto;
+      }
+
+      .hint-block {
+        padding: 1rem 1.2rem;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-left: 3px solid var(--accent);
+        margin-bottom: 1.5rem;
+        font-size: 0.82rem;
+        color: var(--text-dim);
+        line-height: 1.6;
+      }
+      .hint-block strong { color: var(--accent); }
+
+      .selected-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        margin-bottom: 1.5rem;
+      }
+      .sel-row {
+        display: grid;
+        grid-template-columns: 36px 60px 1fr auto;
+        gap: 1rem;
+        align-items: center;
+        padding: 0.7rem 1rem;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 2px;
+        cursor: grab;
+      }
+      .sel-row:active { cursor: grabbing; }
+      .sel-row.sortable-ghost {
+        opacity: 0.35;
+        background: var(--bg);
+      }
+      .sel-row .num {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 1.4rem;
+        font-style: italic;
+        color: var(--accent);
+        text-align: center;
+        line-height: 1;
+      }
+      .sel-row .thumb {
+        width: 60px;
+        aspect-ratio: 2 / 3;
+        background: var(--bg);
+        border: 1px solid var(--line);
+        position: relative;
+        overflow: hidden;
+      }
+      .sel-row.is-wide .thumb {
+        width: 80px;
+        aspect-ratio: 16 / 9;
+      }
+      .sel-row .thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .sel-row .thumb .empty {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.6rem;
+        color: var(--text-faint);
+      }
+      .sel-row .info { min-width: 0; }
+      .sel-row .info .title {
+        font-family: 'Noto Serif TC', serif;
+        font-size: 0.95rem;
+        color: var(--text);
+        letter-spacing: 0.04em;
+        line-height: 1.3;
+      }
+      .sel-row .info .title-en {
+        font-size: 0.75rem;
+        color: var(--text-dim);
+        font-family: 'Cormorant Garamond', serif;
+      }
+      .sel-row .info .meta {
+        font-size: 0.68rem;
+        color: var(--text-faint);
+        letter-spacing: 0.08em;
+        margin-top: 0.2rem;
+      }
+      .sel-row .actions {
+        display: flex;
+        gap: 0.3rem;
+      }
+      .sel-row .actions button {
+        background: transparent;
+        border: 1px solid var(--line);
+        color: var(--text-faint);
+        cursor: pointer;
+        width: 30px;
+        height: 30px;
+        border-radius: 2px;
+        font-size: 0.85rem;
+      }
+      .sel-row .actions button:hover { border-color: var(--accent); color: var(--accent); }
+      .sel-row .actions button.del:hover { border-color: var(--danger); color: var(--danger); }
+
+      .empty-state {
+        padding: 3rem 1rem;
+        text-align: center;
+        color: var(--text-faint);
+        border: 1px dashed var(--line);
+        border-radius: 2px;
+        margin-bottom: 1.5rem;
+      }
+
+      /* ===== PICKER MODAL ===== */
+      .modal-backdrop {
+        position: fixed; inset: 0;
+        background: rgba(0, 0, 0, 0.75);
+        z-index: 100;
+        display: none;
+        align-items: center;
+        justify-content: center;
+        padding: 2rem;
+      }
+      .modal-backdrop[data-open="true"] { display: flex; }
+      .modal {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        max-width: 720px;
+        width: 100%;
+        max-height: 85vh;
+        display: flex;
+        flex-direction: column;
+        border-radius: 2px;
+      }
+      .modal h2 {
+        margin: 0;
+        padding: 1.2rem 1.5rem 0.5rem;
+        font-size: 1rem;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+      }
+      .modal .picker-toolbar {
+        padding: 0.5rem 1.5rem 1rem;
+        display: flex;
+        gap: 0.6rem;
+        align-items: center;
+      }
+      .modal .picker-toolbar input {
+        flex: 1;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        color: var(--text);
+        padding: 0.5rem 0.7rem;
+        border-radius: 2px;
+        font-family: inherit;
+        font-size: 0.85rem;
+      }
+      .modal .picker-toolbar input:focus { outline: none; border-color: var(--accent-dim); }
+      .modal .picker-list {
+        flex: 1;
+        overflow-y: auto;
+        padding: 0 1.5rem 1rem;
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        gap: 0.8rem;
+      }
+      .pick-card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        cursor: pointer;
+        padding: 0.6rem;
+        display: flex;
+        gap: 0.7rem;
+        align-items: center;
+        border-radius: 2px;
+        transition: border-color 0.2s;
+      }
+      .pick-card:hover { border-color: var(--accent); }
+      .pick-card.disabled { opacity: 0.35; cursor: not-allowed; }
+      .pick-card .pick-thumb {
+        width: 40px;
+        aspect-ratio: 2 / 3;
+        flex-shrink: 0;
+        background: var(--bg);
+        border: 1px solid var(--line);
+        overflow: hidden;
+      }
+      .pick-card.is-wide .pick-thumb {
+        width: 56px;
+        aspect-ratio: 16 / 9;
+      }
+      .pick-card .pick-thumb img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .pick-card .pick-info {
+        min-width: 0;
+        flex: 1;
+      }
+      .pick-card .pick-info .t {
+        font-family: 'Noto Serif TC', serif;
+        font-size: 0.85rem;
+        line-height: 1.3;
+      }
+      .pick-card .pick-info .y {
+        font-size: 0.68rem;
+        color: var(--text-faint);
+        margin-top: 0.15rem;
+      }
+      .modal .picker-foot {
+        padding: 1rem 1.5rem;
+        border-top: 1px solid var(--line);
+        display: flex;
+        justify-content: flex-end;
+      }
+
+      .toast {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-left: 4px solid var(--accent);
+        padding: 1rem 1.4rem;
+        max-width: 420px;
+        font-size: 0.82rem;
+        line-height: 1.5;
+        z-index: 200;
+        display: none;
+        box-shadow: 0 8px 28px rgba(0,0,0,0.5);
+      }
+      .toast[data-open="true"] { display: block; }
+      .toast.ok { border-left-color: var(--ok); }
+      .toast.err { border-left-color: var(--danger); }
+      .toast a { color: var(--accent); }
+    </style>
+  </head>
+  <body>
+    <header class="admin-header">
+      <h1>LTH Portfolio · Admin</h1>
+      <nav style="display: flex; gap: 1rem; flex: 0 0 auto; margin-left: 2rem; align-items: center;">
+        <a href="/admin/" style="color: var(--text-faint); font-size: 0.72rem; letter-spacing: 0.08em; text-decoration: none;">← 後台首頁</a>
+        <a href="/admin/works/" style="color: var(--text-dim); padding: 0.4rem 0.8rem; border-radius: 2px; font-size: 0.78rem; letter-spacing: 0.08em; text-decoration: none;">作品資訊</a>
+        <a href="/admin/awards/" style="color: var(--text-dim); padding: 0.4rem 0.8rem; border-radius: 2px; font-size: 0.78rem; letter-spacing: 0.08em; text-decoration: none;">得獎入圍</a>
+        <a href="/admin/selected/" style="color: var(--accent); border: 1px solid var(--accent); padding: 0.4rem 0.8rem; border-radius: 2px; font-size: 0.78rem; letter-spacing: 0.08em; text-decoration: none;">精選作品</a>
+      </nav>
+      <span class="meta" id="count"></span>
+    </header>
+
+    <div class="save-bar">
+      <span class="status" id="dirty-status">無變更</span>
+      <span class="spacer"></span>
+      <button class="btn" id="add-btn" type="button">＋ 加入作品</button>
+      <button class="btn" id="reset-btn" type="button" disabled>還原</button>
+      <button class="btn primary" id="save-btn" type="button" disabled>全部存檔</button>
+    </div>
+
+    <main>
+      <div class="hint-block">
+        <strong>Selected Works</strong> 是首頁 hero 區那條 HBO 風格的精選代表作清單（會顯示巨大的 1 / 2 / 3 數字）。
+        建議 4-6 部，最多 10 部。順序會直接反映在首頁 — 拖拉重排即可。
+      </div>
+
+      <div class="selected-list" id="list"></div>
+
+      <div class="empty-state" id="empty" style="display: none;">
+        <div style="font-size: 0.95rem; margin-bottom: 0.5rem;">目前沒有精選作品</div>
+        <div style="font-size: 0.78rem;">按上方「＋ 加入作品」開始挑選</div>
+      </div>
+    </main>
+
+    <div class="modal-backdrop" id="picker">
+      <div class="modal">
+        <h2>選一部加入精選</h2>
+        <div class="picker-toolbar">
+          <input id="pick-search" placeholder="搜尋作品名 / slug..." />
+        </div>
+        <div class="picker-list" id="pick-list"></div>
+        <div class="picker-foot">
+          <button type="button" class="btn" id="pick-cancel">關閉</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script define:vars={{ allWorks, initialSlugs, CATEGORY_ZH }}>
+      let slugs = JSON.parse(JSON.stringify(initialSlugs));
+      let baseline = JSON.stringify(slugs);
+
+      const list = document.getElementById('list');
+      const empty = document.getElementById('empty');
+      const countEl = document.getElementById('count');
+      const dirtyStatus = document.getElementById('dirty-status');
+      const saveBtn = document.getElementById('save-btn');
+      const resetBtn = document.getElementById('reset-btn');
+      const addBtn = document.getElementById('add-btn');
+      const picker = document.getElementById('picker');
+      const pickSearch = document.getElementById('pick-search');
+      const pickList = document.getElementById('pick-list');
+      const pickCancel = document.getElementById('pick-cancel');
+      const toast = document.getElementById('toast');
+
+      const worksMap = new Map(allWorks.map((w) => [w.slug, w]));
+
+      function escapeHtml(s) {
+        if (s == null) return '';
+        return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      }
+
+      function isWide(work) {
+        return (work.categories || []).some((c) => c === 'mv' || c === 'commercial');
+      }
+
+      function renderList() {
+        list.innerHTML = '';
+        if (slugs.length === 0) {
+          empty.style.display = '';
+        } else {
+          empty.style.display = 'none';
+        }
+        slugs.forEach((slug, idx) => {
+          const w = worksMap.get(slug);
+          if (!w) {
+            // 找不到對應作品（可能 works.json 改過 slug）
+            const row = document.createElement('div');
+            row.className = 'sel-row';
+            row.dataset.slug = slug;
+            row.innerHTML = `
+              <span class="num">${idx + 1}</span>
+              <div class="thumb"><span class="empty">？</span></div>
+              <div class="info">
+                <div class="title" style="color: var(--danger);">⚠️ slug 不存在於作品庫</div>
+                <div class="meta" style="font-family: monospace;">${escapeHtml(slug)}</div>
+              </div>
+              <div class="actions">
+                <button class="del" data-action="del" title="移除">✕</button>
+              </div>
+            `;
+            list.appendChild(row);
+            return;
+          }
+          const wide = isWide(w);
+          const cats = (w.categories || []).map((c) => CATEGORY_ZH[c] || c).join(' · ');
+          const row = document.createElement('div');
+          row.className = `sel-row ${wide ? 'is-wide' : ''}`;
+          row.dataset.slug = slug;
+          row.innerHTML = `
+            <span class="num">${idx + 1}</span>
+            <div class="thumb">
+              ${w.cover ? `<img src="${w.cover}" alt="${escapeHtml(w.titleZh)}" loading="lazy" />` : '<span class="empty">無</span>'}
+            </div>
+            <div class="info">
+              <div class="title">${escapeHtml(w.titleZh)}</div>
+              ${w.titleEn ? `<div class="title-en">${escapeHtml(w.titleEn)}</div>` : ''}
+              <div class="meta">${escapeHtml(w.year || '—')} · ${escapeHtml(cats)}</div>
+            </div>
+            <div class="actions">
+              <button class="del" data-action="del" title="移除">✕</button>
+            </div>
+          `;
+          list.appendChild(row);
+        });
+        countEl.textContent = `${slugs.length} 部`;
+
+        // bind delete handlers
+        list.querySelectorAll('button[data-action="del"]').forEach((b) => {
+          b.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const row = b.closest('.sel-row');
+            const slug = row.dataset.slug;
+            slugs = slugs.filter((s) => s !== slug);
+            renderList();
+            checkDirty();
+          });
+        });
+      }
+
+      function checkDirty() {
+        const cur = JSON.stringify(slugs);
+        const dirty = cur !== baseline;
+        if (dirty) {
+          dirtyStatus.textContent = '已修改（按存檔才會生效）';
+          dirtyStatus.classList.add('dirty');
+          saveBtn.disabled = false;
+          resetBtn.disabled = false;
+        } else {
+          dirtyStatus.textContent = '無變更';
+          dirtyStatus.classList.remove('dirty');
+          saveBtn.disabled = true;
+          resetBtn.disabled = true;
+        }
+      }
+
+      // ==== SortableJS for reorder ====
+      let sortable = null;
+      function ensureSortable() {
+        if (window.Sortable) return Promise.resolve(window.Sortable);
+        return new Promise((resolve) => {
+          const s = document.createElement('script');
+          s.src = 'https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js';
+          s.onload = () => resolve(window.Sortable);
+          document.head.appendChild(s);
+        });
+      }
+      async function initSortable() {
+        const Sortable = await ensureSortable();
+        if (sortable) sortable.destroy();
+        sortable = Sortable.create(list, {
+          animation: 180,
+          ghostClass: 'sortable-ghost',
+          forceFallback: true,
+          fallbackTolerance: 5,
+          onEnd: () => {
+            slugs = Array.from(list.querySelectorAll('.sel-row')).map((r) => r.dataset.slug);
+            renderList();
+            checkDirty();
+          },
+        });
+      }
+
+      // ==== PICKER ====
+      function openPicker() {
+        pickSearch.value = '';
+        renderPicker('');
+        picker.setAttribute('data-open', 'true');
+        setTimeout(() => pickSearch.focus(), 50);
+      }
+      function closePicker() {
+        picker.setAttribute('data-open', 'false');
+      }
+      function renderPicker(query) {
+        pickList.innerHTML = '';
+        const q = query.toLowerCase();
+        const selectedSet = new Set(slugs);
+        let count = 0;
+        for (const w of allWorks) {
+          if (q && !(w.titleZh.toLowerCase().includes(q) || (w.titleEn || '').toLowerCase().includes(q) || w.slug.toLowerCase().includes(q))) continue;
+          const isSelected = selectedSet.has(w.slug);
+          const wide = isWide(w);
+          const card = document.createElement('div');
+          card.className = `pick-card ${wide ? 'is-wide' : ''} ${isSelected ? 'disabled' : ''}`;
+          card.innerHTML = `
+            <div class="pick-thumb">
+              ${w.cover ? `<img src="${w.cover}" alt="" loading="lazy" />` : ''}
+            </div>
+            <div class="pick-info">
+              <div class="t">${escapeHtml(w.titleZh)}</div>
+              <div class="y">${escapeHtml(w.year || '')} · ${escapeHtml(CATEGORY_ZH[w.primaryCategory] || w.primaryCategory)}${isSelected ? ' · 已加入' : ''}</div>
+            </div>
+          `;
+          if (!isSelected) {
+            card.addEventListener('click', () => {
+              if (slugs.length >= 10) {
+                showToast('已達上限 10 部，請先移除某部再加', 'err');
+                return;
+              }
+              slugs.push(w.slug);
+              renderList();
+              checkDirty();
+              renderPicker(pickSearch.value);
+              showToast(`已加入「${w.titleZh}」`, 'ok', 2000);
+            });
+          }
+          pickList.appendChild(card);
+          count++;
+        }
+        if (count === 0) {
+          pickList.innerHTML = '<div style="grid-column: 1 / -1; padding: 2rem; text-align: center; color: var(--text-faint);">沒有符合的作品</div>';
+        }
+      }
+      addBtn.addEventListener('click', openPicker);
+      pickCancel.addEventListener('click', closePicker);
+      picker.addEventListener('click', (e) => { if (e.target === picker) closePicker(); });
+      pickSearch.addEventListener('input', () => renderPicker(pickSearch.value));
+
+      // ==== SAVE / RESET ====
+      saveBtn.addEventListener('click', async () => {
+        saveBtn.disabled = true;
+        saveBtn.textContent = '存檔中...';
+        try {
+          const res = await fetch('/admin/api/selected', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ slugs }),
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'save failed');
+          baseline = JSON.stringify(slugs);
+          checkDirty();
+          showToast(
+            `✅ 精選作品已更新（${data.count} 部）<br/><small>CF Pages 約 1-2 分鐘後反應到正式站</small><br/>${data.url ? `<a href="${data.url}" target="_blank">查看 commit</a>` : ''}`,
+            'ok',
+            6000,
+          );
+        } catch (err) {
+          showToast(`❌ 存檔失敗：${err.message}`, 'err', 8000);
+        } finally {
+          saveBtn.textContent = '全部存檔';
+        }
+      });
+      resetBtn.addEventListener('click', () => {
+        if (!confirm('還原所有未存檔的變更？')) return;
+        slugs = JSON.parse(baseline);
+        renderList();
+        checkDirty();
+      });
+
+      window.addEventListener('beforeunload', (e) => {
+        if (JSON.stringify(slugs) !== baseline) {
+          e.preventDefault();
+          e.returnValue = '';
+        }
+      });
+
+      // ==== TOAST ====
+      function showToast(msg, kind = 'ok', ms = 3000) {
+        toast.className = `toast ${kind}`;
+        toast.innerHTML = msg;
+        toast.setAttribute('data-open', 'true');
+        clearTimeout(showToast._t);
+        showToast._t = setTimeout(() => toast.setAttribute('data-open', 'false'), ms);
+      }
+
+      // ==== INIT ====
+      renderList();
+      checkDirty();
+      initSortable();
+    </script>
+  </body>
+</html>
