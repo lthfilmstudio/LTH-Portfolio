@@ -11,7 +11,7 @@
   position: relative;
 }
 
-.hero-left { position: relative; padding-top: 2rem; }
+.hero-left { position: relative; padding-top: 2rem; min-width: 0; }
 
 .hero h1 {
   font-family: 'Noto Serif TC', serif;
@@ -257,44 +257,108 @@
   margin-top: 0.1rem;
 }
 
-/* HERO RIGHT — SELECTED WORK */
+/* HERO RIGHT — AWARDS（現在跟 Selected Works 對調） */
 .hero-right {
   border-left: 1px solid var(--line);
   padding-left: 3rem;
   padding-top: 2rem;
 }
 
+.hero-right .hero-awards-label {
+  margin-bottom: 1.5rem;
+}
+
+/* 右欄窄，得獎 3 張改直排 */
+.hero-right .hero-awards-row {
+  grid-template-columns: 1fr;
+  gap: 0.8rem;
+}
+
+/* ===== SELECTED WORKS — HBO Top 10 風 ===== */
+/* 在 hero-left 底下，水平 scroll，每個 item = 巨大 outline 數字 + 2:3 海報 */
 .featured-label {
   font-size: 0.62rem;
   letter-spacing: 0.35em;
   text-transform: uppercase;
   color: var(--text-faint);
+  margin-top: 3rem;
   margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.featured-label span:last-child {
+  font-family: 'Noto Serif TC', serif;
+  letter-spacing: 0.3em;
+  text-transform: none;
 }
 
 .featured-list {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 1.6rem 1rem;
+  display: flex;
+  gap: 1.5rem;
+  overflow-x: auto;
+  overflow-y: visible;
+  padding: 1rem 0 1.5rem;
+  scroll-snap-type: x proximity;
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-soft) transparent;
+  min-width: 0;
+  max-width: 100%;
 }
 
+.featured-list::-webkit-scrollbar { height: 6px; }
+.featured-list::-webkit-scrollbar-track { background: transparent; }
+.featured-list::-webkit-scrollbar-thumb {
+  background: var(--line-soft);
+  border-radius: 3px;
+}
+.featured-list::-webkit-scrollbar-thumb:hover { background: var(--line); }
+
 .featured-item {
-  display: flex;
-  flex-direction: column;
-  gap: 0.55rem;
+  flex-shrink: 0;
+  display: grid;
+  grid-template-columns: auto auto;
+  align-items: end;
+  gap: 0;
+  position: relative;
   cursor: pointer;
   text-decoration: none;
   color: inherit;
-  position: relative;
   transition: transform 0.4s cubic-bezier(.2,.8,.2,1);
+  scroll-snap-align: start;
+  padding-bottom: 3rem; /* 留位給標題 */
 }
 
 .featured-item:hover { transform: translateY(-3px); }
 
+/* 巨大 outline 數字 — Cormorant 復古 serif */
+.featured-num {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: clamp(9rem, 20vw, 16rem);
+  font-weight: 400;
+  line-height: 0.8;
+  color: transparent;
+  -webkit-text-stroke: 2.5px rgba(255, 255, 255, 0.6);
+  letter-spacing: -0.04em;
+  margin-right: -1.2rem; /* 數字往海報左邊延伸，部分被海報蓋住 */
+  z-index: 0;
+  user-select: none;
+  transition: -webkit-text-stroke-color 0.4s, transform 0.4s;
+  align-self: end;
+  padding-bottom: 0;
+  font-style: italic;
+}
+
+.featured-item:hover .featured-num {
+  -webkit-text-stroke-color: var(--accent);
+}
+
 .featured-thumb {
-  width: 100%;
+  width: 180px;
   aspect-ratio: 2 / 3;
   position: relative;
+  z-index: 1;
 }
 
 .featured-thumb--image {
@@ -322,13 +386,16 @@
   transform: scale(1.04);
 }
 
-.featured-item .idx { display: none; }
-
 .featured-item .title {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.1rem;
+  gap: 0.15rem;
   min-width: 0;
+  padding-top: 0.5rem;
 }
 
 .featured-item .title-zh {
@@ -348,9 +415,5 @@
   color: var(--text-dim);
   letter-spacing: 0.04em;
   font-style: italic;
-}
-
-.featured-item .year {
-  display: none;
 }
 

@@ -23,6 +23,17 @@
     padding-top: 2.5rem;
     margin-top: 0;
   }
+  .hero-right .hero-awards-row {
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
+  .featured-thumb {
+    width: 150px;
+  }
+  .featured-num {
+    font-size: clamp(7rem, 22vw, 11rem);
+    margin-right: -0.8rem;
+  }
   .hero-profile {
     grid-template-columns: 1fr;
     gap: 1.5rem;
