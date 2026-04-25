@@ -53,6 +53,52 @@
   pointer-events: none;
 }
 
+/* ===== POSTER EFFECTS — film grain + vignette =====
+   只套在真海報容器（不影響 .thumb 漸層 placeholder）。
+   ::before = vignette（邊角微暗）
+   ::after  = film grain（底片顆粒，mix-blend overlay） */
+.featured-thumb--image,
+.work-cover--image,
+.hero-award-item .award-bg {
+  position: relative;
+}
+
+.featured-thumb--image::before,
+.work-cover--image::before,
+.hero-award-item .award-bg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+  background: radial-gradient(
+    ellipse 110% 130% at center,
+    transparent 35%,
+    rgba(0, 0, 0, 0.5) 100%
+  );
+  transition: opacity 0.5s;
+}
+
+.featured-thumb--image::after,
+.work-cover--image::after,
+.hero-award-item .award-bg::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+  background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+  opacity: 0.3;
+  mix-blend-mode: overlay;
+}
+
+/* Hover：vignette 變淡（中央更亮）+ grain 透明度略降 */
+.featured-item:hover .featured-thumb--image::before,
+.work-card:hover .work-cover--image::before,
+.hero-award-item:hover .award-bg::before {
+  opacity: 0.5;
+}
+
 /* Film poster gradients (used in sections.css .film-poster) */
 .pst-1 { background: linear-gradient(135deg, #3d2817 0%, #1a1410 50%, #6b3a1f 100%); }
 .pst-2 { background: linear-gradient(180deg, #8b6534 0%, #c49a5e 40%, #2a1f15 100%); }
