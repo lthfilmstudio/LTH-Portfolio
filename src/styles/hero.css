@@ -1,7 +1,50 @@
+/* ===== SCROLL CUE — 引導往下看作品集 ===== */
+.scroll-cue {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  text-decoration: none;
+  color: var(--text-faint);
+  transition: color 0.3s, transform 0.3s;
+  z-index: 5;
+}
+
+.scroll-cue:hover {
+  color: var(--accent);
+}
+
+.scroll-cue-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.25em;
+  text-transform: uppercase;
+}
+
+.scroll-cue-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  border: 1px solid currentColor;
+  border-radius: 50%;
+  animation: scroll-cue-bounce 2.4s ease-in-out infinite;
+}
+
+@keyframes scroll-cue-bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(4px); }
+}
+
 /* ===== HERO ===== */
 .hero {
-  min-height: auto;
-  padding: 3.5rem 3rem 1rem;
+  min-height: 100vh;
+  padding: 6rem 3rem 4rem;
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 0 4rem; /* row gap 0 — Selected Works 緊貼 hero-left 底，不留空 */
@@ -387,8 +430,8 @@
   letter-spacing: 0.35em;
   text-transform: uppercase;
   color: var(--text-faint);
-  margin-top: 0.5rem;
-  margin-bottom: 0.6rem;
+  margin-top: 2.5rem;
+  margin-bottom: 1.2rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
