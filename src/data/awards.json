@@ -9,7 +9,10 @@
     "workEn": "Gold Leaf",
     "awardZh": "金鐘獎 最佳剪輯獎",
     "awardEn": "Golden Bell Awards",
-    "poster": "/stills/covers/official/gold-leaf-2022.jpg"
+    "poster": "/stills/covers/official/gold-leaf-2022.jpg",
+    "posterX": 50,
+    "posterY": 50,
+    "posterScale": 100
   },
   {
     "id": "kite-soaring-2019",
@@ -21,7 +24,10 @@
     "workEn": "The Kite Soaring",
     "awardZh": "金鐘獎 最佳剪輯獎",
     "awardEn": "Golden Bell Awards",
-    "poster": "/stills/covers/yt/the-kite-soaring-2010.jpg"
+    "poster": "/stills/covers/yt/the-kite-soaring-2010.jpg",
+    "posterX": 50,
+    "posterY": 50,
+    "posterScale": 100
   },
   {
     "id": "living-2024",
@@ -33,6 +39,9 @@
     "workEn": "Living",
     "awardZh": "金鐘獎 最佳剪輯獎",
     "awardEn": "Golden Bell Awards",
-    "poster": "/stills/covers/official/living-2023.jpg"
+    "poster": "/stills/covers/official/living-2023.jpg",
+    "posterX": 50,
+    "posterY": 50,
+    "posterScale": 100
   }
 ]

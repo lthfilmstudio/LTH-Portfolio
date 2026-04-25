@@ -95,9 +95,16 @@ function thumbClass(slug: string): string {
     </div>
 
     <div class="hero-awards-row">
-      {awards.map((a) => (
+      {awards.map((a: any) => (
         <div class={`hero-award-item ${a.status}`}>
-          <div class="award-bg" style={`background-image: url('${a.poster}')`} aria-hidden="true"></div>
+          <div class="award-bg" aria-hidden="true">
+            <img
+              src={a.poster}
+              alt=""
+              loading="lazy"
+              style={`object-position: ${a.posterX ?? 50}% ${a.posterY ?? 50}%; transform: scale(${(a.posterScale ?? 100) / 100});`}
+            />
+          </div>
           <div class="award-content">
             <div class="award-meta">
               <span class="award-status-sm"><span class="dot"></span> {a.statusZh} · {a.statusEn}</span>

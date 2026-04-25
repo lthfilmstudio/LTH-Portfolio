@@ -1,0 +1,499 @@
+---
+import awardsData from '../../data/awards.json';
+const awards = awardsData;
+---
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LTH Portfolio Admin · 得獎入圍</title>
+    <style is:global>
+      :root {
+        --bg: #0a0908;
+        --surface: #141311;
+        --surface-2: #1a1816;
+        --line: #2a2824;
+        --line-soft: #1f1d1a;
+        --text: #ece9e1;
+        --text-dim: #a9a399;
+        --text-faint: #6a655c;
+        --accent: #c9a961;
+        --accent-dim: #8a7a4a;
+        --danger: #d66a54;
+        --ok: #6fb07f;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: -apple-system, "Noto Sans TC", sans-serif;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      header.admin-header {
+        padding: 1.2rem 2rem;
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        gap: 2rem;
+        position: sticky;
+        top: 0;
+        background: rgba(10, 9, 8, 0.92);
+        backdrop-filter: blur(12px);
+        z-index: 10;
+      }
+      header.admin-header h1 {
+        font-size: 1rem;
+        margin: 0;
+        letter-spacing: 0.1em;
+        font-weight: 500;
+      }
+      header.admin-header nav { display: flex; gap: 1rem; flex: 1; }
+      header.admin-header nav a {
+        color: var(--text-dim);
+        text-decoration: none;
+        padding: 0.4rem 0.8rem;
+        border-radius: 2px;
+        font-size: 0.78rem;
+        letter-spacing: 0.08em;
+      }
+      header.admin-header nav a.active {
+        color: var(--accent);
+        border: 1px solid var(--accent-dim);
+      }
+      header.admin-header .meta { color: var(--text-faint); font-size: 0.75rem; letter-spacing: 0.1em; }
+      main { padding: 2rem; max-width: 1200px; margin: 0 auto; }
+
+      .toolbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+      }
+      .toolbar h2 {
+        margin: 0;
+        font-size: 0.9rem;
+        letter-spacing: 0.1em;
+        color: var(--text-dim);
+      }
+      .btn {
+        background: transparent;
+        border: 1px solid var(--line);
+        color: var(--text-dim);
+        padding: 0.5rem 1rem;
+        font-size: 0.78rem;
+        letter-spacing: 0.1em;
+        cursor: pointer;
+        border-radius: 2px;
+        transition: all 0.2s;
+      }
+      .btn:hover { border-color: var(--accent); color: var(--accent); }
+      .btn.primary { border-color: var(--accent); color: var(--accent); }
+      .btn.primary:hover { background: var(--accent); color: var(--bg); }
+      .btn.danger:hover { border-color: var(--danger); color: var(--danger); }
+      .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+      .award-list { display: flex; flex-direction: column; gap: 1rem; }
+
+      .award-card {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-radius: 3px;
+        padding: 1.2rem;
+        display: grid;
+        grid-template-columns: 220px 1fr;
+        gap: 1.5rem;
+      }
+
+      .preview-box {
+        position: relative;
+        aspect-ratio: 220 / 96;
+        background: var(--surface-2);
+        border: 1px solid var(--line-soft);
+        overflow: hidden;
+        border-radius: 2px;
+      }
+      .preview-bg {
+        position: absolute;
+        inset: 0;
+        opacity: 0.35;
+        filter: grayscale(0.3);
+      }
+      .preview-bg img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .preview-content {
+        position: relative;
+        z-index: 1;
+        padding: 0.7rem 0.9rem;
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+        font-size: 0.7rem;
+      }
+      .preview-content .meta-row {
+        display: flex;
+        justify-content: space-between;
+        color: var(--accent);
+        font-size: 0.6rem;
+        letter-spacing: 0.2em;
+      }
+      .preview-content .meta-row.nom { color: var(--text-dim); }
+      .preview-content .work {
+        font-size: 0.75rem;
+        color: var(--text);
+      }
+      .preview-content .work .en { color: var(--text-dim); margin-left: 0.4em; font-style: italic; font-size: 0.65rem; }
+      .preview-content .award-line { font-size: 0.6rem; color: var(--text-dim); }
+      .preview-content .award-line .en { color: var(--text-faint); margin-left: 0.4em; font-style: italic; }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 0.8rem 1.2rem;
+      }
+      .form-row { display: flex; flex-direction: column; gap: 0.3rem; }
+      .form-row.full { grid-column: 1 / -1; }
+      .form-row label {
+        font-size: 0.7rem;
+        letter-spacing: 0.1em;
+        color: var(--text-faint);
+        text-transform: uppercase;
+      }
+      .form-row input,
+      .form-row select {
+        background: var(--surface-2);
+        border: 1px solid var(--line);
+        color: var(--text);
+        padding: 0.5rem 0.7rem;
+        border-radius: 2px;
+        font-size: 0.85rem;
+        font-family: inherit;
+      }
+      .form-row input:focus,
+      .form-row select:focus {
+        outline: none;
+        border-color: var(--accent);
+      }
+
+      .slider-row { display: grid; grid-template-columns: auto 1fr 60px; gap: 0.7rem; align-items: center; font-size: 0.75rem; color: var(--text-dim); }
+      .slider-row input[type="range"] { padding: 0; }
+      .slider-row .val { text-align: right; color: var(--text); font-variant-numeric: tabular-nums; }
+
+      .card-actions {
+        margin-top: 0.8rem;
+        display: flex;
+        gap: 0.6rem;
+        justify-content: flex-end;
+      }
+
+      .toast {
+        position: fixed;
+        bottom: 2rem;
+        right: 2rem;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-left: 3px solid var(--accent);
+        padding: 0.9rem 1.2rem;
+        border-radius: 3px;
+        font-size: 0.85rem;
+        max-width: 360px;
+        z-index: 200;
+        display: none;
+        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+      }
+      .toast[data-open="true"] { display: block; }
+      .toast.ok { border-left-color: var(--ok); }
+      .toast.err { border-left-color: var(--danger); }
+      .toast a { color: var(--accent); }
+
+      .save-bar {
+        position: sticky;
+        bottom: 0;
+        background: rgba(10, 9, 8, 0.92);
+        backdrop-filter: blur(12px);
+        padding: 1rem 0;
+        border-top: 1px solid var(--line);
+        margin-top: 2rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .save-bar .status { color: var(--text-faint); font-size: 0.78rem; }
+      .save-bar .status.dirty { color: var(--accent); }
+    </style>
+  </head>
+  <body>
+    <header class="admin-header">
+      <h1>LTH Portfolio · Admin</h1>
+      <nav>
+        <a href="/admin/">海報管理</a>
+        <a href="/admin/awards" class="active">得獎入圍</a>
+      </nav>
+      <span class="meta" id="count">{awards.length} entries</span>
+    </header>
+
+    <main>
+      <div class="toolbar">
+        <h2>得獎入圍紀錄</h2>
+        <button class="btn primary" id="add-btn" type="button">＋ 新增一筆</button>
+      </div>
+
+      <div class="award-list" id="award-list"></div>
+
+      <div class="save-bar">
+        <span class="status" id="dirty-status">無變更</span>
+        <button class="btn primary" id="save-btn" type="button" disabled>儲存並發布</button>
+      </div>
+    </main>
+
+    <div class="toast" id="toast"></div>
+
+    <script define:vars={{ initialAwards: awards }}>
+      let awards = JSON.parse(JSON.stringify(initialAwards));
+      let dirty = false;
+
+      const list = document.getElementById('award-list');
+      const dirtyStatus = document.getElementById('dirty-status');
+      const saveBtn = document.getElementById('save-btn');
+      const addBtn = document.getElementById('add-btn');
+      const toast = document.getElementById('toast');
+
+      function setDirty(v) {
+        dirty = v;
+        if (v) {
+          dirtyStatus.textContent = '有未儲存變更';
+          dirtyStatus.classList.add('dirty');
+          saveBtn.disabled = false;
+        } else {
+          dirtyStatus.textContent = '無變更';
+          dirtyStatus.classList.remove('dirty');
+          saveBtn.disabled = true;
+        }
+      }
+
+      function render() {
+        list.innerHTML = '';
+        awards.forEach((a, i) => {
+          const card = document.createElement('div');
+          card.className = 'award-card';
+          card.innerHTML = `
+            <div>
+              <div class="preview-box">
+                <div class="preview-bg">
+                  <img src="${escapeAttr(a.poster)}" style="object-position: ${a.posterX}% ${a.posterY}%; transform: scale(${a.posterScale / 100});" alt="" />
+                </div>
+                <div class="preview-content">
+                  <div class="meta-row ${a.status}">
+                    <span>● ${escape(a.statusZh)} · ${escape(a.statusEn)}</span>
+                    <span>${escape(a.year)}</span>
+                  </div>
+                  <div class="work">${escape(a.workZh)}<span class="en">${escape(a.workEn)}</span></div>
+                  <div class="award-line">${escape(a.awardZh)} <span class="en">${escape(a.awardEn)}</span></div>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="form-grid">
+                <div class="form-row">
+                  <label>狀態</label>
+                  <select data-field="status" data-i="${i}">
+                    <option value="win" ${a.status === 'win' ? 'selected' : ''}>獲獎 Winner</option>
+                    <option value="nom" ${a.status === 'nom' ? 'selected' : ''}>入圍 Nominee</option>
+                  </select>
+                </div>
+                <div class="form-row">
+                  <label>年份</label>
+                  <input type="text" data-field="year" data-i="${i}" value="${escapeAttr(a.year)}" />
+                </div>
+                <div class="form-row">
+                  <label>作品（中）</label>
+                  <input type="text" data-field="workZh" data-i="${i}" value="${escapeAttr(a.workZh)}" />
+                </div>
+                <div class="form-row">
+                  <label>作品（英）</label>
+                  <input type="text" data-field="workEn" data-i="${i}" value="${escapeAttr(a.workEn)}" />
+                </div>
+                <div class="form-row">
+                  <label>獎項（中）</label>
+                  <input type="text" data-field="awardZh" data-i="${i}" value="${escapeAttr(a.awardZh)}" />
+                </div>
+                <div class="form-row">
+                  <label>獎項（英）</label>
+                  <input type="text" data-field="awardEn" data-i="${i}" value="${escapeAttr(a.awardEn)}" />
+                </div>
+                <div class="form-row full">
+                  <label>海報路徑（/stills/covers/...）</label>
+                  <input type="text" data-field="poster" data-i="${i}" value="${escapeAttr(a.poster)}" />
+                </div>
+                <div class="form-row full">
+                  <label>海報位置與大小（即時預覽）</label>
+                  <div class="slider-row">
+                    <span>橫向 X</span>
+                    <input type="range" min="0" max="100" data-field="posterX" data-i="${i}" value="${a.posterX}" />
+                    <span class="val" id="vX-${i}">${a.posterX}%</span>
+                  </div>
+                  <div class="slider-row">
+                    <span>縱向 Y</span>
+                    <input type="range" min="0" max="100" data-field="posterY" data-i="${i}" value="${a.posterY}" />
+                    <span class="val" id="vY-${i}">${a.posterY}%</span>
+                  </div>
+                  <div class="slider-row">
+                    <span>縮放</span>
+                    <input type="range" min="50" max="250" data-field="posterScale" data-i="${i}" value="${a.posterScale}" />
+                    <span class="val" id="vS-${i}">${a.posterScale}%</span>
+                  </div>
+                </div>
+                <div class="form-row full">
+                  <label>ID（不建議改，會影響穩定性）</label>
+                  <input type="text" data-field="id" data-i="${i}" value="${escapeAttr(a.id)}" />
+                </div>
+              </div>
+              <div class="card-actions">
+                <button class="btn" data-action="up" data-i="${i}" type="button" ${i === 0 ? 'disabled' : ''}>↑ 上移</button>
+                <button class="btn" data-action="down" data-i="${i}" type="button" ${i === awards.length - 1 ? 'disabled' : ''}>↓ 下移</button>
+                <button class="btn danger" data-action="delete" data-i="${i}" type="button">刪除</button>
+              </div>
+            </div>
+          `;
+          list.appendChild(card);
+        });
+
+        list.querySelectorAll('input, select').forEach((el) => {
+          el.addEventListener('input', (e) => {
+            const t = e.target;
+            const i = parseInt(t.dataset.i);
+            const field = t.dataset.field;
+            let v = t.value;
+            if (['posterX', 'posterY', 'posterScale'].includes(field)) {
+              v = parseInt(v);
+              const valEl = document.getElementById(`v${field === 'posterX' ? 'X' : field === 'posterY' ? 'Y' : 'S'}-${i}`);
+              if (valEl) valEl.textContent = v + '%';
+              const card = list.querySelectorAll('.award-card')[i];
+              const img = card.querySelector('.preview-bg img');
+              if (img) {
+                const a = awards[i];
+                const tempX = field === 'posterX' ? v : a.posterX;
+                const tempY = field === 'posterY' ? v : a.posterY;
+                const tempS = field === 'posterScale' ? v : a.posterScale;
+                img.style.objectPosition = `${tempX}% ${tempY}%`;
+                img.style.transform = `scale(${tempS / 100})`;
+              }
+            }
+            if (field === 'status') {
+              awards[i].statusZh = v === 'win' ? '獲獎' : '入圍';
+              awards[i].statusEn = v === 'win' ? 'Winner' : 'Nominee';
+            }
+            awards[i][field] = v;
+            updatePreviewText(i);
+            setDirty(true);
+          });
+        });
+
+        list.querySelectorAll('button[data-action]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const action = btn.dataset.action;
+            const i = parseInt(btn.dataset.i);
+            if (action === 'delete') {
+              if (!confirm('確定刪除這筆得獎紀錄？')) return;
+              awards.splice(i, 1);
+            } else if (action === 'up' && i > 0) {
+              [awards[i - 1], awards[i]] = [awards[i], awards[i - 1]];
+            } else if (action === 'down' && i < awards.length - 1) {
+              [awards[i], awards[i + 1]] = [awards[i + 1], awards[i]];
+            }
+            setDirty(true);
+            render();
+          });
+        });
+      }
+
+      function updatePreviewText(i) {
+        const card = list.querySelectorAll('.award-card')[i];
+        const a = awards[i];
+        const meta = card.querySelector('.meta-row');
+        if (meta) {
+          meta.className = `meta-row ${a.status}`;
+          meta.innerHTML = `<span>● ${escape(a.statusZh)} · ${escape(a.statusEn)}</span><span>${escape(a.year)}</span>`;
+        }
+        const work = card.querySelector('.work');
+        if (work) work.innerHTML = `${escape(a.workZh)}<span class="en">${escape(a.workEn)}</span>`;
+        const line = card.querySelector('.award-line');
+        if (line) line.innerHTML = `${escape(a.awardZh)} <span class="en">${escape(a.awardEn)}</span>`;
+        const img = card.querySelector('.preview-bg img');
+        if (img) img.src = a.poster;
+      }
+
+      addBtn.addEventListener('click', () => {
+        awards.push({
+          id: 'new-' + Date.now(),
+          status: 'win',
+          statusZh: '獲獎',
+          statusEn: 'Winner',
+          year: new Date().getFullYear().toString(),
+          workZh: '',
+          workEn: '',
+          awardZh: '',
+          awardEn: '',
+          poster: '/stills/covers/official/',
+          posterX: 50,
+          posterY: 50,
+          posterScale: 100,
+        });
+        setDirty(true);
+        render();
+        window.scrollTo(0, document.body.scrollHeight);
+      });
+
+      saveBtn.addEventListener('click', async () => {
+        saveBtn.disabled = true;
+        saveBtn.textContent = '儲存中...';
+        try {
+          const res = await fetch('/admin/api/awards', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ awards }),
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'save failed');
+          showToast(
+            `✅ 已儲存 ${data.count} 筆<br/><small>CF Pages 約 1-2 分鐘後更新</small><br/>` +
+              (data.url ? `<a href="${data.url}" target="_blank">查看 commit</a>` : ''),
+            'ok',
+            8000,
+          );
+          setDirty(false);
+        } catch (err) {
+          showToast(`❌ 儲存失敗：${err.message}`, 'err', 8000);
+          setDirty(true);
+        } finally {
+          saveBtn.disabled = false;
+          saveBtn.textContent = '儲存並發布';
+        }
+      });
+
+      function showToast(msg, kind = 'ok', ms = 5000) {
+        toast.className = `toast ${kind}`;
+        toast.innerHTML = msg;
+        toast.setAttribute('data-open', 'true');
+        setTimeout(() => toast.setAttribute('data-open', 'false'), ms);
+      }
+
+      function escape(s) {
+        return String(s ?? '').replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+      }
+      function escapeAttr(s) { return escape(s); }
+
+      window.addEventListener('beforeunload', (e) => {
+        if (dirty) { e.preventDefault(); e.returnValue = ''; }
+      });
+
+      render();
+      setDirty(false);
+    </script>
+  </body>
+</html>
