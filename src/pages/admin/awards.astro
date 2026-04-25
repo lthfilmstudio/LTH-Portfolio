@@ -230,9 +230,10 @@ const awards = awardsData;
   <body>
     <header class="admin-header">
       <h1>LTH Portfolio · Admin</h1>
-      <nav>
-        <a href="/admin/">海報管理</a>
-        <a href="/admin/awards" class="active">得獎入圍</a>
+      <nav style="display: flex; gap: 1rem; flex: 1; margin-left: 2rem; align-items: center;">
+        <a href="/admin/" style="color: var(--text-faint); font-size: 0.72rem; letter-spacing: 0.08em; text-decoration: none;">← 後台首頁</a>
+        <a href="/admin/works/" style="color: var(--text-dim); padding: 0.4rem 0.8rem; border-radius: 2px; font-size: 0.78rem; letter-spacing: 0.08em; text-decoration: none;">作品海報</a>
+        <a href="/admin/awards/" style="color: var(--accent); border: 1px solid var(--accent); padding: 0.4rem 0.8rem; border-radius: 2px; font-size: 0.78rem; letter-spacing: 0.08em; text-decoration: none;">得獎入圍</a>
       </nav>
       <span class="meta" id="count">{awards.length} entries</span>
     </header>

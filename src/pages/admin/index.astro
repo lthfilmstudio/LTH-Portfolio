@@ -1,24 +1,44 @@
 ---
 import works from '../../data/works.json';
+import awards from '../../data/awards.json';
 
-type Work = {
-  slug: string;
-  titleZh: string;
-  titleEn?: string;
-  year?: string;
-  categories?: string[];
-  cover?: string;
+const worksCount = (works as unknown[]).length;
+const awardsCount = (awards as unknown[]).length;
+
+type AdminLink = {
+  href: string;
+  zh: string;
+  en: string;
+  desc: string;
+  count?: string;
+  ready: boolean;
 };
 
-const list = works as Work[];
+const links: AdminLink[] = [
+  {
+    href: '/admin/works/',
+    zh: '作品海報',
+    en: 'Works & Posters',
+    desc: '上傳裁切作品海報、調整作品排序、編輯標籤連結',
+    count: `${worksCount} 部作品`,
+    ready: true,
+  },
+  {
+    href: '/admin/awards/',
+    zh: '得獎入圍',
+    en: 'Awards',
+    desc: '新增 / 編輯獲獎入圍紀錄、調整海報底圖位置',
+    count: `${awardsCount} 筆紀錄`,
+    ready: true,
+  },
+];
 ---
 <!doctype html>
 <html lang="zh-Hant">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>LTH Portfolio Admin · 海報管理</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css" />
+    <title>LTH Portfolio Admin</title>
     <style>
       :root {
         --bg: #0a0908;
@@ -28,8 +48,6 @@ const list = works as Work[];
         --text-dim: #a9a399;
         --text-faint: #6a655c;
         --accent: #c9a961;
-        --danger: #d66a54;
-        --ok: #6fb07f;
       }
       * { box-sizing: border-box; }
       body {
@@ -46,11 +64,6 @@ const list = works as Work[];
         display: flex;
         align-items: center;
         justify-content: space-between;
-        position: sticky;
-        top: 0;
-        background: rgba(10, 9, 8, 0.92);
-        backdrop-filter: blur(12px);
-        z-index: 10;
       }
       header.admin-header h1 {
         font-size: 1rem;
@@ -58,458 +71,133 @@ const list = works as Work[];
         letter-spacing: 0.1em;
         font-weight: 500;
       }
-      header.admin-header .meta {
+      header.admin-header a.back {
         color: var(--text-faint);
-        font-size: 0.75rem;
-        letter-spacing: 0.1em;
-      }
-      main {
-        padding: 2rem;
-        max-width: 1400px;
-        margin: 0 auto;
-      }
-      .filter-bar {
-        display: flex;
-        gap: 0.6rem;
-        flex-wrap: wrap;
-        margin-bottom: 2rem;
-      }
-      .filter-bar button {
-        background: transparent;
-        border: 1px solid var(--line);
-        color: var(--text-dim);
-        padding: 0.4rem 0.9rem;
-        border-radius: 2px;
-        cursor: pointer;
-        font-size: 0.75rem;
+        font-size: 0.72rem;
         letter-spacing: 0.08em;
-        transition: all 0.2s;
+        text-decoration: none;
       }
-      .filter-bar button:hover { border-color: var(--accent); color: var(--text); }
-      .filter-bar button[aria-pressed="true"] {
-        border-color: var(--accent);
-        color: var(--accent);
+      header.admin-header a.back:hover { color: var(--accent); }
+      main {
+        max-width: 980px;
+        margin: 0 auto;
+        padding: 4rem 2rem 6rem;
       }
-      .filter-bar input {
-        background: transparent;
-        border: 1px solid var(--line);
-        color: var(--text);
-        padding: 0.4rem 0.9rem;
-        border-radius: 2px;
-        font-size: 0.75rem;
-        min-width: 220px;
+      .hello {
+        margin-bottom: 3rem;
+      }
+      .hello .label {
+        font-size: 0.7rem;
+        letter-spacing: 0.3em;
+        color: var(--text-faint);
+        text-transform: uppercase;
+        margin-bottom: 0.8rem;
+      }
+      .hello h2 {
+        font-family: 'Noto Serif TC', serif;
+        font-size: 1.8rem;
+        font-weight: 400;
+        margin: 0 0 0.4rem;
+        letter-spacing: 0.05em;
+      }
+      .hello p {
+        margin: 0;
+        color: var(--text-dim);
+        font-size: 0.88rem;
+        letter-spacing: 0.04em;
       }
       .grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-        gap: 1.5rem 1.2rem;
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 1.2rem;
       }
       .card {
-        background: var(--surface);
+        display: block;
+        padding: 1.6rem 1.4rem;
         border: 1px solid var(--line);
-        border-radius: 3px;
-        overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        transition: border-color 0.2s;
-      }
-      .card:hover { border-color: var(--text-faint); }
-      .card .thumb {
-        aspect-ratio: 2 / 3;
-        background: #000;
+        background: var(--surface);
+        text-decoration: none;
+        color: var(--text);
+        transition: border-color 0.25s, transform 0.25s;
         position: relative;
-        overflow: hidden;
       }
-      .card .thumb img {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        object-position: center top;
-      }
-      .card .info {
-        padding: 0.7rem 0.8rem;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 0.2rem;
-      }
-      .card .info .title-zh {
-        font-size: 0.85rem;
-        line-height: 1.3;
-        color: var(--text);
-      }
-      .card .info .title-en {
-        font-size: 0.7rem;
-        color: var(--text-faint);
-        font-style: italic;
-      }
-      .card .info .year {
-        font-size: 0.68rem;
-        color: var(--text-faint);
-        letter-spacing: 0.1em;
-        margin-top: 0.1rem;
-      }
-      .card .actions {
-        padding: 0 0.8rem 0.8rem;
-      }
-      .card button.upload-btn {
-        width: 100%;
-        background: transparent;
-        border: 1px solid var(--line);
-        color: var(--text-dim);
-        padding: 0.5rem;
-        font-size: 0.7rem;
-        letter-spacing: 0.15em;
-        cursor: pointer;
-        border-radius: 2px;
-        transition: all 0.2s;
-      }
-      .card button.upload-btn:hover {
+      .card:hover {
         border-color: var(--accent);
-        color: var(--accent);
+        transform: translateY(-2px);
       }
-      .card[data-has-official="true"] button.upload-btn {
-        border-color: var(--ok);
-        color: var(--ok);
-      }
-
-      /* Modal */
-      .modal-backdrop {
-        position: fixed;
-        inset: 0;
-        background: rgba(10, 9, 8, 0.85);
-        backdrop-filter: blur(8px);
-        display: none;
-        align-items: center;
-        justify-content: center;
-        z-index: 100;
-      }
-      .modal-backdrop[data-open="true"] { display: flex; }
-      .modal {
-        background: var(--surface);
-        border: 1px solid var(--line);
-        border-radius: 4px;
-        padding: 1.5rem;
-        max-width: 720px;
-        width: 92vw;
-        max-height: 90vh;
-        overflow: auto;
-      }
-      .modal h2 {
-        margin: 0 0 0.3rem;
-        font-size: 1rem;
-        letter-spacing: 0.08em;
+      .card .zh {
+        font-family: 'Noto Serif TC', serif;
+        font-size: 1.1rem;
         font-weight: 500;
+        letter-spacing: 0.08em;
+        margin-bottom: 0.2rem;
       }
-      .modal .sub {
-        color: var(--text-faint);
-        font-size: 0.75rem;
-        margin-bottom: 1.2rem;
-      }
-      .modal .drop {
-        border: 1px dashed var(--line);
-        padding: 2rem;
-        text-align: center;
-        color: var(--text-dim);
-        border-radius: 3px;
-        cursor: pointer;
-        transition: all 0.2s;
-      }
-      .modal .drop:hover { border-color: var(--accent); color: var(--accent); }
-      .modal .drop small { display: block; margin-top: 0.4rem; color: var(--text-faint); font-size: 0.7rem; }
-      .modal .crop-area { margin-top: 1.2rem; display: none; }
-      .modal .crop-area[data-open="true"] { display: block; }
-      .modal .crop-area .stage {
-        max-height: 60vh;
-        background: #000;
-        border: 1px solid var(--line);
-      }
-      .modal .crop-area .stage img { display: block; max-width: 100%; }
-      .modal .footer {
-        display: flex;
-        gap: 0.8rem;
-        justify-content: flex-end;
-        margin-top: 1.2rem;
-      }
-      .modal .footer button {
-        background: transparent;
-        border: 1px solid var(--line);
-        color: var(--text);
-        padding: 0.6rem 1.2rem;
-        cursor: pointer;
-        border-radius: 2px;
-        font-size: 0.78rem;
-        letter-spacing: 0.1em;
-      }
-      .modal .footer button.primary {
-        border-color: var(--accent);
+      .card .en {
+        font-size: 0.7rem;
+        letter-spacing: 0.25em;
         color: var(--accent);
+        text-transform: uppercase;
+        margin-bottom: 1rem;
       }
-      .modal .footer button.primary:hover {
-        background: var(--accent);
-        color: var(--bg);
+      .card .desc {
+        color: var(--text-dim);
+        font-size: 0.82rem;
+        line-height: 1.55;
+        margin-bottom: 1.2rem;
+        min-height: 2.5em;
       }
-      .modal .footer button:disabled {
-        opacity: 0.4;
-        cursor: not-allowed;
+      .card .meta {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 0.72rem;
+        color: var(--text-faint);
+        letter-spacing: 0.1em;
+        padding-top: 0.8rem;
+        border-top: 1px solid var(--line);
       }
-      .toast {
-        position: fixed;
-        bottom: 2rem;
-        right: 2rem;
-        background: var(--surface);
-        border: 1px solid var(--line);
-        border-left: 3px solid var(--accent);
-        padding: 0.9rem 1.2rem;
-        border-radius: 3px;
-        font-size: 0.85rem;
-        max-width: 360px;
-        z-index: 200;
-        display: none;
-        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+      .card .meta .arrow {
+        color: var(--accent);
+        transition: transform 0.25s;
       }
-      .toast[data-open="true"] { display: block; }
-      .toast.ok { border-left-color: var(--ok); }
-      .toast.err { border-left-color: var(--danger); }
-      .toast a { color: var(--accent); }
+      .card:hover .meta .arrow {
+        transform: translateX(4px);
+      }
+      .card.coming-soon {
+        opacity: 0.55;
+        pointer-events: none;
+      }
+      .card.coming-soon .meta .arrow {
+        color: var(--text-faint);
+      }
     </style>
   </head>
   <body>
     <header class="admin-header">
       <h1>LTH Portfolio · Admin</h1>
-      <nav style="display: flex; gap: 1rem; flex: 1; margin-left: 2rem;">
-        <a href="/admin/" style="color: var(--accent); border: 1px solid var(--accent); padding: 0.4rem 0.8rem; border-radius: 2px; font-size: 0.78rem; letter-spacing: 0.08em; text-decoration: none;">海報管理</a>
-        <a href="/admin/awards" style="color: var(--text-dim); padding: 0.4rem 0.8rem; border-radius: 2px; font-size: 0.78rem; letter-spacing: 0.08em; text-decoration: none;">得獎入圍</a>
-      </nav>
-      <span class="meta" id="count">{list.length} works</span>
+      <a href="/" class="back">← 回到網站</a>
     </header>
 
     <main>
-      <div class="filter-bar">
-        <button data-filter="all" aria-pressed="true">全部</button>
-        <button data-filter="feature">電影</button>
-        <button data-filter="series">劇集</button>
-        <button data-filter="trailer">預告片花</button>
-        <button data-filter="short">短片</button>
-        <button data-filter="commercial">廣告</button>
-        <button data-filter="mv">MV</button>
-        <button data-filter="tvmovie">電視電影</button>
-        <input id="search" placeholder="搜尋作品名..." />
+      <div class="hello">
+        <div class="label">後台首頁</div>
+        <h2>選擇要管理的內容</h2>
+        <p>所有更動都會直接 commit 到 GitHub，部署完才會反應到正式站。</p>
       </div>
 
-      <div class="grid" id="grid">
-        {list.map((w) => {
-          const hasOfficial = (w.cover || '').includes('/official/');
-          const cats = (w.categories || []).join(' ');
-          return (
-            <article
-              class="card"
-              data-slug={w.slug}
-              data-title-zh={w.titleZh}
-              data-title-en={w.titleEn || ''}
-              data-cats={cats}
-              data-has-official={hasOfficial ? 'true' : 'false'}
-            >
-              <div class="thumb">
-                {w.cover && <img src={w.cover} alt={w.titleZh} loading="lazy" />}
-              </div>
-              <div class="info">
-                <span class="title-zh">{w.titleZh}</span>
-                {w.titleEn && <span class="title-en">{w.titleEn}</span>}
-                <span class="year">{w.year}</span>
-              </div>
-              <div class="actions">
-                <button class="upload-btn" type="button">上傳 / 替換海報</button>
-              </div>
-            </article>
-          );
-        })}
+      <div class="grid">
+        {links.map((l) => (
+          <a class={`card${l.ready ? '' : ' coming-soon'}`} href={l.ready ? l.href : '#'}>
+            <div class="zh">{l.zh}</div>
+            <div class="en">{l.en}</div>
+            <div class="desc">{l.desc}</div>
+            <div class="meta">
+              <span>{l.count ?? '即將推出'}</span>
+              <span class="arrow">→</span>
+            </div>
+          </a>
+        ))}
       </div>
     </main>
-
-    <div class="modal-backdrop" id="modal">
-      <div class="modal">
-        <h2 id="m-title">上傳海報</h2>
-        <div class="sub" id="m-slug"></div>
-
-        <label class="drop" id="m-drop">
-          點此選擇圖片（或拖曳）
-          <small>支援 JPG / PNG / WebP，自動裁切成 2:3</small>
-          <input type="file" id="m-file" accept="image/*" hidden />
-        </label>
-
-        <div class="crop-area" id="m-crop">
-          <div class="stage"><img id="m-img" /></div>
-          <div class="sub" style="margin-top: 0.7rem;">拖動調整裁切範圍，完成後按送出</div>
-        </div>
-
-        <div class="footer">
-          <button type="button" id="m-cancel">取消</button>
-          <button type="button" class="primary" id="m-submit" disabled>送出並發布</button>
-        </div>
-      </div>
-    </div>
-
-    <div class="toast" id="toast"></div>
-
-    <script>
-      // Cropper via CDN
-      const cdnScript = document.createElement('script');
-      cdnScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js';
-      document.head.appendChild(cdnScript);
-      await new Promise((r) => { cdnScript.onload = r; });
-      const Cropper = (window as any).Cropper;
-
-      const grid = document.getElementById('grid')!;
-      const searchInput = document.getElementById('search') as HTMLInputElement;
-      const filterBtns = document.querySelectorAll<HTMLButtonElement>('.filter-bar button[data-filter]');
-
-      let activeFilter = 'all';
-      function applyFilter() {
-        const q = (searchInput.value || '').trim().toLowerCase();
-        grid.querySelectorAll<HTMLElement>('.card').forEach((card) => {
-          const titleZh = (card.dataset.titleZh || '').toLowerCase();
-          const titleEn = (card.dataset.titleEn || '').toLowerCase();
-          const cats = (card.dataset.cats || '').toLowerCase();
-          const matchFilter = activeFilter === 'all' || cats.includes(activeFilter);
-          const matchQuery = !q || titleZh.includes(q) || titleEn.includes(q);
-          card.style.display = matchFilter && matchQuery ? '' : 'none';
-        });
-      }
-      filterBtns.forEach((b) => {
-        b.addEventListener('click', () => {
-          filterBtns.forEach((x) => x.setAttribute('aria-pressed', 'false'));
-          b.setAttribute('aria-pressed', 'true');
-          activeFilter = b.dataset.filter || 'all';
-          applyFilter();
-        });
-      });
-      searchInput.addEventListener('input', applyFilter);
-
-      // Modal
-      const modal = document.getElementById('modal')!;
-      const mTitle = document.getElementById('m-title')!;
-      const mSlug = document.getElementById('m-slug')!;
-      const mDrop = document.getElementById('m-drop')!;
-      const mFile = document.getElementById('m-file') as HTMLInputElement;
-      const mCrop = document.getElementById('m-crop')!;
-      const mImg = document.getElementById('m-img') as HTMLImageElement;
-      const mCancel = document.getElementById('m-cancel')!;
-      const mSubmit = document.getElementById('m-submit') as HTMLButtonElement;
-      const toast = document.getElementById('toast')!;
-
-      let cropper: any = null;
-      let currentSlug = '';
-      let currentTitle = '';
-
-      function openModal(slug: string, title: string) {
-        currentSlug = slug;
-        currentTitle = title;
-        mTitle.textContent = `上傳海報 — ${title}`;
-        mSlug.textContent = `slug: ${slug}  →  public/stills/covers/official/${slug}.jpg`;
-        mCrop.setAttribute('data-open', 'false');
-        mSubmit.disabled = true;
-        mFile.value = '';
-        if (cropper) { cropper.destroy(); cropper = null; }
-        modal.setAttribute('data-open', 'true');
-      }
-      function closeModal() {
-        modal.setAttribute('data-open', 'false');
-        if (cropper) { cropper.destroy(); cropper = null; }
-      }
-      mCancel.addEventListener('click', closeModal);
-      modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-
-      grid.querySelectorAll<HTMLElement>('.card').forEach((card) => {
-        const btn = card.querySelector<HTMLButtonElement>('.upload-btn')!;
-        btn.addEventListener('click', () => {
-          openModal(card.dataset.slug!, card.dataset.titleZh!);
-        });
-      });
-
-      mDrop.addEventListener('click', () => mFile.click());
-      mDrop.addEventListener('dragover', (e) => { e.preventDefault(); });
-      mDrop.addEventListener('drop', (e) => {
-        e.preventDefault();
-        const f = (e as DragEvent).dataTransfer?.files?.[0];
-        if (f) loadFile(f);
-      });
-      mFile.addEventListener('change', () => {
-        const f = mFile.files?.[0];
-        if (f) loadFile(f);
-      });
-
-      function loadFile(file: File) {
-        const reader = new FileReader();
-        reader.onload = () => {
-          mImg.src = reader.result as string;
-          mCrop.setAttribute('data-open', 'true');
-          if (cropper) cropper.destroy();
-          cropper = new Cropper(mImg, {
-            aspectRatio: 2 / 3,
-            viewMode: 1,
-            autoCropArea: 1,
-            movable: true,
-            zoomable: true,
-            scalable: false,
-            rotatable: false,
-            background: false,
-            ready: () => { mSubmit.disabled = false; },
-          });
-        };
-        reader.readAsDataURL(file);
-      }
-
-      function showToast(msg: string, kind: 'ok' | 'err' = 'ok', ms = 5000) {
-        toast.className = `toast ${kind}`;
-        toast.innerHTML = msg;
-        toast.setAttribute('data-open', 'true');
-        setTimeout(() => toast.setAttribute('data-open', 'false'), ms);
-      }
-
-      mSubmit.addEventListener('click', async () => {
-        if (!cropper || !currentSlug) return;
-        mSubmit.disabled = true;
-        mSubmit.textContent = '上傳中...';
-
-        const canvas = cropper.getCroppedCanvas({
-          width: 900,
-          imageSmoothingQuality: 'high',
-        });
-        const dataUrl = canvas.toDataURL('image/jpeg', 0.88);
-
-        try {
-          const res = await fetch('/admin/api/upload-poster', {
-            method: 'POST',
-            headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ slug: currentSlug, imageBase64: dataUrl }),
-          });
-          const data = await res.json();
-          if (!res.ok) throw new Error(data.error || 'upload failed');
-
-          showToast(
-            `✅ ${currentTitle} 海報已推送<br/>` +
-              `<small>CF Pages 約 1-2 分鐘後更新</small><br/>` +
-              (data.url ? `<a href="${data.url}" target="_blank">查看 commit</a>` : ''),
-            'ok',
-            8000,
-          );
-
-          // 標記 card 為已有 official
-          const card = grid.querySelector<HTMLElement>(`.card[data-slug="${currentSlug}"]`);
-          if (card) {
-            card.dataset.hasOfficial = 'true';
-            const img = card.querySelector('img');
-            if (img) img.src = `/stills/covers/official/${currentSlug}.jpg?t=${Date.now()}`;
-          }
-          closeModal();
-        } catch (err: any) {
-          showToast(`❌ 上傳失敗：${err.message}`, 'err', 8000);
-        } finally {
-          mSubmit.disabled = false;
-          mSubmit.textContent = '送出並發布';
-        }
-      });
-    </script>
   </body>
 </html>
