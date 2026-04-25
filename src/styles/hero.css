@@ -1,7 +1,7 @@
 /* ===== HERO ===== */
 .hero {
   min-height: 100vh;
-  padding: 8rem 3rem 4rem;
+  padding: 5rem 3rem 4rem;
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 0 4rem; /* row gap 0 — Selected Works 緊貼 hero-left 底，不留空 */
@@ -11,7 +11,7 @@
   position: relative;
 }
 
-.hero-left { position: relative; padding-top: 2rem; min-width: 0; }
+.hero-left { position: relative; padding-top: 0; min-width: 0; }
 
 .hero h1 {
   font-family: 'Noto Serif TC', serif;
@@ -261,7 +261,7 @@
 .hero-right {
   border-left: 1px solid var(--line);
   padding-left: 3rem;
-  padding-top: 2rem;
+  padding-top: 0;
 }
 
 .hero-right .hero-awards-label {
