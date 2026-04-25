@@ -245,6 +245,15 @@ const LINK_TYPES = [
         object-fit: cover;
         display: block;
         filter: grayscale(0.2);
+        -webkit-user-drag: none;
+        user-drag: none;
+        pointer-events: none;
+      }
+      .card .thumb, .card .info, .card .info * {
+        pointer-events: none;
+      }
+      .card .drag-handle, .card .badge-new {
+        pointer-events: auto;
       }
       .card .thumb .empty {
         position: absolute;
@@ -1233,26 +1242,42 @@ const LINK_TYPES = [
           dragSrcIdx = +card.dataset.idx;
           card.classList.add('dragging');
           document.body.classList.add('is-dragging');
-          if (e.dataTransfer) e.dataTransfer.effectAllowed = 'move';
+          if (e.dataTransfer) {
+            e.dataTransfer.effectAllowed = 'move';
+            // Some browsers require setData for drag to actually begin
+            e.dataTransfer.setData('text/plain', String(dragSrcIdx));
+          }
         });
         card.addEventListener('dragend', () => {
           card.classList.remove('dragging');
           document.body.classList.remove('is-dragging');
           grid.querySelectorAll('.drop-target').forEach((el) => el.classList.remove('drop-target'));
+          dragSrcIdx = -1;
+        });
+        card.addEventListener('dragenter', (e) => {
+          e.preventDefault();
+          if (dragSrcIdx === -1) return;
+          const tIdx = +card.dataset.idx;
+          if (tIdx !== dragSrcIdx) card.classList.add('drop-target');
         });
         card.addEventListener('dragover', (e) => {
           e.preventDefault();
           if (e.dataTransfer) e.dataTransfer.dropEffect = 'move';
-          card.classList.add('drop-target');
         });
-        card.addEventListener('dragleave', () => card.classList.remove('drop-target'));
+        card.addEventListener('dragleave', (e) => {
+          // Only remove if we actually left the card (not just moved to a child)
+          if (!card.contains(e.relatedTarget)) card.classList.remove('drop-target');
+        });
         card.addEventListener('drop', (e) => {
           e.preventDefault();
+          e.stopPropagation();
           card.classList.remove('drop-target');
           const targetIdx = +card.dataset.idx;
           if (dragSrcIdx === -1 || dragSrcIdx === targetIdx) return;
           const [moved] = works.splice(dragSrcIdx, 1);
-          works.splice(targetIdx, 0, moved);
+          // After splice, target index may have shifted if src < target
+          const newTarget = dragSrcIdx < targetIdx ? targetIdx - 1 : targetIdx;
+          works.splice(newTarget, 0, moved);
           dragSrcIdx = -1;
           renderList();
           checkDirty();
