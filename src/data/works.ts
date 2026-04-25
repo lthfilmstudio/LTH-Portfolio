@@ -54,8 +54,8 @@ export const CATEGORY_LABELS: Record<Category, { zh: string; en: string }> = {
 export const CATEGORY_ORDER: Category[] = [
   'feature',
   'series',
-  'tvmovie',
   'short',
+  'tvmovie',
   'trailer',
   'commercial',
   'mv',
