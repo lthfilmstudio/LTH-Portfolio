@@ -200,12 +200,15 @@ const LINK_TYPES = [
         -webkit-user-select: none;
       }
       .card:hover { border-color: var(--accent-dim); transform: translateY(-2px); }
-      .card.dragging { opacity: 0.35; transform: none !important; }
-      .card.drop-target {
+      .card.sortable-ghost {
+        opacity: 0.35;
+        background: var(--bg);
+      }
+      .card.sortable-chosen {
         border-color: var(--accent);
-        box-shadow: 0 0 0 2px var(--accent), inset 0 0 0 1px var(--accent);
       }
       body.is-dragging .card:hover { transform: none; }
+      body.is-dragging { cursor: grabbing !important; }
       .card .drag-handle {
         position: absolute;
         top: 0.4rem;
@@ -811,7 +814,7 @@ const LINK_TYPES = [
           const card = document.createElement('article');
           card.className = 'card';
           card.dataset.idx = String(idx);
-          card.draggable = true;
+          card.dataset.slug = w.slug;
           card.innerHTML = `
             <span class="drag-handle" title="拖動排序">⋮⋮</span>
             ${isNew ? '<span class="badge-new">NEW</span>' : ''}
@@ -1234,61 +1237,59 @@ const LINK_TYPES = [
       // ============================================================
       // DRAG-DROP REORDER
       // ============================================================
-      // Event delegation on grid — more robust than per-card listeners
-      let dragSrcIdx = -1;
-      let dragSrcSlug = '';
-      grid.addEventListener('dragstart', (e) => {
-        const card = e.target.closest('.card');
-        if (!card) return;
-        dragSrcIdx = +card.dataset.idx;
-        dragSrcSlug = works[dragSrcIdx] && works[dragSrcIdx].titleZh || '';
-        card.classList.add('dragging');
-        document.body.classList.add('is-dragging');
-        if (e.dataTransfer) {
-          e.dataTransfer.effectAllowed = 'move';
-          e.dataTransfer.setData('text/plain', String(dragSrcIdx));
-        }
-        showToast(`🟡 開始拖動：${dragSrcSlug}（idx ${dragSrcIdx}）`, 'ok', 2000);
-      });
-      grid.addEventListener('dragend', (e) => {
-        const card = e.target.closest('.card');
-        if (card) card.classList.remove('dragging');
-        document.body.classList.remove('is-dragging');
-        grid.querySelectorAll('.drop-target').forEach((el) => el.classList.remove('drop-target'));
-        // Reset only if drop didn't happen
-        if (dragSrcIdx !== -1) {
-          showToast(`⚠️ 拖動取消（沒放到任何卡片上）`, 'err', 3000);
-        }
-        dragSrcIdx = -1;
-      });
-      grid.addEventListener('dragover', (e) => {
-        // preventDefault on grid is required for drop to fire anywhere inside
-        e.preventDefault();
-        if (e.dataTransfer) e.dataTransfer.dropEffect = 'move';
-        const card = e.target.closest('.card');
-        if (!card || dragSrcIdx === -1) return;
-        const tIdx = +card.dataset.idx;
-        if (tIdx === dragSrcIdx) return;
-        // highlight only this target, clear others
-        grid.querySelectorAll('.drop-target').forEach((el) => {
-          if (el !== card) el.classList.remove('drop-target');
+      // SortableJS — battle-tested drag library, handles all browser quirks
+      let sortable = null;
+      function ensureSortable() {
+        if (window.Sortable) return Promise.resolve(window.Sortable);
+        return new Promise((resolve) => {
+          const s = document.createElement('script');
+          s.src = 'https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js';
+          s.onload = () => resolve(window.Sortable);
+          document.head.appendChild(s);
         });
-        card.classList.add('drop-target');
-      });
-      grid.addEventListener('drop', (e) => {
-        e.preventDefault();
-        const card = e.target.closest('.card');
-        if (!card || dragSrcIdx === -1) return;
-        const targetIdx = +card.dataset.idx;
-        if (targetIdx === dragSrcIdx) return;
-        const [moved] = works.splice(dragSrcIdx, 1);
-        const newTarget = dragSrcIdx < targetIdx ? targetIdx - 1 : targetIdx;
-        works.splice(newTarget, 0, moved);
-        dragSrcIdx = -1;
-        renderList();
-        checkDirty();
-        showToast(`已把「${moved.titleZh}」移到第 ${newTarget + 1} 位`, 'ok', 2500);
-      });
+      }
+
+      async function initSortable() {
+        const Sortable = await ensureSortable();
+        if (sortable) sortable.destroy();
+        sortable = Sortable.create(grid, {
+          animation: 180,
+          ghostClass: 'sortable-ghost',
+          chosenClass: 'sortable-chosen',
+          forceFallback: true,
+          fallbackTolerance: 5,
+          onStart: () => {
+            document.body.classList.add('is-dragging');
+          },
+          onEnd: (evt) => {
+            document.body.classList.remove('is-dragging');
+            const oldIdx = +evt.item.dataset.idx;
+            // SortableJS reorders the DOM. We need to map this back to the works[] array.
+            // Read the new order from DOM after the drop.
+            const newOrder = Array.from(grid.querySelectorAll('.card')).map((c) => c.dataset.slug);
+            // Build new works array following DOM order, preserving any filtered-out items in their relative positions.
+            // Simplest approach: only reorder if no filter active, otherwise warn.
+            if (activeFilter !== 'all' || searchQuery) {
+              showToast('⚠️ 套用篩選/搜尋時不能拖拉排序，請先按「全部」', 'err', 4000);
+              renderList(); // restore visual order
+              return;
+            }
+            const slugToWork = new Map(works.map((w) => [w.slug, w]));
+            const reordered = newOrder.map((s) => slugToWork.get(s)).filter(Boolean);
+            if (reordered.length !== works.length) {
+              showToast('⚠️ 排序失敗（資料不一致），已還原', 'err', 4000);
+              renderList();
+              return;
+            }
+            works = reordered;
+            renderList();
+            checkDirty();
+            const moved = works[evt.newIndex];
+            showToast(`已把「${moved.titleZh}」移到第 ${evt.newIndex + 1} 位`, 'ok', 2500);
+          },
+        });
+      }
+      initSortable();
 
       // ============================================================
       // SAVE / RESET
