@@ -1,7 +1,7 @@
 /* ===== HERO ===== */
 .hero {
   min-height: 100vh;
-  padding: 5rem 3rem 4rem;
+  padding: 7.5rem 3rem 4rem;
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 0 4rem; /* row gap 0 — Selected Works 緊貼 hero-left 底，不留空 */
@@ -76,7 +76,7 @@
   grid-template-columns: 1fr 1fr;
   column-gap: 2.5rem;
   row-gap: 1rem;
-  margin-bottom: 3rem;
+  margin-bottom: 1rem;
   padding-bottom: 2.5rem;
   border-bottom: 1px solid var(--line);
 }
