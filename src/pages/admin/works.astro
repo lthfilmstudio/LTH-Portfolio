@@ -1,33 +1,70 @@
 ---
 import works from '../../data/works.json';
 
+type Link = { type: string; url: string; label?: string };
 type Work = {
   slug: string;
   titleZh: string;
   titleEn?: string;
   year?: string;
-  categories?: string[];
+  categories: string[];
+  primaryCategory: string;
+  director?: string;
+  writers?: string;
+  description?: string;
   cover?: string;
+  coverOriginal?: string;
+  covers?: string[];
+  links?: Link[];
+  hasDetail?: boolean;
 };
 
-const list = works as Work[];
+const initialWorks = works as Work[];
+
+const CATEGORIES = [
+  { value: 'feature', zh: '電影' },
+  { value: 'series', zh: '劇集' },
+  { value: 'trailer', zh: '預告片花' },
+  { value: 'short', zh: '短片' },
+  { value: 'commercial', zh: '廣告' },
+  { value: 'mv', zh: 'MV' },
+  { value: 'tvmovie', zh: '電視電影' },
+];
+
+const LINK_TYPES = [
+  { value: 'youtube', zh: 'YouTube' },
+  { value: 'facebook', zh: 'Facebook' },
+  { value: 'netflix', zh: 'Netflix' },
+  { value: 'iqiyi', zh: '愛奇藝' },
+  { value: 'catchplay', zh: 'CatchPlay' },
+  { value: 'friday', zh: 'friDay' },
+  { value: 'hakkatv', zh: '客家電視' },
+  { value: 'hami', zh: 'Hami Video' },
+  { value: 'kktv', zh: 'KKTV' },
+  { value: 'myvideo', zh: 'MyVideo' },
+  { value: 'pts', zh: '公視' },
+  { value: 'link', zh: '其他連結' },
+];
 ---
 <!doctype html>
 <html lang="zh-Hant">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>LTH Portfolio Admin · 海報管理</title>
+    <title>LTH Portfolio Admin · 作品資訊整理</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css" />
-    <style>
+    <style is:global>
       :root {
         --bg: #0a0908;
         --surface: #141311;
+        --panel: #1a1816;
         --line: #2a2824;
+        --line-soft: #1f1d1a;
         --text: #ece9e1;
         --text-dim: #a9a399;
         --text-faint: #6a655c;
         --accent: #c9a961;
+        --accent-dim: #8a7544;
         --danger: #d66a54;
         --ok: #6fb07f;
       }
@@ -45,12 +82,12 @@ const list = works as Work[];
         border-bottom: 1px solid var(--line);
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        gap: 1rem;
         position: sticky;
         top: 0;
         background: rgba(10, 9, 8, 0.92);
         backdrop-filter: blur(12px);
-        z-index: 10;
+        z-index: 30;
       }
       header.admin-header h1 {
         font-size: 1rem;
@@ -62,6 +99,51 @@ const list = works as Work[];
         color: var(--text-faint);
         font-size: 0.75rem;
         letter-spacing: 0.1em;
+        margin-left: auto;
+      }
+      .save-bar {
+        position: sticky;
+        top: 56px;
+        z-index: 25;
+        padding: 0.7rem 2rem;
+        background: var(--surface);
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      .save-bar .status { color: var(--text-faint); font-size: 0.78rem; letter-spacing: 0.05em; }
+      .save-bar .status.dirty { color: var(--accent); }
+      .save-bar .spacer { flex: 1; }
+      .btn {
+        background: transparent;
+        border: 1px solid var(--line);
+        color: var(--text-dim);
+        padding: 0.45rem 1rem;
+        font-family: inherit;
+        font-size: 0.8rem;
+        letter-spacing: 0.08em;
+        cursor: pointer;
+        border-radius: 2px;
+        transition: all 0.2s;
+      }
+      .btn:hover:not(:disabled) { border-color: var(--accent-dim); color: var(--text); }
+      .btn:disabled { opacity: 0.4; cursor: not-allowed; }
+      .btn.primary {
+        border-color: var(--accent);
+        color: var(--accent);
+      }
+      .btn.primary:hover:not(:disabled) {
+        background: var(--accent);
+        color: var(--bg);
+      }
+      .btn.danger {
+        border-color: var(--danger);
+        color: var(--danger);
+      }
+      .btn.danger:hover:not(:disabled) {
+        background: var(--danger);
+        color: var(--bg);
       }
       main {
         padding: 2rem;
@@ -73,50 +155,87 @@ const list = works as Work[];
         gap: 0.6rem;
         flex-wrap: wrap;
         margin-bottom: 2rem;
+        align-items: center;
       }
-      .filter-bar button {
+      .filter-bar button[data-filter] {
         background: transparent;
         border: 1px solid var(--line);
         color: var(--text-dim);
         padding: 0.4rem 0.9rem;
-        border-radius: 2px;
+        font-family: inherit;
+        font-size: 0.78rem;
+        letter-spacing: 0.05em;
         cursor: pointer;
-        font-size: 0.75rem;
-        letter-spacing: 0.08em;
+        border-radius: 2px;
         transition: all 0.2s;
       }
-      .filter-bar button:hover { border-color: var(--accent); color: var(--text); }
-      .filter-bar button[aria-pressed="true"] {
-        border-color: var(--accent);
-        color: var(--accent);
-      }
+      .filter-bar button[data-filter]:hover { border-color: var(--accent-dim); color: var(--text); }
+      .filter-bar button[data-filter][aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
       .filter-bar input {
-        background: transparent;
+        background: var(--panel);
         border: 1px solid var(--line);
         color: var(--text);
-        padding: 0.4rem 0.9rem;
+        padding: 0.45rem 0.8rem;
+        font-family: inherit;
+        font-size: 0.85rem;
         border-radius: 2px;
-        font-size: 0.75rem;
-        min-width: 220px;
+        flex: 1;
+        max-width: 240px;
       }
+      .filter-bar input:focus { outline: none; border-color: var(--accent-dim); }
+
       .grid {
         display: grid;
         grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-        gap: 1.5rem 1.2rem;
+        gap: 1.2rem;
       }
       .card {
-        background: var(--surface);
+        background: var(--panel);
         border: 1px solid var(--line);
-        border-radius: 3px;
+        cursor: pointer;
+        transition: all 0.2s;
+        position: relative;
         overflow: hidden;
-        display: flex;
-        flex-direction: column;
-        transition: border-color 0.2s;
       }
-      .card:hover { border-color: var(--text-faint); }
+      .card:hover { border-color: var(--accent-dim); transform: translateY(-2px); }
+      .card.dragging { opacity: 0.4; }
+      .card.drop-target { border-color: var(--accent); }
+      .card .drag-handle {
+        position: absolute;
+        top: 0.4rem;
+        left: 0.4rem;
+        width: 22px;
+        height: 22px;
+        border-radius: 2px;
+        background: rgba(20, 19, 17, 0.85);
+        color: var(--text-faint);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.7rem;
+        cursor: grab;
+        z-index: 5;
+        opacity: 0;
+        transition: opacity 0.2s, color 0.2s;
+      }
+      .card:hover .drag-handle { opacity: 1; }
+      .card .drag-handle:hover { color: var(--accent); }
+      .card .drag-handle:active { cursor: grabbing; }
+      .card .badge-new {
+        position: absolute;
+        top: 0.4rem;
+        right: 0.4rem;
+        background: var(--accent);
+        color: var(--bg);
+        font-size: 0.6rem;
+        letter-spacing: 0.1em;
+        padding: 0.15rem 0.4rem;
+        z-index: 5;
+        text-transform: uppercase;
+      }
       .card .thumb {
         aspect-ratio: 2 / 3;
-        background: #000;
+        background: var(--bg);
         position: relative;
         overflow: hidden;
       }
@@ -124,286 +243,1089 @@ const list = works as Work[];
         width: 100%;
         height: 100%;
         object-fit: cover;
-        object-position: center top;
+        display: block;
+        filter: grayscale(0.2);
+      }
+      .card .thumb .empty {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: var(--text-faint);
+        font-size: 0.7rem;
+        letter-spacing: 0.1em;
       }
       .card .info {
-        padding: 0.7rem 0.8rem;
-        flex: 1;
+        padding: 0.6rem 0.7rem;
         display: flex;
         flex-direction: column;
-        gap: 0.2rem;
+        gap: 0.15rem;
       }
       .card .info .title-zh {
-        font-size: 0.85rem;
-        line-height: 1.3;
+        font-family: 'Noto Serif TC', serif;
         color: var(--text);
+        font-size: 0.85rem;
+        letter-spacing: 0.05em;
+        line-height: 1.3;
       }
       .card .info .title-en {
         font-size: 0.7rem;
-        color: var(--text-faint);
-        font-style: italic;
+        color: var(--text-dim);
+        line-height: 1.3;
       }
       .card .info .year {
-        font-size: 0.68rem;
+        font-size: 0.65rem;
         color: var(--text-faint);
         letter-spacing: 0.1em;
-        margin-top: 0.1rem;
+        margin-top: 0.2rem;
       }
-      .card .actions {
-        padding: 0 0.8rem 0.8rem;
+
+      /* ===== DRAWER ===== */
+      .drawer-backdrop {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(2px);
+        z-index: 40;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.25s;
       }
-      .card button.upload-btn {
-        width: 100%;
+      .drawer-backdrop[data-open="true"] { opacity: 1; pointer-events: auto; }
+
+      .drawer {
+        position: fixed;
+        top: 0;
+        right: 0;
+        height: 100vh;
+        width: 520px;
+        max-width: 100vw;
+        background: var(--surface);
+        border-left: 1px solid var(--line);
+        z-index: 50;
+        transform: translateX(100%);
+        transition: transform 0.3s ease;
+        display: flex;
+        flex-direction: column;
+      }
+      .drawer[data-open="true"] { transform: translateX(0); }
+      .drawer-head {
+        padding: 1.2rem 1.5rem;
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      .drawer-head h2 {
+        margin: 0;
+        font-size: 0.95rem;
+        font-weight: 500;
+        letter-spacing: 0.08em;
+        flex: 1;
+      }
+      .drawer-head .close-x {
         background: transparent;
-        border: 1px solid var(--line);
+        border: none;
         color: var(--text-dim);
-        padding: 0.5rem;
+        font-size: 1.2rem;
+        cursor: pointer;
+        width: 28px;
+        height: 28px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1;
+      }
+      .drawer-head .close-x:hover { color: var(--text); }
+
+      .drawer-body {
+        flex: 1;
+        overflow-y: auto;
+        padding: 1.2rem 1.5rem;
+      }
+      .drawer-body fieldset {
+        border: none;
+        margin: 0 0 1.4rem;
+        padding: 0;
+      }
+      .drawer-body fieldset legend {
+        font-size: 0.7rem;
+        letter-spacing: 0.25em;
+        color: var(--text-faint);
+        text-transform: uppercase;
+        margin-bottom: 0.6rem;
+        padding: 0;
+      }
+
+      .field { margin-bottom: 0.9rem; }
+      .field label {
+        display: block;
         font-size: 0.7rem;
         letter-spacing: 0.15em;
-        cursor: pointer;
-        border-radius: 2px;
-        transition: all 0.2s;
+        color: var(--text-dim);
+        text-transform: uppercase;
+        margin-bottom: 0.3rem;
       }
-      .card button.upload-btn:hover {
+      .field input[type="text"],
+      .field input[type="url"],
+      .field textarea,
+      .field select {
+        width: 100%;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        color: var(--text);
+        padding: 0.5rem 0.7rem;
+        font-family: inherit;
+        font-size: 0.85rem;
+        border-radius: 2px;
+      }
+      .field input:focus,
+      .field textarea:focus,
+      .field select:focus { outline: none; border-color: var(--accent-dim); }
+      .field input[readonly] { color: var(--text-faint); cursor: not-allowed; }
+      .field textarea { min-height: 90px; resize: vertical; line-height: 1.5; }
+      .field .hint {
+        font-size: 0.7rem;
+        color: var(--text-faint);
+        margin-top: 0.25rem;
+        line-height: 1.4;
+      }
+      .field .hint.warn { color: var(--accent); }
+      .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; }
+
+      .checkbox-row, .radio-row {
+        display: flex;
+        gap: 0.5rem;
+        flex-wrap: wrap;
+      }
+      .checkbox-row label, .radio-row label {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.35rem;
+        padding: 0.35rem 0.7rem;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 2px;
+        cursor: pointer;
+        font-size: 0.78rem;
+        color: var(--text-dim);
+        text-transform: none;
+        letter-spacing: 0.04em;
+        margin: 0;
+      }
+      .checkbox-row label:hover, .radio-row label:hover { border-color: var(--accent-dim); color: var(--text); }
+      .checkbox-row input, .radio-row input { accent-color: var(--accent); }
+      .checkbox-row label.checked, .radio-row label.checked {
         border-color: var(--accent);
         color: var(--accent);
       }
-      .card[data-has-official="true"] button.upload-btn {
-        border-color: var(--ok);
-        color: var(--ok);
+
+      .links-list { display: flex; flex-direction: column; gap: 0.5rem; }
+      .link-row {
+        display: grid;
+        grid-template-columns: 110px 1fr 28px;
+        gap: 0.4rem;
+        align-items: center;
+      }
+      .link-row .url-row {
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 0.3rem;
+      }
+      .link-row select, .link-row input {
+        width: 100%;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        color: var(--text);
+        padding: 0.4rem 0.6rem;
+        font-size: 0.78rem;
+        border-radius: 2px;
+        font-family: inherit;
+      }
+      .link-row .del {
+        background: transparent;
+        border: 1px solid var(--line);
+        color: var(--text-faint);
+        cursor: pointer;
+        font-size: 0.85rem;
+        height: 28px;
+        border-radius: 2px;
+      }
+      .link-row .del:hover { border-color: var(--danger); color: var(--danger); }
+      .link-card {
+        padding: 0.6rem;
+        border: 1px solid var(--line-soft);
+        border-radius: 2px;
+        background: rgba(255,255,255,0.015);
       }
 
-      /* Modal */
+      .cover-block {
+        display: flex;
+        gap: 1rem;
+        align-items: center;
+        padding: 0.8rem;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 2px;
+      }
+      .cover-block .preview {
+        width: 70px;
+        aspect-ratio: 2 / 3;
+        background: var(--bg);
+        border: 1px solid var(--line);
+        flex-shrink: 0;
+        position: relative;
+        overflow: hidden;
+      }
+      .cover-block .preview img { width: 100%; height: 100%; object-fit: cover; display: block; }
+      .cover-block .preview .empty {
+        position: absolute; inset: 0;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 0.65rem; color: var(--text-faint);
+      }
+      .cover-block .info {
+        flex: 1;
+        font-size: 0.72rem;
+        color: var(--text-dim);
+        line-height: 1.4;
+        word-break: break-all;
+      }
+      .cover-block .info .official {
+        color: var(--ok);
+        font-size: 0.65rem;
+        letter-spacing: 0.15em;
+        text-transform: uppercase;
+        margin-bottom: 0.2rem;
+      }
+
+      .drawer-foot {
+        padding: 1rem 1.5rem;
+        border-top: 1px solid var(--line);
+        display: flex;
+        gap: 0.6rem;
+        align-items: center;
+      }
+      .drawer-foot .spacer { flex: 1; }
+
+      /* ===== UPLOAD MODAL (cropper) ===== */
       .modal-backdrop {
-        position: fixed;
-        inset: 0;
-        background: rgba(10, 9, 8, 0.85);
-        backdrop-filter: blur(8px);
+        position: fixed; inset: 0;
+        background: rgba(0, 0, 0, 0.75);
+        z-index: 100;
         display: none;
         align-items: center;
         justify-content: center;
-        z-index: 100;
+        padding: 2rem;
       }
       .modal-backdrop[data-open="true"] { display: flex; }
       .modal {
         background: var(--surface);
         border: 1px solid var(--line);
-        border-radius: 4px;
-        padding: 1.5rem;
-        max-width: 720px;
-        width: 92vw;
+        max-width: 600px;
+        width: 100%;
         max-height: 90vh;
-        overflow: auto;
+        display: flex;
+        flex-direction: column;
+        border-radius: 2px;
       }
       .modal h2 {
-        margin: 0 0 0.3rem;
         font-size: 1rem;
-        letter-spacing: 0.08em;
         font-weight: 500;
+        margin: 0;
+        padding: 1.2rem 1.5rem 0.4rem;
+        letter-spacing: 0.08em;
       }
       .modal .sub {
+        padding: 0 1.5rem 0.5rem;
+        font-size: 0.72rem;
         color: var(--text-faint);
-        font-size: 0.75rem;
-        margin-bottom: 1.2rem;
+        word-break: break-all;
       }
       .modal .drop {
-        border: 1px dashed var(--line);
+        margin: 0.5rem 1.5rem;
         padding: 2rem;
+        border: 1.5px dashed var(--line);
         text-align: center;
-        color: var(--text-dim);
-        border-radius: 3px;
         cursor: pointer;
+        color: var(--text-dim);
+        border-radius: 2px;
         transition: all 0.2s;
       }
-      .modal .drop:hover { border-color: var(--accent); color: var(--accent); }
-      .modal .drop small { display: block; margin-top: 0.4rem; color: var(--text-faint); font-size: 0.7rem; }
-      .modal .crop-area { margin-top: 1.2rem; display: none; }
+      .modal .drop:hover { border-color: var(--accent-dim); color: var(--text); }
+      .modal .drop small { display: block; margin-top: 0.4rem; font-size: 0.7rem; color: var(--text-faint); }
+      .modal .crop-area { display: none; padding: 0 1.5rem; flex: 1; min-height: 0; }
       .modal .crop-area[data-open="true"] { display: block; }
-      .modal .crop-area .stage {
-        max-height: 60vh;
-        background: #000;
-        border: 1px solid var(--line);
+      .modal .stage {
+        max-height: 50vh;
+        background: var(--bg);
       }
-      .modal .crop-area .stage img { display: block; max-width: 100%; }
+      .modal .stage img { max-width: 100%; display: block; }
       .modal .footer {
+        padding: 1rem 1.5rem;
         display: flex;
-        gap: 0.8rem;
         justify-content: flex-end;
-        margin-top: 1.2rem;
+        gap: 0.6rem;
       }
-      .modal .footer button {
-        background: transparent;
+
+      /* ===== DELETE CONFIRM MODAL ===== */
+      .confirm {
+        background: var(--surface);
+        border: 1px solid var(--danger);
+        max-width: 460px;
+        width: 100%;
+        padding: 1.5rem;
+        border-radius: 2px;
+      }
+      .confirm h3 {
+        margin: 0 0 0.8rem;
+        font-size: 0.95rem;
+        color: var(--danger);
+        letter-spacing: 0.05em;
+      }
+      .confirm p {
+        font-size: 0.85rem;
+        color: var(--text-dim);
+        line-height: 1.55;
+        margin: 0 0 1rem;
+      }
+      .confirm .slug-echo {
+        font-family: 'Courier New', monospace;
+        color: var(--accent);
+        background: var(--bg);
+        padding: 0.2rem 0.4rem;
+        font-size: 0.85rem;
+      }
+      .confirm input {
+        width: 100%;
+        background: var(--panel);
         border: 1px solid var(--line);
         color: var(--text);
-        padding: 0.6rem 1.2rem;
-        cursor: pointer;
+        padding: 0.55rem 0.7rem;
+        font-family: 'Courier New', monospace;
+        font-size: 0.9rem;
         border-radius: 2px;
-        font-size: 0.78rem;
-        letter-spacing: 0.1em;
+        margin-bottom: 1rem;
       }
-      .modal .footer button.primary {
-        border-color: var(--accent);
-        color: var(--accent);
+      .confirm .footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 0.6rem;
       }
-      .modal .footer button.primary:hover {
-        background: var(--accent);
-        color: var(--bg);
-      }
-      .modal .footer button:disabled {
-        opacity: 0.4;
-        cursor: not-allowed;
-      }
+
+      /* ===== TOAST ===== */
       .toast {
         position: fixed;
         bottom: 2rem;
         right: 2rem;
         background: var(--surface);
         border: 1px solid var(--line);
-        border-left: 3px solid var(--accent);
-        padding: 0.9rem 1.2rem;
-        border-radius: 3px;
-        font-size: 0.85rem;
-        max-width: 360px;
+        border-left: 4px solid var(--accent);
+        padding: 1rem 1.4rem;
+        max-width: 420px;
+        font-size: 0.82rem;
+        line-height: 1.5;
         z-index: 200;
         display: none;
-        box-shadow: 0 12px 32px rgba(0, 0, 0, 0.4);
+        box-shadow: 0 8px 28px rgba(0,0,0,0.5);
       }
       .toast[data-open="true"] { display: block; }
       .toast.ok { border-left-color: var(--ok); }
       .toast.err { border-left-color: var(--danger); }
       .toast a { color: var(--accent); }
+
+      /* dragging state on body */
+      body.is-dragging { cursor: grabbing !important; }
+      body.is-dragging .card { transition: none; }
     </style>
   </head>
   <body>
     <header class="admin-header">
       <h1>LTH Portfolio · Admin</h1>
-      <nav style="display: flex; gap: 1rem; flex: 1; margin-left: 2rem; align-items: center;">
+      <nav style="display: flex; gap: 1rem; flex: 0 0 auto; margin-left: 2rem; align-items: center;">
         <a href="/admin/" style="color: var(--text-faint); font-size: 0.72rem; letter-spacing: 0.08em; text-decoration: none;">← 後台首頁</a>
-        <a href="/admin/works/" style="color: var(--accent); border: 1px solid var(--accent); padding: 0.4rem 0.8rem; border-radius: 2px; font-size: 0.78rem; letter-spacing: 0.08em; text-decoration: none;">作品海報</a>
+        <a href="/admin/works/" style="color: var(--accent); border: 1px solid var(--accent); padding: 0.4rem 0.8rem; border-radius: 2px; font-size: 0.78rem; letter-spacing: 0.08em; text-decoration: none;">作品資訊</a>
         <a href="/admin/awards/" style="color: var(--text-dim); padding: 0.4rem 0.8rem; border-radius: 2px; font-size: 0.78rem; letter-spacing: 0.08em; text-decoration: none;">得獎入圍</a>
       </nav>
-      <span class="meta" id="count">{list.length} works</span>
+      <span class="meta" id="count">{initialWorks.length} works</span>
     </header>
+
+    <div class="save-bar">
+      <span class="status" id="dirty-status">無變更</span>
+      <span class="spacer"></span>
+      <button class="btn" id="add-btn" type="button">＋ 新增作品</button>
+      <button class="btn" id="reset-btn" type="button" disabled>還原</button>
+      <button class="btn primary" id="save-btn" type="button" disabled>全部存檔</button>
+    </div>
 
     <main>
       <div class="filter-bar">
         <button data-filter="all" aria-pressed="true">全部</button>
-        <button data-filter="feature">電影</button>
-        <button data-filter="series">劇集</button>
-        <button data-filter="trailer">預告片花</button>
-        <button data-filter="short">短片</button>
-        <button data-filter="commercial">廣告</button>
-        <button data-filter="mv">MV</button>
-        <button data-filter="tvmovie">電視電影</button>
-        <input id="search" placeholder="搜尋作品名..." />
+        {CATEGORIES.map((c) => (
+          <button data-filter={c.value}>{c.zh}</button>
+        ))}
+        <input id="search" placeholder="搜尋作品名 / slug..." />
       </div>
 
-      <div class="grid" id="grid">
-        {list.map((w) => {
-          const hasOfficial = (w.cover || '').includes('/official/');
-          const cats = (w.categories || []).join(' ');
-          return (
-            <article
-              class="card"
-              data-slug={w.slug}
-              data-title-zh={w.titleZh}
-              data-title-en={w.titleEn || ''}
-              data-cats={cats}
-              data-has-official={hasOfficial ? 'true' : 'false'}
-            >
-              <div class="thumb">
-                {w.cover && <img src={w.cover} alt={w.titleZh} loading="lazy" />}
-              </div>
-              <div class="info">
-                <span class="title-zh">{w.titleZh}</span>
-                {w.titleEn && <span class="title-en">{w.titleEn}</span>}
-                <span class="year">{w.year}</span>
-              </div>
-              <div class="actions">
-                <button class="upload-btn" type="button">上傳 / 替換海報</button>
-              </div>
-            </article>
-          );
-        })}
-      </div>
+      <div class="grid" id="grid"></div>
     </main>
+
+    <div class="drawer-backdrop" id="drawer-bg"></div>
+    <aside class="drawer" id="drawer">
+      <div class="drawer-head">
+        <h2 id="drawer-title">編輯作品</h2>
+        <button class="close-x" id="drawer-close" type="button" aria-label="關閉">✕</button>
+      </div>
+      <div class="drawer-body" id="drawer-body"></div>
+      <div class="drawer-foot">
+        <button class="btn danger" id="drawer-delete" type="button">刪除</button>
+        <span class="spacer"></span>
+        <button class="btn" id="drawer-cancel" type="button">取消</button>
+        <button class="btn primary" id="drawer-apply" type="button">套用變更</button>
+      </div>
+    </aside>
 
     <div class="modal-backdrop" id="modal">
       <div class="modal">
         <h2 id="m-title">上傳海報</h2>
         <div class="sub" id="m-slug"></div>
-
         <label class="drop" id="m-drop">
           點此選擇圖片（或拖曳）
           <small>支援 JPG / PNG / WebP，自動裁切成 2:3</small>
           <input type="file" id="m-file" accept="image/*" hidden />
         </label>
-
         <div class="crop-area" id="m-crop">
           <div class="stage"><img id="m-img" /></div>
           <div class="sub" style="margin-top: 0.7rem;">拖動調整裁切範圍，完成後按送出</div>
         </div>
-
         <div class="footer">
-          <button type="button" id="m-cancel">取消</button>
-          <button type="button" class="primary" id="m-submit" disabled>送出並發布</button>
+          <button type="button" class="btn" id="m-cancel">取消</button>
+          <button type="button" class="btn primary" id="m-submit" disabled>送出並發布</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal-backdrop" id="confirm-modal">
+      <div class="confirm">
+        <h3>刪除作品？</h3>
+        <p>
+          這個動作不可逆。請輸入作品 slug <span class="slug-echo" id="confirm-slug-echo"></span> 確認刪除。
+          <br/>注意：刪除後還要按「全部存檔」才會推上 GitHub。
+        </p>
+        <input id="confirm-input" placeholder="輸入 slug 確認" autocomplete="off" />
+        <div class="footer">
+          <button type="button" class="btn" id="confirm-cancel">取消</button>
+          <button type="button" class="btn danger" id="confirm-ok" disabled>確認刪除</button>
         </div>
       </div>
     </div>
 
     <div class="toast" id="toast"></div>
 
-    <script>
-      // Cropper via CDN
-      const cdnScript = document.createElement('script');
-      cdnScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js';
-      document.head.appendChild(cdnScript);
-      await new Promise((r) => { cdnScript.onload = r; });
-      const Cropper = (window as any).Cropper;
-
-      const grid = document.getElementById('grid')!;
-      const searchInput = document.getElementById('search') as HTMLInputElement;
-      const filterBtns = document.querySelectorAll<HTMLButtonElement>('.filter-bar button[data-filter]');
-
+    <script define:vars={{ initialWorks, CATEGORIES, LINK_TYPES }}>
+      // ============================================================
+      // STATE
+      // ============================================================
+      let works = JSON.parse(JSON.stringify(initialWorks));
+      let baseline = JSON.stringify(works);
       let activeFilter = 'all';
-      function applyFilter() {
-        const q = (searchInput.value || '').trim().toLowerCase();
-        grid.querySelectorAll<HTMLElement>('.card').forEach((card) => {
-          const titleZh = (card.dataset.titleZh || '').toLowerCase();
-          const titleEn = (card.dataset.titleEn || '').toLowerCase();
-          const cats = (card.dataset.cats || '').toLowerCase();
+      let searchQuery = '';
+
+      // Drawer working state
+      let drawerMode = 'edit'; // 'edit' | 'new'
+      let drawerIdx = -1;       // index in works array (or -1 for new)
+      let drawerDraft = null;   // edited copy
+
+      // ============================================================
+      // DOM
+      // ============================================================
+      const grid = document.getElementById('grid');
+      const countEl = document.getElementById('count');
+      const dirtyStatus = document.getElementById('dirty-status');
+      const saveBtn = document.getElementById('save-btn');
+      const resetBtn = document.getElementById('reset-btn');
+      const addBtn = document.getElementById('add-btn');
+      const filterBtns = document.querySelectorAll('.filter-bar button[data-filter]');
+      const searchInput = document.getElementById('search');
+
+      const drawer = document.getElementById('drawer');
+      const drawerBg = document.getElementById('drawer-bg');
+      const drawerTitle = document.getElementById('drawer-title');
+      const drawerBody = document.getElementById('drawer-body');
+      const drawerClose = document.getElementById('drawer-close');
+      const drawerCancel = document.getElementById('drawer-cancel');
+      const drawerApply = document.getElementById('drawer-apply');
+      const drawerDelete = document.getElementById('drawer-delete');
+
+      const modal = document.getElementById('modal');
+      const mTitle = document.getElementById('m-title');
+      const mSlug = document.getElementById('m-slug');
+      const mDrop = document.getElementById('m-drop');
+      const mFile = document.getElementById('m-file');
+      const mCrop = document.getElementById('m-crop');
+      const mImg = document.getElementById('m-img');
+      const mCancel = document.getElementById('m-cancel');
+      const mSubmit = document.getElementById('m-submit');
+
+      const confirmModal = document.getElementById('confirm-modal');
+      const confirmEcho = document.getElementById('confirm-slug-echo');
+      const confirmInput = document.getElementById('confirm-input');
+      const confirmCancel = document.getElementById('confirm-cancel');
+      const confirmOk = document.getElementById('confirm-ok');
+
+      const toast = document.getElementById('toast');
+
+      // ============================================================
+      // RENDER LIST
+      // ============================================================
+      function categoryZh(v) {
+        const c = CATEGORIES.find((x) => x.value === v);
+        return c ? c.zh : v;
+      }
+
+      function renderList() {
+        grid.innerHTML = '';
+        const q = searchQuery.toLowerCase();
+        let visible = 0;
+        works.forEach((w, idx) => {
+          const cats = (w.categories || []).join(' ');
           const matchFilter = activeFilter === 'all' || cats.includes(activeFilter);
-          const matchQuery = !q || titleZh.includes(q) || titleEn.includes(q);
-          card.style.display = matchFilter && matchQuery ? '' : 'none';
+          const matchQuery =
+            !q ||
+            (w.titleZh || '').toLowerCase().includes(q) ||
+            (w.titleEn || '').toLowerCase().includes(q) ||
+            (w.slug || '').toLowerCase().includes(q);
+          if (!matchFilter || !matchQuery) return;
+          visible++;
+
+          const isNew = !baseline.includes(`"slug":"${w.slug}"`) && !originalSlugs.has(w.slug);
+          const card = document.createElement('article');
+          card.className = 'card';
+          card.dataset.idx = String(idx);
+          card.draggable = true;
+          card.innerHTML = `
+            <span class="drag-handle" title="拖動排序">⋮⋮</span>
+            ${isNew ? '<span class="badge-new">NEW</span>' : ''}
+            <div class="thumb">
+              ${w.cover ? `<img src="${w.cover}" alt="${escapeHtml(w.titleZh)}" loading="lazy" />` : '<span class="empty">無海報</span>'}
+            </div>
+            <div class="info">
+              <span class="title-zh">${escapeHtml(w.titleZh) || '(未命名)'}</span>
+              ${w.titleEn ? `<span class="title-en">${escapeHtml(w.titleEn)}</span>` : ''}
+              <span class="year">${escapeHtml(w.year || '—')} · ${escapeHtml(categoryZh(w.primaryCategory))}</span>
+            </div>
+          `;
+          card.addEventListener('click', (e) => {
+            if (e.target.closest('.drag-handle')) return;
+            openDrawer('edit', idx);
+          });
+          attachDragHandlers(card);
+          grid.appendChild(card);
+        });
+        countEl.textContent = `${visible} / ${works.length} works`;
+      }
+
+      const originalSlugs = new Set(initialWorks.map((w) => w.slug));
+
+      function escapeHtml(s) {
+        if (s == null) return '';
+        return String(s)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;');
+      }
+
+      // ============================================================
+      // DIRTY TRACKING
+      // ============================================================
+      function checkDirty() {
+        const cur = JSON.stringify(works);
+        const dirty = cur !== baseline;
+        if (dirty) {
+          // Count diffs roughly
+          const baseArr = JSON.parse(baseline);
+          let added = 0, removed = 0, changed = 0;
+          const baseBySlug = new Map(baseArr.map((w) => [w.slug, w]));
+          const curBySlug = new Map(works.map((w) => [w.slug, w]));
+          for (const [s, w] of curBySlug) {
+            const b = baseBySlug.get(s);
+            if (!b) added++;
+            else if (JSON.stringify(b) !== JSON.stringify(w)) changed++;
+          }
+          for (const [s] of baseBySlug) if (!curBySlug.has(s)) removed++;
+          // Also check order changes
+          const orderChanged =
+            baseArr.length === works.length &&
+            baseArr.some((w, i) => works[i] && works[i].slug !== w.slug);
+          const parts = [];
+          if (added) parts.push(`+${added} 新增`);
+          if (removed) parts.push(`-${removed} 刪除`);
+          if (changed) parts.push(`${changed} 修改`);
+          if (orderChanged && !parts.length) parts.push('順序變動');
+          else if (orderChanged) parts.push('+順序');
+          dirtyStatus.textContent = parts.join('，') || '已修改';
+          dirtyStatus.classList.add('dirty');
+          saveBtn.disabled = false;
+          resetBtn.disabled = false;
+        } else {
+          dirtyStatus.textContent = '無變更';
+          dirtyStatus.classList.remove('dirty');
+          saveBtn.disabled = true;
+          resetBtn.disabled = true;
+        }
+      }
+
+      // ============================================================
+      // DRAWER
+      // ============================================================
+      function openDrawer(mode, idx) {
+        drawerMode = mode;
+        drawerIdx = idx;
+        if (mode === 'new') {
+          drawerDraft = {
+            slug: '',
+            titleZh: '',
+            titleEn: '',
+            year: '',
+            categories: ['feature'],
+            primaryCategory: 'feature',
+            director: '',
+            writers: '',
+            description: '',
+            cover: '',
+            coverOriginal: '',
+            covers: [],
+            links: [],
+            hasDetail: false,
+          };
+          drawerTitle.textContent = '新增作品';
+          drawerDelete.style.display = 'none';
+        } else {
+          drawerDraft = JSON.parse(JSON.stringify(works[idx]));
+          if (!drawerDraft.links) drawerDraft.links = [];
+          if (!drawerDraft.categories) drawerDraft.categories = [];
+          drawerTitle.textContent = `編輯：${drawerDraft.titleZh || '(未命名)'}`;
+          drawerDelete.style.display = '';
+        }
+        renderDrawerForm();
+        drawer.setAttribute('data-open', 'true');
+        drawerBg.setAttribute('data-open', 'true');
+      }
+
+      function closeDrawer() {
+        drawer.setAttribute('data-open', 'false');
+        drawerBg.setAttribute('data-open', 'false');
+        drawerDraft = null;
+        drawerIdx = -1;
+      }
+
+      function renderDrawerForm() {
+        const d = drawerDraft;
+        const isOfficial = (d.cover || '').includes('/official/');
+        drawerBody.innerHTML = `
+          <fieldset>
+            <legend>基本資料</legend>
+            <div class="field">
+              <label>Slug（網址 ID）</label>
+              <input type="text" id="f-slug" value="${escapeHtml(d.slug)}" ${drawerMode === 'edit' ? 'readonly' : ''} placeholder="例：the-photo-1977-2025" />
+              <div class="hint">${drawerMode === 'edit' ? '已上線的 slug 不能改（會壞外部連結）。' : '只能英文小寫、數字、連字號（-），不能空白。'}</div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label>中文片名 *</label>
+                <input type="text" id="f-titleZh" value="${escapeHtml(d.titleZh)}" />
+              </div>
+              <div class="field">
+                <label>英文片名</label>
+                <input type="text" id="f-titleEn" value="${escapeHtml(d.titleEn || '')}" />
+              </div>
+            </div>
+            <div class="field-row">
+              <div class="field">
+                <label>年份</label>
+                <input type="text" id="f-year" value="${escapeHtml(d.year || '')}" placeholder="2025" />
+              </div>
+              <div class="field">
+                <label>顯示為作品集詳情頁</label>
+                <div style="margin-top: 0.4rem;">
+                  <label style="display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.35rem 0.7rem; background: var(--panel); border: 1px solid var(--line); border-radius: 2px; font-size: 0.78rem; color: var(--text-dim); cursor: pointer; text-transform: none; letter-spacing: 0.04em;">
+                    <input type="checkbox" id="f-hasDetail" ${d.hasDetail ? 'checked' : ''} />
+                    <span>建立詳情頁 hasDetail</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>分類</legend>
+            <div class="field">
+              <label>所屬分類（可複選）</label>
+              <div class="checkbox-row" id="f-categories">
+                ${CATEGORIES.map((c) => `
+                  <label class="${d.categories.includes(c.value) ? 'checked' : ''}">
+                    <input type="checkbox" value="${c.value}" ${d.categories.includes(c.value) ? 'checked' : ''} />
+                    <span>${c.zh}</span>
+                  </label>
+                `).join('')}
+              </div>
+            </div>
+            <div class="field">
+              <label>主要分類（決定首頁出現位置）</label>
+              <div class="radio-row" id="f-primary">
+                ${CATEGORIES.map((c) => `
+                  <label class="${d.primaryCategory === c.value ? 'checked' : ''}" data-disabled="${!d.categories.includes(c.value)}" style="${!d.categories.includes(c.value) ? 'opacity: 0.35; pointer-events: none;' : ''}">
+                    <input type="radio" name="primary" value="${c.value}" ${d.primaryCategory === c.value ? 'checked' : ''} ${!d.categories.includes(c.value) ? 'disabled' : ''} />
+                    <span>${c.zh}</span>
+                  </label>
+                `).join('')}
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>製作資訊</legend>
+            <div class="field">
+              <label>導演</label>
+              <input type="text" id="f-director" value="${escapeHtml(d.director || '')}" />
+            </div>
+            <div class="field">
+              <label>編劇</label>
+              <input type="text" id="f-writers" value="${escapeHtml(d.writers || '')}" />
+            </div>
+            <div class="field">
+              <label>劇情描述</label>
+              <textarea id="f-description">${escapeHtml(d.description || '')}</textarea>
+              <div class="hint">會顯示在作品詳情頁。可換行。</div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>海報</legend>
+            <div class="cover-block">
+              <div class="preview">
+                ${d.cover ? `<img src="${d.cover}" alt="cover" />` : '<span class="empty">無</span>'}
+              </div>
+              <div class="info">
+                ${isOfficial ? '<div class="official">✓ 官方海報</div>' : ''}
+                ${d.cover ? escapeHtml(d.cover) : '尚未上傳海報'}
+              </div>
+              <button type="button" class="btn" id="f-upload-poster" ${drawerMode === 'new' ? 'disabled title="新增作品請先儲存後再上傳海報"' : ''}>
+                ${d.cover ? '替換海報' : '上傳海報'}
+              </button>
+            </div>
+            ${drawerMode === 'new' ? '<div class="hint warn">新增的作品要先按「套用變更」+「全部存檔」推上去後，才能上傳海報。</div>' : ''}
+          </fieldset>
+
+          <fieldset>
+            <legend>外部連結</legend>
+            <div class="links-list" id="f-links"></div>
+            <button type="button" class="btn" id="f-add-link" style="margin-top: 0.6rem;">＋ 新增連結</button>
+            <div class="hint">每個連結可選平台類型，URL 必須是 https://...，標籤是給訪客看的中文（例：正式預告 Trailer）</div>
+          </fieldset>
+        `;
+        attachDrawerHandlers();
+        renderLinks();
+      }
+
+      function renderLinks() {
+        const list = document.getElementById('f-links');
+        list.innerHTML = '';
+        drawerDraft.links.forEach((l, i) => {
+          const row = document.createElement('div');
+          row.className = 'link-card';
+          row.innerHTML = `
+            <div class="link-row">
+              <select data-i="${i}" data-f="type">
+                ${LINK_TYPES.map((t) => `<option value="${t.value}" ${t.value === l.type ? 'selected' : ''}>${t.zh}</option>`).join('')}
+              </select>
+              <input type="text" data-i="${i}" data-f="label" placeholder="顯示文字（例：正式預告 Trailer）" value="${escapeHtml(l.label || '')}" />
+              <button type="button" class="del" data-i="${i}" title="移除連結">✕</button>
+              <div class="url-row">
+                <input type="url" data-i="${i}" data-f="url" placeholder="https://..." value="${escapeHtml(l.url || '')}" />
+              </div>
+            </div>
+          `;
+          list.appendChild(row);
+        });
+        list.querySelectorAll('select, input').forEach((el) => {
+          el.addEventListener('input', (e) => {
+            const t = e.target;
+            const i = +t.dataset.i;
+            const f = t.dataset.f;
+            drawerDraft.links[i][f] = t.value;
+          });
+        });
+        list.querySelectorAll('.del').forEach((b) => {
+          b.addEventListener('click', () => {
+            const i = +b.dataset.i;
+            drawerDraft.links.splice(i, 1);
+            renderLinks();
+          });
         });
       }
+
+      function attachDrawerHandlers() {
+        const get = (id) => document.getElementById(id);
+        get('f-slug') && get('f-slug').addEventListener('input', (e) => { drawerDraft.slug = e.target.value.trim(); });
+        get('f-titleZh').addEventListener('input', (e) => { drawerDraft.titleZh = e.target.value; });
+        get('f-titleEn').addEventListener('input', (e) => { drawerDraft.titleEn = e.target.value; });
+        get('f-year').addEventListener('input', (e) => { drawerDraft.year = e.target.value; });
+        get('f-director').addEventListener('input', (e) => { drawerDraft.director = e.target.value; });
+        get('f-writers').addEventListener('input', (e) => { drawerDraft.writers = e.target.value; });
+        get('f-description').addEventListener('input', (e) => { drawerDraft.description = e.target.value; });
+        get('f-hasDetail').addEventListener('change', (e) => { drawerDraft.hasDetail = e.target.checked; });
+
+        // categories checkboxes
+        document.querySelectorAll('#f-categories input').forEach((cb) => {
+          cb.addEventListener('change', (e) => {
+            const v = e.target.value;
+            const has = e.target.checked;
+            if (has) {
+              if (!drawerDraft.categories.includes(v)) drawerDraft.categories.push(v);
+            } else {
+              drawerDraft.categories = drawerDraft.categories.filter((x) => x !== v);
+              // If primary was unchecked, switch to first remaining
+              if (drawerDraft.primaryCategory === v) {
+                drawerDraft.primaryCategory = drawerDraft.categories[0] || '';
+              }
+            }
+            renderDrawerForm();
+          });
+        });
+
+        // primary category radios
+        document.querySelectorAll('#f-primary input').forEach((rb) => {
+          rb.addEventListener('change', (e) => {
+            drawerDraft.primaryCategory = e.target.value;
+            // Visual update
+            document.querySelectorAll('#f-primary label').forEach((l) => {
+              const inp = l.querySelector('input');
+              l.classList.toggle('checked', inp.checked);
+            });
+          });
+        });
+
+        // upload poster
+        const uploadBtn = get('f-upload-poster');
+        if (uploadBtn) {
+          uploadBtn.addEventListener('click', () => {
+            if (drawerMode === 'new') return;
+            // Need slug to exist on server (= already saved). Warn if dirty.
+            const slug = drawerDraft.slug;
+            const orig = works[drawerIdx];
+            if (!originalSlugs.has(slug)) {
+              showToast('請先「套用變更」+「全部存檔」後再上傳海報', 'err', 5000);
+              return;
+            }
+            openUploadModal(slug, drawerDraft.titleZh);
+          });
+        }
+
+        // add link
+        get('f-add-link').addEventListener('click', () => {
+          drawerDraft.links.push({ type: 'youtube', url: '', label: '' });
+          renderLinks();
+        });
+      }
+
+      // ============================================================
+      // DRAWER ACTIONS
+      // ============================================================
+      drawerClose.addEventListener('click', closeDrawer);
+      drawerCancel.addEventListener('click', closeDrawer);
+      drawerBg.addEventListener('click', closeDrawer);
+
+      drawerApply.addEventListener('click', () => {
+        const d = drawerDraft;
+        // Validate
+        if (!d.slug || !/^[\p{L}\p{N}\-]+$/u.test(d.slug)) {
+          showToast('Slug 格式錯誤（只能英文/數字/連字號）', 'err'); return;
+        }
+        if (!d.titleZh.trim()) { showToast('中文片名必填', 'err'); return; }
+        if (!d.categories.length) { showToast('至少選一個分類', 'err'); return; }
+        if (!d.primaryCategory || !d.categories.includes(d.primaryCategory)) {
+          showToast('主要分類必須是已勾選的分類之一', 'err'); return;
+        }
+        // Slug uniqueness check (exclude self in edit mode)
+        const dupIdx = works.findIndex((w) => w.slug === d.slug);
+        if (dupIdx !== -1 && dupIdx !== drawerIdx) {
+          showToast(`Slug "${d.slug}" 已被其他作品使用`, 'err'); return;
+        }
+        // Validate links
+        for (let i = 0; i < d.links.length; i++) {
+          const l = d.links[i];
+          if (!l.url || !/^https?:\/\//i.test(l.url)) {
+            showToast(`第 ${i + 1} 個連結 URL 無效`, 'err'); return;
+          }
+        }
+
+        if (drawerMode === 'new') {
+          works.unshift(d);
+        } else {
+          works[drawerIdx] = d;
+        }
+        renderList();
+        checkDirty();
+        closeDrawer();
+        showToast(drawerMode === 'new' ? '已加入清單，記得「全部存檔」' : '已更新，記得「全部存檔」', 'ok', 3000);
+      });
+
+      // ============================================================
+      // DELETE
+      // ============================================================
+      drawerDelete.addEventListener('click', () => {
+        if (drawerMode !== 'edit') return;
+        const slug = drawerDraft.slug;
+        confirmEcho.textContent = slug;
+        confirmInput.value = '';
+        confirmOk.disabled = true;
+        confirmModal.setAttribute('data-open', 'true');
+        confirmInput.focus();
+      });
+
+      confirmInput.addEventListener('input', () => {
+        confirmOk.disabled = confirmInput.value !== confirmEcho.textContent;
+      });
+      confirmCancel.addEventListener('click', () => confirmModal.setAttribute('data-open', 'false'));
+      confirmModal.addEventListener('click', (e) => {
+        if (e.target === confirmModal) confirmModal.setAttribute('data-open', 'false');
+      });
+      confirmOk.addEventListener('click', () => {
+        if (confirmInput.value !== confirmEcho.textContent) return;
+        works.splice(drawerIdx, 1);
+        confirmModal.setAttribute('data-open', 'false');
+        closeDrawer();
+        renderList();
+        checkDirty();
+        showToast('已從清單移除，記得「全部存檔」', 'ok', 3000);
+      });
+
+      // ============================================================
+      // ADD
+      // ============================================================
+      addBtn.addEventListener('click', () => openDrawer('new', -1));
+
+      // ============================================================
+      // FILTER / SEARCH
+      // ============================================================
       filterBtns.forEach((b) => {
         b.addEventListener('click', () => {
           filterBtns.forEach((x) => x.setAttribute('aria-pressed', 'false'));
           b.setAttribute('aria-pressed', 'true');
           activeFilter = b.dataset.filter || 'all';
-          applyFilter();
+          renderList();
         });
       });
-      searchInput.addEventListener('input', applyFilter);
+      searchInput.addEventListener('input', () => {
+        searchQuery = searchInput.value.trim();
+        renderList();
+      });
 
-      // Modal
-      const modal = document.getElementById('modal')!;
-      const mTitle = document.getElementById('m-title')!;
-      const mSlug = document.getElementById('m-slug')!;
-      const mDrop = document.getElementById('m-drop')!;
-      const mFile = document.getElementById('m-file') as HTMLInputElement;
-      const mCrop = document.getElementById('m-crop')!;
-      const mImg = document.getElementById('m-img') as HTMLImageElement;
-      const mCancel = document.getElementById('m-cancel')!;
-      const mSubmit = document.getElementById('m-submit') as HTMLButtonElement;
-      const toast = document.getElementById('toast')!;
+      // ============================================================
+      // DRAG-DROP REORDER
+      // ============================================================
+      let dragSrcIdx = -1;
+      function attachDragHandlers(card) {
+        card.addEventListener('dragstart', (e) => {
+          dragSrcIdx = +card.dataset.idx;
+          card.classList.add('dragging');
+          document.body.classList.add('is-dragging');
+          if (e.dataTransfer) e.dataTransfer.effectAllowed = 'move';
+        });
+        card.addEventListener('dragend', () => {
+          card.classList.remove('dragging');
+          document.body.classList.remove('is-dragging');
+          grid.querySelectorAll('.drop-target').forEach((el) => el.classList.remove('drop-target'));
+        });
+        card.addEventListener('dragover', (e) => {
+          e.preventDefault();
+          if (e.dataTransfer) e.dataTransfer.dropEffect = 'move';
+          card.classList.add('drop-target');
+        });
+        card.addEventListener('dragleave', () => card.classList.remove('drop-target'));
+        card.addEventListener('drop', (e) => {
+          e.preventDefault();
+          card.classList.remove('drop-target');
+          const targetIdx = +card.dataset.idx;
+          if (dragSrcIdx === -1 || dragSrcIdx === targetIdx) return;
+          const [moved] = works.splice(dragSrcIdx, 1);
+          works.splice(targetIdx, 0, moved);
+          dragSrcIdx = -1;
+          renderList();
+          checkDirty();
+        });
+      }
 
-      let cropper: any = null;
+      // ============================================================
+      // SAVE / RESET
+      // ============================================================
+      saveBtn.addEventListener('click', async () => {
+        saveBtn.disabled = true;
+        saveBtn.textContent = '存檔中...';
+        try {
+          const res = await fetch('/admin/api/works', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ works }),
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'save failed');
+          baseline = JSON.stringify(works);
+          // Update originalSlugs after successful commit
+          works.forEach((w) => originalSlugs.add(w.slug));
+          checkDirty();
+          renderList();
+          showToast(
+            `✅ 已存檔 ${data.count} 筆作品<br/>` +
+              `<small>CF Pages 約 1-2 分鐘後更新正式站</small><br/>` +
+              (data.url ? `<a href="${data.url}" target="_blank">查看 commit</a>` : ''),
+            'ok',
+            8000,
+          );
+        } catch (err) {
+          showToast(`❌ 存檔失敗：${err.message}`, 'err', 8000);
+        } finally {
+          saveBtn.textContent = '全部存檔';
+        }
+      });
+
+      resetBtn.addEventListener('click', () => {
+        if (!confirm('還原所有未存檔的變更？')) return;
+        works = JSON.parse(baseline);
+        renderList();
+        checkDirty();
+      });
+
+      window.addEventListener('beforeunload', (e) => {
+        if (JSON.stringify(works) !== baseline) {
+          e.preventDefault();
+          e.returnValue = '';
+        }
+      });
+
+      // ============================================================
+      // POSTER UPLOAD MODAL (lazy-load Cropper)
+      // ============================================================
+      let cropper = null;
       let currentSlug = '';
       let currentTitle = '';
+      let cropperReady = null;
 
-      function openModal(slug: string, title: string) {
+      function ensureCropper() {
+        if (cropperReady) return cropperReady;
+        cropperReady = new Promise((resolve) => {
+          const s = document.createElement('script');
+          s.src = 'https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js';
+          s.onload = () => resolve(window.Cropper);
+          document.head.appendChild(s);
+        });
+        return cropperReady;
+      }
+
+      function openUploadModal(slug, title) {
         currentSlug = slug;
         currentTitle = title;
         mTitle.textContent = `上傳海報 — ${title}`;
@@ -414,36 +1336,30 @@ const list = works as Work[];
         if (cropper) { cropper.destroy(); cropper = null; }
         modal.setAttribute('data-open', 'true');
       }
-      function closeModal() {
+      function closeUploadModal() {
         modal.setAttribute('data-open', 'false');
         if (cropper) { cropper.destroy(); cropper = null; }
       }
-      mCancel.addEventListener('click', closeModal);
-      modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
-
-      grid.querySelectorAll<HTMLElement>('.card').forEach((card) => {
-        const btn = card.querySelector<HTMLButtonElement>('.upload-btn')!;
-        btn.addEventListener('click', () => {
-          openModal(card.dataset.slug!, card.dataset.titleZh!);
-        });
-      });
+      mCancel.addEventListener('click', closeUploadModal);
+      modal.addEventListener('click', (e) => { if (e.target === modal) closeUploadModal(); });
 
       mDrop.addEventListener('click', () => mFile.click());
-      mDrop.addEventListener('dragover', (e) => { e.preventDefault(); });
+      mDrop.addEventListener('dragover', (e) => e.preventDefault());
       mDrop.addEventListener('drop', (e) => {
         e.preventDefault();
-        const f = (e as DragEvent).dataTransfer?.files?.[0];
+        const f = e.dataTransfer && e.dataTransfer.files[0];
         if (f) loadFile(f);
       });
       mFile.addEventListener('change', () => {
-        const f = mFile.files?.[0];
+        const f = mFile.files && mFile.files[0];
         if (f) loadFile(f);
       });
 
-      function loadFile(file: File) {
+      async function loadFile(file) {
+        const Cropper = await ensureCropper();
         const reader = new FileReader();
         reader.onload = () => {
-          mImg.src = reader.result as string;
+          mImg.src = reader.result;
           mCrop.setAttribute('data-open', 'true');
           if (cropper) cropper.destroy();
           cropper = new Cropper(mImg, {
@@ -461,24 +1377,12 @@ const list = works as Work[];
         reader.readAsDataURL(file);
       }
 
-      function showToast(msg: string, kind: 'ok' | 'err' = 'ok', ms = 5000) {
-        toast.className = `toast ${kind}`;
-        toast.innerHTML = msg;
-        toast.setAttribute('data-open', 'true');
-        setTimeout(() => toast.setAttribute('data-open', 'false'), ms);
-      }
-
       mSubmit.addEventListener('click', async () => {
         if (!cropper || !currentSlug) return;
         mSubmit.disabled = true;
         mSubmit.textContent = '上傳中...';
-
-        const canvas = cropper.getCroppedCanvas({
-          width: 900,
-          imageSmoothingQuality: 'high',
-        });
+        const canvas = cropper.getCroppedCanvas({ width: 900, imageSmoothingQuality: 'high' });
         const dataUrl = canvas.toDataURL('image/jpeg', 0.88);
-
         try {
           const res = await fetch('/admin/api/upload-poster', {
             method: 'POST',
@@ -487,30 +1391,50 @@ const list = works as Work[];
           });
           const data = await res.json();
           if (!res.ok) throw new Error(data.error || 'upload failed');
-
+          // Update local state cover
+          const idx = works.findIndex((w) => w.slug === currentSlug);
+          if (idx !== -1) {
+            works[idx].cover = `/stills/covers/official/${currentSlug}.jpg`;
+            baseline = JSON.stringify(works);
+            renderList();
+            checkDirty();
+            // If drawer open for this work, re-render form to show new cover
+            if (drawerIdx === idx && drawer.getAttribute('data-open') === 'true') {
+              drawerDraft.cover = works[idx].cover;
+              renderDrawerForm();
+            }
+          }
           showToast(
             `✅ ${currentTitle} 海報已推送<br/>` +
-              `<small>CF Pages 約 1-2 分鐘後更新</small><br/>` +
               (data.url ? `<a href="${data.url}" target="_blank">查看 commit</a>` : ''),
             'ok',
-            8000,
+            6000,
           );
-
-          // 標記 card 為已有 official
-          const card = grid.querySelector<HTMLElement>(`.card[data-slug="${currentSlug}"]`);
-          if (card) {
-            card.dataset.hasOfficial = 'true';
-            const img = card.querySelector('img');
-            if (img) img.src = `/stills/covers/official/${currentSlug}.jpg?t=${Date.now()}`;
-          }
-          closeModal();
-        } catch (err: any) {
+          closeUploadModal();
+        } catch (err) {
           showToast(`❌ 上傳失敗：${err.message}`, 'err', 8000);
         } finally {
           mSubmit.disabled = false;
           mSubmit.textContent = '送出並發布';
         }
       });
+
+      // ============================================================
+      // TOAST
+      // ============================================================
+      function showToast(msg, kind = 'ok', ms = 4000) {
+        toast.className = `toast ${kind}`;
+        toast.innerHTML = msg;
+        toast.setAttribute('data-open', 'true');
+        clearTimeout(showToast._t);
+        showToast._t = setTimeout(() => toast.setAttribute('data-open', 'false'), ms);
+      }
+
+      // ============================================================
+      // INIT
+      // ============================================================
+      renderList();
+      checkDirty();
     </script>
   </body>
 </html>
