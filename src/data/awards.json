@@ -11,7 +11,7 @@
     "awardEn": "Golden Bell Awards",
     "poster": "/stills/covers/official/gold-leaf-2022.jpg",
     "posterX": 50,
-    "posterY": 50,
+    "posterY": 65,
     "posterScale": 100
   },
   {
@@ -40,8 +40,8 @@
     "awardZh": "金鐘獎 最佳剪輯獎",
     "awardEn": "Golden Bell Awards",
     "poster": "/stills/covers/official/living-2023.jpg",
-    "posterX": 50,
-    "posterY": 50,
-    "posterScale": 100
+    "posterX": 47,
+    "posterY": 68,
+    "posterScale": 106
   }
 ]
