@@ -15,10 +15,10 @@ footer {
 
 .footer-logo {
   display: block;
-  width: clamp(280px, 36vw, 420px);
+  width: clamp(190px, 24vw, 280px);
   height: auto;
   margin: 0 auto 2.4rem;
-  opacity: 0.9;
+  opacity: 0.55;
   user-select: none;
 }
 

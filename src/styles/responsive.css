@@ -84,7 +84,7 @@
 
   footer { padding: 5rem 1.5rem 2.5rem; }
   .footer-hero { margin-bottom: 3rem; }
-  .footer-logo { width: clamp(220px, 70vw, 320px); margin-bottom: 1.8rem; }
+  .footer-logo { width: clamp(150px, 50vw, 220px); margin-bottom: 1.8rem; }
   .footer-sub { font-size: 0.92rem; margin-bottom: 2.2rem; }
   .contact-form .form-row { grid-template-columns: 1fr; gap: 1.1rem; }
   .contact-form .form-submit { width: 100%; min-width: 0; }
