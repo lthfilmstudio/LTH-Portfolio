@@ -41,23 +41,21 @@
     "hasDetail": true
   },
   {
-    "slug": "summer-blue-hour-2025",
+    "slug": "summer-blue-hour-2025-trailer",
     "titleZh": "夏日最後的祕密",
     "titleEn": "Summer Blue Hour",
     "year": "2025",
     "categories": [
-      "feature",
       "trailer"
     ],
-    "primaryCategory": "feature",
+    "primaryCategory": "trailer",
     "director": "邱晧洲",
     "writers": "",
-    "description": "『十七歲的祕密，是關於你的每一幀回憶。』那一年，他們約定相愛到畢業就分手，沒有原因，只留下遺憾十年過去，蘇明儀依然放不下，回憶裡的每個片段，依舊清晰如昨日。而一直默默守護的程硯，也藏著無法說出口的心意…",
-    "cover": "/stills/covers/official/summer-blue-hour-2025.jpg",
+    "description": "前導預告、正式預告剪輯",
+    "cover": "/stills/covers/473096089_122107576496711309_452250625718281418_n.jpg",
     "coverOriginal": "/stills/covers/473096089_122107576496711309_452250625718281418_n.jpg",
     "covers": [
-      "/stills/covers/473096089_122107576496711309_452250625718281418_n.jpg",
-      "/stills/covers/473096089_122107576496711309_452250625718281418_n%201.jpg"
+      "/stills/covers/473096089_122107576496711309_452250625718281418_n.jpg"
     ],
     "links": [
       {
@@ -222,6 +220,36 @@
     "hasDetail": true
   },
   {
+    "slug": "summer-blue-hour-2025",
+    "titleZh": "夏日最後的祕密",
+    "titleEn": "Summer Blue Hour",
+    "year": "2025",
+    "categories": [
+      "feature"
+    ],
+    "primaryCategory": "feature",
+    "director": "邱晧洲",
+    "writers": "",
+    "description": "『十七歲的祕密，是關於你的每一幀回憶。』那一年，他們約定相愛到畢業就分手，沒有原因，只留下遺憾十年過去，蘇明儀依然放不下，回憶裡的每個片段，依舊清晰如昨日。而一直默默守護的程硯，也藏著無法說出口的心意…",
+    "cover": "/stills/covers/official/summer-blue-hour-2025.jpg",
+    "coverOriginal": "/stills/covers/473096089_122107576496711309_452250625718281418_n.jpg",
+    "covers": [
+      "/stills/covers/473096089_122107576496711309_452250625718281418_n.jpg",
+      "/stills/covers/473096089_122107576496711309_452250625718281418_n%201.jpg"
+    ],
+    "links": [
+      {
+        "type": "facebook",
+        "url": "https://www.facebook.com/VVPfans/videos/1164626838355262"
+      },
+      {
+        "type": "youtube",
+        "url": "https://www.youtube.com/watch?v=Ee0bpCHmbww"
+      }
+    ],
+    "hasDetail": true
+  },
+  {
     "slug": "adrift-in-love-2025",
     "titleZh": "人浮於愛",
     "titleEn": "Adrift in Love",
@@ -255,7 +283,7 @@
     "hasDetail": true
   },
   {
-    "slug": "tabloid-2024",
+    "slug": "tabloid-2024-trailer",
     "titleZh": "死了一個娛樂女記者之後",
     "titleEn": "Tabloid",
     "year": "2024",
@@ -275,7 +303,7 @@
     "hasDetail": true
   },
   {
-    "slug": "mission-2024",
+    "slug": "mission-2024-trailer",
     "titleZh": "太太太厲害 M",
     "titleEn": "Mission",
     "year": "2024",
@@ -324,7 +352,7 @@
     "hasDetail": true
   },
   {
-    "slug": "wave-makers-2023",
+    "slug": "wave-makers-2023-trailer",
     "titleZh": "人選之人—造浪者",
     "titleEn": "Wave Makers",
     "year": "2023",
@@ -468,7 +496,7 @@
     "hasDetail": true
   },
   {
-    "slug": "copycat-killer-2023",
+    "slug": "copycat-killer-2023-trailer",
     "titleZh": "模仿犯",
     "titleEn": "Copycat Killer",
     "year": "2023",
@@ -555,8 +583,7 @@
     "titleEn": "Gold Leaf",
     "year": "2022",
     "categories": [
-      "series",
-      "trailer"
+      "series"
     ],
     "primaryCategory": "series",
     "director": "林君陽",
@@ -583,6 +610,35 @@
       {
         "type": "netflix",
         "url": "https://www.netflix.com/tw/title/81516613"
+      }
+    ],
+    "hasDetail": true
+  },
+  {
+    "slug": "gold-leaf-2022-trailer",
+    "titleZh": "茶金",
+    "titleEn": "Gold Leaf",
+    "year": "2022",
+    "categories": [
+      "trailer"
+    ],
+    "primaryCategory": "trailer",
+    "director": "林君陽",
+    "writers": "徐彥萍",
+    "description": "超前導預告、前導預告、片花剪輯",
+    "cover": "/stills/covers/tea.jpg",
+    "coverOriginal": "/stills/covers/tea.jpg",
+    "covers": [
+      "/stills/covers/tea.jpg"
+    ],
+    "links": [
+      {
+        "type": "youtube",
+        "url": "https://www.youtube.com/watch?v=elAn2KcGgps"
+      },
+      {
+        "type": "youtube",
+        "url": "https://www.youtube.com/watch?v=34DvsWTU704"
       }
     ],
     "hasDetail": true
@@ -912,8 +968,7 @@
     "titleEn": "Remembering Lichuan",
     "year": "2016",
     "categories": [
-      "series",
-      "trailer"
+      "series"
     ],
     "primaryCategory": "series",
     "director": "陳銘章",
@@ -922,8 +977,7 @@
     "cover": "/stills/covers/yt/remembering-lichuan-2016.jpg",
     "coverOriginal": "/stills/covers/Screenshot_2024-09-03_at_20.02.19%201.png",
     "covers": [
-      "/stills/covers/Screenshot_2024-09-03_at_20.02.19%201.png",
-      "/stills/covers/Screenshot_2024-09-03_at_20.02.19.png"
+      "/stills/covers/Screenshot_2024-09-03_at_20.02.19%201.png"
     ],
     "links": [
       {
@@ -966,6 +1020,39 @@
       {
         "type": "youtube",
         "url": "https://youtu.be/INIE_z1sUiM?si=m0RvByIZyjwjn0ss"
+      }
+    ],
+    "hasDetail": true
+  },
+  {
+    "slug": "remembering-lichuan-2016-trailer",
+    "titleZh": "遇見王瀝川",
+    "titleEn": "Remembering Lichuan",
+    "year": "2016",
+    "categories": [
+      "trailer"
+    ],
+    "primaryCategory": "trailer",
+    "director": "陳銘章",
+    "writers": "施定柔",
+    "description": "預告、前導片花、正式片花剪輯",
+    "cover": "/stills/covers/Screenshot_2024-09-03_at_20.02.19.png",
+    "coverOriginal": "/stills/covers/Screenshot_2024-09-03_at_20.02.19.png",
+    "covers": [
+      "/stills/covers/Screenshot_2024-09-03_at_20.02.19.png"
+    ],
+    "links": [
+      {
+        "type": "youtube",
+        "url": "https://youtu.be/xFMotwsGRSY?si=QRd74RZ9YP1yjy7W"
+      },
+      {
+        "type": "youtube",
+        "url": "https://youtu.be/_PtmhmMvGG0?si=hQgO8EKh8ooUAMYY"
+      },
+      {
+        "type": "youtube",
+        "url": "https://youtu.be/NV74g3OEGag?si=qiHVK-azrqb5vDOC"
       }
     ],
     "hasDetail": true

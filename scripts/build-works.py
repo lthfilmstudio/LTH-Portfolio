@@ -143,8 +143,12 @@ def parse_genre(raw: str) -> list[str]:
     return [GENRE_MAP[p] for p in parts if p in GENRE_MAP]
 
 
-def slugify(zh: str, en: str, year: str) -> str:
-    """Slug 優先用英文名，沒英文名就用羅馬拼音簡化（保留 zh hash 不現實，用序號）。"""
+def slugify(zh: str, en: str, year: str, primary_category: str = "") -> str:
+    """Slug 優先用英文名，沒英文名就用羅馬拼音簡化（保留 zh hash 不現實，用序號）。
+
+    primary_category 為 'trailer' 時加 -trailer 後綴，避免跟同名正片撞 slug
+    （Notion DB 把預告片花拆成獨立列）。
+    """
     base = en or zh
     # 簡單處理：英文 lowercase、非 alnum 改 -
     s = re.sub(r"[^a-zA-Z0-9一-鿿]+", "-", base).strip("-").lower()
@@ -154,43 +158,16 @@ def slugify(zh: str, en: str, year: str) -> str:
         s = f"work-{year}-{s[:20]}"
     if year:
         s = f"{s}-{year}" if year not in s else s
+    if primary_category == "trailer":
+        s = f"{s}-trailer"
     return s[:80]
-
-
-CATEGORY_PRIORITY = ["feature", "series", "tvmovie", "short", "mv", "commercial", "trailer"]
-
-
-def merge_into(existing: dict, new: dict) -> None:
-    """同 slug 兩筆合併（Notion 把預告片花拆成獨立列造成的）。"""
-    for cat in new["categories"]:
-        if cat not in existing["categories"]:
-            existing["categories"].append(cat)
-    existing["categories"].sort(key=lambda c: CATEGORY_PRIORITY.index(c) if c in CATEGORY_PRIORITY else 99)
-    existing["primaryCategory"] = existing["categories"][0]
-
-    seen_urls = {l["url"] for l in existing["links"]}
-    for l in new["links"]:
-        if l["url"] not in seen_urls:
-            existing["links"].append(l)
-            seen_urls.add(l["url"])
-
-    if len(new["description"]) > len(existing["description"]):
-        existing["description"] = new["description"]
-    if not existing["director"] and new["director"]:
-        existing["director"] = new["director"]
-    if not existing["writers"] and new["writers"]:
-        existing["writers"] = new["writers"]
-    for c in new["covers"]:
-        if c not in existing["covers"]:
-            existing["covers"].append(c)
-    existing["hasDetail"] = existing["hasDetail"] or new["hasDetail"]
 
 
 def main():
     with open(CSV_PATH, encoding="utf-8-sig") as f:
         rows = list(csv.DictReader(f))
 
-    works_by_slug: dict[str, dict] = {}
+    works = []
     for idx, r in enumerate(rows):
         raw_title = r.get("Projects", "").strip()
         if not raw_title:
@@ -206,7 +183,7 @@ def main():
         writers = r.get("Writers", "").strip().removeprefix("編劇 ").strip()
         description = r.get("Description", "").strip()
         links = parse_links(r.get("Related", ""))
-        slug = slugify(zh, en, year)
+        slug = slugify(zh, en, year, categories[0])
 
         # Cover：CSV 可能有多張逗點分隔；實體檔名已 rename 為解碼後的原字元
         # URL 裡空白替換為 %20（browser 會自動處理中文 encoding）
@@ -238,7 +215,7 @@ def main():
         # 決定是否有詳細頁（MV/廣告不做）
         has_detail = not (set(categories) <= {"mv", "commercial"})
 
-        entry = {
+        works.append({
             "slug": slug,
             "titleZh": zh,
             "titleEn": en,
@@ -253,14 +230,7 @@ def main():
             "covers": covers_all,
             "links": links,
             "hasDetail": has_detail,
-        }
-
-        if slug in works_by_slug:
-            merge_into(works_by_slug[slug], entry)
-        else:
-            works_by_slug[slug] = entry
-
-    works = list(works_by_slug.values())
+        })
 
     # 年份 desc 排序
     works.sort(key=lambda w: (w["year"] or "0"), reverse=True)
