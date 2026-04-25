@@ -1,7 +1,7 @@
 /* ===== HERO ===== */
 .hero {
   min-height: 100vh;
-  padding: 7.5rem 3rem 4rem;
+  padding: 5.5rem 3rem 2rem;
   display: grid;
   grid-template-columns: 2fr 1fr;
   gap: 0 4rem; /* row gap 0 — Selected Works 緊貼 hero-left 底，不留空 */
@@ -19,14 +19,23 @@
 
 .hero-left { position: relative; padding-top: 0; min-width: 0; }
 
+/* 名字列：林姿嫺 + Tzushien Lin 並排 */
+.hero-name-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  margin-top: 1.5rem;
+  margin-bottom: 1rem;
+}
+
 .hero h1 {
   font-family: 'Noto Serif TC', serif;
   font-size: clamp(1.2rem, 2.2vw, 1.7rem);
   font-weight: 400;
   line-height: 1.15;
   letter-spacing: 0.12em;
-  margin-top: 1.5rem;
-  margin-bottom: 0.4rem;
+  margin: 0;
   color: var(--text);
 }
 
@@ -36,14 +45,16 @@
   color: var(--text-dim);
   font-weight: 300;
   letter-spacing: 0.1em;
-  margin-bottom: 1.5rem;
   font-style: italic;
 }
 
+/* 職稱列：中英並排 */
 .hero-titles {
   display: flex;
-  flex-direction: column;
-  gap: 0.4rem;
+  flex-direction: row;
+  align-items: baseline;
+  gap: 0.8rem;
+  flex-wrap: wrap;
   margin-bottom: 1.5rem;
   padding-bottom: 1.5rem;
   border-bottom: 1px solid var(--line);
@@ -341,7 +352,7 @@
   letter-spacing: 0.35em;
   text-transform: uppercase;
   color: var(--text-faint);
-  margin-top: 0;
+  margin-top: 1.5rem;
   margin-bottom: 1rem;
   display: flex;
   align-items: center;
