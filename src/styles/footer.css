@@ -42,37 +42,110 @@ footer {
   margin: 0 0 2.8rem;
 }
 
-.footer-cta {
-  display: inline-flex;
-  align-items: baseline;
-  gap: 1rem;
-  padding: 1.1rem 2.2rem;
-  border: 1px solid var(--accent-dim);
-  background: transparent;
-  color: var(--text);
-  text-decoration: none;
-  border-radius: 2px;
-  transition: background 0.3s, border-color 0.3s, color 0.3s, transform 0.3s;
+/* CONTACT FORM */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  max-width: 560px;
+  margin: 0 auto;
+  text-align: left;
 }
 
-.footer-cta:hover {
+.contact-form .form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.contact-form .form-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.contact-form .form-label {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  color: var(--text);
+  padding: 0.7rem 0.9rem;
+  font-family: inherit;
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+  border-radius: 2px;
+  resize: vertical;
+  transition: border-color 0.3s, background 0.3s;
+}
+
+.contact-form textarea {
+  font-family: 'Noto Sans TC', -apple-system, sans-serif;
+  line-height: 1.6;
+  min-height: 120px;
+}
+
+.contact-form input::placeholder,
+.contact-form textarea::placeholder {
+  color: var(--text-faint);
+  opacity: 0.6;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: var(--accent-dim);
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.contact-form .form-submit {
+  margin-top: 0.5rem;
+  padding: 0.95rem 2rem;
+  background: transparent;
+  border: 1px solid var(--accent-dim);
+  color: var(--text);
+  font-family: 'Noto Serif TC', serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.25em;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: background 0.3s, border-color 0.3s, color 0.3s, transform 0.3s;
+  align-self: center;
+  min-width: 220px;
+}
+
+.contact-form .form-submit:hover:not(:disabled) {
   background: rgba(201, 169, 97, 0.08);
   border-color: var(--accent);
   color: var(--accent);
   transform: translateY(-2px);
 }
 
-.footer-cta .cta-label {
-  font-family: 'Noto Serif TC', serif;
-  font-size: 0.78rem;
-  letter-spacing: 0.25em;
+.contact-form .form-submit:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
-.footer-cta .cta-email {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1.05rem;
-  letter-spacing: 0.02em;
+.contact-form .form-status {
+  margin-top: 0.4rem;
+  text-align: center;
+  font-size: 0.85rem;
+  line-height: 1.6;
+  min-height: 1.4em;
+  letter-spacing: 0.04em;
+  transition: color 0.3s;
 }
+
+.contact-form .form-status[data-kind="ok"] { color: var(--ok, #6fb07f); }
+.contact-form .form-status[data-kind="err"] { color: var(--danger, #d66a54); }
 
 /* META — 工作室 logo + IMDb */
 .footer-meta {

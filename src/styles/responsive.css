@@ -84,10 +84,10 @@
 
   footer { padding: 5rem 1.5rem 2.5rem; }
   .footer-hero { margin-bottom: 3rem; }
-  .footer-cta { flex-direction: column; gap: 0.4rem; padding: 1.1rem 1.6rem; align-items: center; }
-  .footer-cta .cta-email { font-size: 0.95rem; }
-  .footer-meta { font-size: 0.75rem; gap: 0.5rem; margin-bottom: 3rem; }
-  .footer-meta .studio { font-size: 0.78rem; }
+  .contact-form .form-row { grid-template-columns: 1fr; gap: 1.1rem; }
+  .contact-form .form-submit { width: 100%; min-width: 0; }
+  .footer-meta { gap: 1rem; margin-bottom: 3rem; }
+  .footer-logo { width: clamp(180px, 60vw, 240px); }
   .footer-bottom { flex-direction: column; gap: 0.8rem; text-align: center; font-size: 0.6rem; }
 }
 
