@@ -296,20 +296,22 @@
   margin-bottom: 1rem;
 }
 
-/* 右欄水平 scroll（風格跟 Selected Works 一致） */
+/* 右欄直排 + 垂直 scroll（卡住高度，Selected Works 才能上移） */
 .hero-right .hero-awards-row {
   display: flex;
+  flex-direction: column;
   grid-template-columns: none;
   gap: 0.8rem;
-  overflow-x: auto;
-  overflow-y: visible;
-  padding-bottom: 0.8rem;
-  scroll-snap-type: x proximity;
+  max-height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding-right: 0.5rem;
+  scroll-snap-type: y proximity;
   scrollbar-width: thin;
   scrollbar-color: var(--line-soft) transparent;
 }
 
-.hero-right .hero-awards-row::-webkit-scrollbar { height: 4px; }
+.hero-right .hero-awards-row::-webkit-scrollbar { width: 4px; }
 .hero-right .hero-awards-row::-webkit-scrollbar-track { background: transparent; }
 .hero-right .hero-awards-row::-webkit-scrollbar-thumb {
   background: var(--line-soft);
@@ -319,7 +321,6 @@
 
 .hero-right .hero-award-item {
   flex-shrink: 0;
-  min-width: 220px;
   scroll-snap-align: start;
 }
 
