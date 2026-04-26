@@ -713,7 +713,7 @@ const LINK_TYPES = [
         </div>
         <div class="footer">
           <button type="button" class="btn" id="m-cancel">取消</button>
-          <button type="button" class="btn primary" id="m-submit" disabled>送出並發布</button>
+          <button type="button" class="btn primary" id="m-submit" disabled>暫存海報</button>
         </div>
       </div>
     </div>
@@ -743,6 +743,13 @@ const LINK_TYPES = [
       let baseline = JSON.stringify(works);
       let activeFilter = 'feature'; // 預設電影；'' = 全部
       let searchQuery = '';
+
+      // 待上傳海報暫存：slug → dataURL（base64）。「全部存檔」時隨 works.json 一起 commit。
+      const pendingPosters = new Map();
+      function previewSrc(work) {
+        if (work && pendingPosters.has(work.slug)) return pendingPosters.get(work.slug);
+        return (work && work.cover) || '';
+      }
 
       // Drawer working state
       let drawerMode = 'edit'; // 'edit' | 'new'
@@ -819,11 +826,14 @@ const LINK_TYPES = [
           card.dataset.primary = w.primaryCategory || '';
           const wide = (w.categories || []).some((c) => c === 'mv' || c === 'commercial');
           if (wide) card.dataset.wide = '1';
+          const thumbSrc = previewSrc(w);
+          const isPending = pendingPosters.has(w.slug);
           card.innerHTML = `
             <span class="drag-handle" title="拖動排序">⋮⋮</span>
             ${isNew ? '<span class="badge-new">NEW</span>' : ''}
+            ${isPending ? '<span class="badge-new" style="left: auto; right: 0.5rem; background: var(--accent);">海報待存</span>' : ''}
             <div class="thumb">
-              ${w.cover ? `<img src="${w.cover}" alt="${escapeHtml(w.titleZh)}" loading="lazy" draggable="false" />` : '<span class="empty">無海報</span>'}
+              ${thumbSrc ? `<img src="${thumbSrc}" alt="${escapeHtml(w.titleZh)}" loading="lazy" draggable="false" />` : '<span class="empty">無海報</span>'}
             </div>
             <div class="info">
               <span class="title-zh">${escapeHtml(w.titleZh) || '(未命名)'}</span>
@@ -856,7 +866,7 @@ const LINK_TYPES = [
       // ============================================================
       function checkDirty() {
         const cur = JSON.stringify(works);
-        const dirty = cur !== baseline;
+        const dirty = cur !== baseline || pendingPosters.size > 0;
         if (dirty) {
           // Count diffs roughly
           const baseArr = JSON.parse(baseline);
@@ -879,6 +889,7 @@ const LINK_TYPES = [
           if (changed) parts.push(`${changed} 修改`);
           if (orderChanged && !parts.length) parts.push('順序變動');
           else if (orderChanged) parts.push('+順序');
+          if (pendingPosters.size > 0) parts.push(`${pendingPosters.size} 張海報待存`);
           dirtyStatus.textContent = parts.join('，') || '已修改';
           dirtyStatus.classList.add('dirty');
           saveBtn.disabled = false;
@@ -933,6 +944,18 @@ const LINK_TYPES = [
         drawerBg.setAttribute('data-open', 'false');
         drawerDraft = null;
         drawerIdx = -1;
+        // GC: 清掉沒對應 work 的孤兒 pending（new mode 上傳但沒套用就 cancel 的情況）
+        if (pendingPosters.size > 0) {
+          const liveSlugs = new Set(works.map((w) => w.slug));
+          let cleaned = false;
+          for (const slug of Array.from(pendingPosters.keys())) {
+            if (!liveSlugs.has(slug)) {
+              pendingPosters.delete(slug);
+              cleaned = true;
+            }
+          }
+          if (cleaned) checkDirty();
+        }
       }
 
       function isWideRatio(work) {
@@ -1025,17 +1048,21 @@ const LINK_TYPES = [
             <legend>海報</legend>
             <div class="cover-block ${wide ? 'is-wide' : ''}">
               <div class="preview">
-                ${d.cover ? `<img src="${d.cover}" alt="cover" />` : '<span class="empty">無</span>'}
+                ${(() => {
+                  const src = pendingPosters.has(d.slug) ? pendingPosters.get(d.slug) : d.cover;
+                  return src ? `<img src="${src}" alt="cover" />` : '<span class="empty">無</span>';
+                })()}
               </div>
               <div class="info">
+                ${pendingPosters.has(d.slug) ? '<div style="color: var(--accent); font-size: 0.7rem; margin-bottom: 0.2rem;">● 待存（按「全部存檔」一起推）</div>' : ''}
                 ${d.cover ? escapeHtml(d.cover) : '尚未上傳海報'}
                 ${wide ? '<div style="font-size: 0.65rem; color: var(--text-faint); margin-top: 0.3rem;">封面比例：16:9（YouTube 截圖）</div>' : ''}
               </div>
-              <button type="button" class="btn" id="f-upload-poster" ${drawerMode === 'new' ? 'disabled title="新增作品請先儲存後再上傳海報"' : ''}>
-                ${d.cover ? '替換海報' : '上傳海報'}
+              <button type="button" class="btn" id="f-upload-poster">
+                ${d.cover || pendingPosters.has(d.slug) ? '替換海報' : '上傳海報'}
               </button>
             </div>
-            ${drawerMode === 'new' ? '<div class="hint warn">新增的作品要先按「套用變更」+「全部存檔」推上去後，才能上傳海報。</div>' : ''}
+            ${drawerMode === 'new' ? '<div class="hint">新作品請先填好 Slug 再上傳海報；海報會跟作品一起在「全部存檔」時送出。</div>' : ''}
           </fieldset>
 
           <fieldset>
@@ -1088,7 +1115,20 @@ const LINK_TYPES = [
 
       function attachDrawerHandlers() {
         const get = (id) => document.getElementById(id);
-        get('f-slug') && get('f-slug').addEventListener('input', (e) => { drawerDraft.slug = e.target.value.trim(); });
+        get('f-slug') && get('f-slug').addEventListener('input', (e) => {
+          const oldSlug = drawerDraft.slug;
+          const newSlug = e.target.value.trim();
+          // 新作品改 slug 時，如果有暫存海報，key 跟著搬
+          if (oldSlug !== newSlug && pendingPosters.has(oldSlug)) {
+            pendingPosters.set(newSlug, pendingPosters.get(oldSlug));
+            pendingPosters.delete(oldSlug);
+            // cover URL 也跟著更新
+            if (drawerDraft.cover && drawerDraft.cover.includes(`/${oldSlug}.jpg`)) {
+              drawerDraft.cover = `/stills/covers/official/${newSlug}.jpg`;
+            }
+          }
+          drawerDraft.slug = newSlug;
+        });
         get('f-titleZh').addEventListener('input', (e) => { drawerDraft.titleZh = e.target.value; });
         get('f-titleEn').addEventListener('input', (e) => { drawerDraft.titleEn = e.target.value; });
         get('f-year').addEventListener('input', (e) => { drawerDraft.year = e.target.value; });
@@ -1127,18 +1167,20 @@ const LINK_TYPES = [
           });
         });
 
-        // upload poster
+        // upload poster — 暫存到 pendingPosters，跟著「全部存檔」一起 commit
         const uploadBtn = get('f-upload-poster');
         if (uploadBtn) {
           uploadBtn.addEventListener('click', () => {
-            if (drawerMode === 'new') return;
-            // Need slug to exist on server (= already saved). Warn if dirty.
-            const slug = drawerDraft.slug;
-            if (!originalSlugs.has(slug)) {
-              showToast('請先「套用變更」+「全部存檔」後再上傳海報', 'err', 5000);
+            const slug = (drawerDraft.slug || '').trim();
+            if (!slug) {
+              showToast('請先填 Slug 再上傳海報', 'err', 4000);
               return;
             }
-            openUploadModal(slug, drawerDraft.titleZh, isWideRatio(drawerDraft));
+            if (!/^[\p{L}\p{N}\-]+$/u.test(slug)) {
+              showToast('Slug 格式不對，只能字母/數字/連字號', 'err', 4000);
+              return;
+            }
+            openUploadModal(slug, drawerDraft.titleZh || '(未命名)', isWideRatio(drawerDraft));
           });
         }
 
@@ -1213,7 +1255,8 @@ const LINK_TYPES = [
       });
       confirmOk.addEventListener('click', () => {
         if (confirmInput.value !== confirmEcho.textContent) return;
-        works.splice(drawerIdx, 1);
+        const removed = works.splice(drawerIdx, 1)[0];
+        if (removed && pendingPosters.has(removed.slug)) pendingPosters.delete(removed.slug);
         confirmModal.setAttribute('data-open', 'false');
         closeDrawer();
         renderList();
@@ -1312,21 +1355,24 @@ const LINK_TYPES = [
       saveBtn.addEventListener('click', async () => {
         saveBtn.disabled = true;
         saveBtn.textContent = '存檔中...';
+        const posterPayload = Array.from(pendingPosters, ([slug, imageBase64]) => ({ slug, imageBase64 }));
         try {
           const res = await fetch('/admin/api/works', {
             method: 'POST',
             headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ works }),
+            body: JSON.stringify({ works, pendingPosters: posterPayload }),
           });
           const data = await res.json();
           if (!res.ok) throw new Error(data.error || 'save failed');
           baseline = JSON.stringify(works);
           // Update originalSlugs after successful commit
           works.forEach((w) => originalSlugs.add(w.slug));
+          pendingPosters.clear();
           checkDirty();
           renderList();
+          const posterMsg = data.posters ? `<br/><small>含 ${data.posters} 張海報</small>` : '';
           showToast(
-            `✅ 已存檔 ${data.count} 筆作品<br/>` +
+            `✅ 已存檔 ${data.count} 筆作品${posterMsg}<br/>` +
               `<small>CF Pages 約 1-2 分鐘後更新正式站</small><br/>` +
               (data.url ? `<a href="${data.url}" target="_blank">查看 commit</a>` : ''),
             'ok',
@@ -1340,14 +1386,15 @@ const LINK_TYPES = [
       });
 
       resetBtn.addEventListener('click', () => {
-        if (!confirm('還原所有未存檔的變更？')) return;
+        if (!confirm('還原所有未存檔的變更（含待存海報）？')) return;
         works = JSON.parse(baseline);
+        pendingPosters.clear();
         renderList();
         checkDirty();
       });
 
       window.addEventListener('beforeunload', (e) => {
-        if (JSON.stringify(works) !== baseline) {
+        if (JSON.stringify(works) !== baseline || pendingPosters.size > 0) {
           e.preventDefault();
           e.returnValue = '';
         }
@@ -1430,42 +1477,42 @@ const LINK_TYPES = [
       mSubmit.addEventListener('click', async () => {
         if (!cropper || !currentSlug) return;
         mSubmit.disabled = true;
-        mSubmit.textContent = '上傳中...';
-        const canvas = cropper.getCroppedCanvas({ width: 900, imageSmoothingQuality: 'high' });
-        const dataUrl = canvas.toDataURL('image/jpeg', 0.88);
+        mSubmit.textContent = '處理中...';
         try {
-          const res = await fetch('/admin/api/upload-poster', {
-            method: 'POST',
-            headers: { 'content-type': 'application/json' },
-            body: JSON.stringify({ slug: currentSlug, imageBase64: dataUrl }),
-          });
-          const data = await res.json();
-          if (!res.ok) throw new Error(data.error || 'upload failed');
-          // Update local state cover
+          const canvas = cropper.getCroppedCanvas({ width: 900, imageSmoothingQuality: 'high' });
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.88);
+
+          // 暫存進 Map，等「全部存檔」一起送
+          pendingPosters.set(currentSlug, dataUrl);
+          const newCoverUrl = `/stills/covers/official/${currentSlug}.jpg`;
+
+          // 同步更新 works 裡這支的 cover
           const idx = works.findIndex((w) => w.slug === currentSlug);
           if (idx !== -1) {
-            works[idx].cover = `/stills/covers/official/${currentSlug}.jpg`;
-            baseline = JSON.stringify(works);
-            renderList();
-            checkDirty();
-            // If drawer open for this work, re-render form to show new cover
-            if (drawerIdx === idx && drawer.getAttribute('data-open') === 'true') {
-              drawerDraft.cover = works[idx].cover;
-              renderDrawerForm();
-            }
+            works[idx].cover = newCoverUrl;
           }
+          // drawerDraft 同步（當下開著的 drawer 也要立刻看到）
+          if (drawerDraft && drawerDraft.slug === currentSlug) {
+            drawerDraft.cover = newCoverUrl;
+          }
+
+          renderList();
+          if (drawer.getAttribute('data-open') === 'true' && drawerDraft && drawerDraft.slug === currentSlug) {
+            renderDrawerForm();
+          }
+          checkDirty();
+
           showToast(
-            `✅ ${currentTitle} 海報已推送<br/>` +
-              (data.url ? `<a href="${data.url}" target="_blank">查看 commit</a>` : ''),
+            `✅ ${currentTitle} 海報已暫存<br/><small>按右上「全部存檔」一起推送</small>`,
             'ok',
-            6000,
+            5000,
           );
           closeUploadModal();
         } catch (err) {
-          showToast(`❌ 上傳失敗：${err.message}`, 'err', 8000);
+          showToast(`❌ 處理失敗：${err.message}`, 'err', 8000);
         } finally {
           mSubmit.disabled = false;
-          mSubmit.textContent = '送出並發布';
+          mSubmit.textContent = '暫存海報';
         }
       });
 

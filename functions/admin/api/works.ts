@@ -117,7 +117,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   const repo = env.GITHUB_REPO || 'lthfilmstudio/LTH-Portfolio';
   if (!token) return json({ error: 'missing GITHUB_TOKEN env' }, 500);
 
-  let body: { works?: unknown };
+  let body: { works?: unknown; pendingPosters?: unknown };
   try {
     body = await request.json();
   } catch {
@@ -135,6 +135,23 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     slugs.add(works[i].slug);
   }
 
+  // Validate optional pending posters
+  const pendingPosters: Array<{ slug: string; imageBase64: string }> = [];
+  if (body.pendingPosters !== undefined) {
+    if (!Array.isArray(body.pendingPosters)) return json({ error: 'pendingPosters must be array' }, 400);
+    for (let i = 0; i < body.pendingPosters.length; i++) {
+      const p = body.pendingPosters[i] as any;
+      if (!p || typeof p !== 'object') return json({ error: `pendingPosters[${i}]: not object` }, 400);
+      if (!isString(p.slug) || !/^[\p{L}\p{N}\-]+$/u.test(p.slug))
+        return json({ error: `pendingPosters[${i}]: invalid slug` }, 400);
+      if (!slugs.has(p.slug))
+        return json({ error: `pendingPosters[${i}]: slug "${p.slug}" not in works array` }, 400);
+      if (!isString(p.imageBase64) || p.imageBase64.length < 32)
+        return json({ error: `pendingPosters[${i}]: invalid imageBase64` }, 400);
+      pendingPosters.push({ slug: p.slug, imageBase64: p.imageBase64 });
+    }
+  }
+
   // Normalize: strip undefined, keep field order stable
   const normalized = works.map(normalize);
   const newJson = JSON.stringify(normalized, null, 2) + '\n';
@@ -145,16 +162,30 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     const ref = await gh.getRef(BRANCH);
     const baseCommit = await gh.getCommit(ref.object.sha);
 
-    const blobSha = await gh.createBlob(newJson, 'utf-8');
-    const treeSha = await gh.createTree(baseCommit.tree.sha, [
-      { path: WORKS_JSON_PATH, mode: '100644', type: 'blob', sha: blobSha },
-    ]);
+    // Build tree: works.json + all pending poster files
+    const treeEntries: any[] = [];
 
-    const commitSha = await gh.createCommit(
-      `admin: update works.json (${normalized.length} works)`,
-      treeSha,
-      [ref.object.sha],
-    );
+    const worksBlobSha = await gh.createBlob(newJson, 'utf-8');
+    treeEntries.push({ path: WORKS_JSON_PATH, mode: '100644', type: 'blob', sha: worksBlobSha });
+
+    for (const p of pendingPosters) {
+      const imageContent = p.imageBase64.replace(/^data:image\/[a-z]+;base64,/, '');
+      const blobSha = await gh.createBlob(imageContent, 'base64');
+      treeEntries.push({
+        path: `public/stills/covers/official/${p.slug}.jpg`,
+        mode: '100644',
+        type: 'blob',
+        sha: blobSha,
+      });
+    }
+
+    const treeSha = await gh.createTree(baseCommit.tree.sha, treeEntries);
+
+    const posterCount = pendingPosters.length;
+    const commitMessage = posterCount
+      ? `admin: update works.json (${normalized.length} works) + ${posterCount} poster${posterCount > 1 ? 's' : ''}`
+      : `admin: update works.json (${normalized.length} works)`;
+    const commitSha = await gh.createCommit(commitMessage, treeSha, [ref.object.sha]);
     await gh.updateRef(BRANCH, commitSha);
 
     return json({
@@ -162,6 +193,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
       commit: commitSha,
       url: `https://github.com/${repo}/commit/${commitSha}`,
       count: normalized.length,
+      posters: posterCount,
     });
   } catch (err: any) {
     return json({ error: err.message || String(err) }, 502);
