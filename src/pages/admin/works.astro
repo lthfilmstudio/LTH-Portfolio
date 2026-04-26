@@ -244,7 +244,7 @@ const LINK_TYPES = [
         text-transform: uppercase;
       }
       .card .thumb {
-        aspect-ratio: 27 / 40;
+        aspect-ratio: 297 / 420;
         background: var(--bg);
         position: relative;
         overflow: hidden;
@@ -488,7 +488,7 @@ const LINK_TYPES = [
       }
       .cover-block .preview {
         width: 70px;
-        aspect-ratio: 27 / 40;
+        aspect-ratio: 297 / 420;
         background: var(--bg);
         border: 1px solid var(--line);
         flex-shrink: 0;
@@ -704,7 +704,7 @@ const LINK_TYPES = [
         <div class="sub" id="m-slug"></div>
         <label class="drop" id="m-drop">
           點此選擇圖片（或拖曳）
-          <small>支援 JPG / PNG / WebP，電影/劇集裁 27:40，MV/廣告裁 16:9</small>
+          <small>支援 JPG / PNG / WebP，電影/劇集裁 A3（297:420），MV/廣告裁 16:9</small>
           <input type="file" id="m-file" accept="image/*" hidden />
         </label>
         <div class="crop-area" id="m-crop">
@@ -1406,7 +1406,7 @@ const LINK_TYPES = [
       let cropper = null;
       let currentSlug = '';
       let currentTitle = '';
-      let currentRatio = 27 / 40; // 預設海報比例；MV/廣告 切 16/9
+      let currentRatio = 297 / 420; // 預設海報比例 A3；MV/廣告 切 16/9
       let cropperReady = null;
 
       function ensureCropper() {
@@ -1423,8 +1423,8 @@ const LINK_TYPES = [
       function openUploadModal(slug, title, wide) {
         currentSlug = slug;
         currentTitle = title;
-        currentRatio = wide ? 16 / 9 : 27 / 40;
-        const ratioLabel = wide ? '16:9（YouTube 截圖）' : '27:40（電影海報）';
+        currentRatio = wide ? 16 / 9 : 297 / 420;
+        const ratioLabel = wide ? '16:9（YouTube 截圖）' : 'A3（297:420）';
         mTitle.textContent = `上傳海報 — ${title}`;
         mSlug.textContent = `slug: ${slug}  →  比例 ${ratioLabel}`;
         mCrop.setAttribute('data-open', 'false');

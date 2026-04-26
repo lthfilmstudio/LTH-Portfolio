@@ -47,7 +47,7 @@
 
 .film-poster {
   width: 100%;
-  aspect-ratio: 27 / 40;
+  aspect-ratio: 297 / 420;
   background-size: cover;
   background-position: center;
   filter: grayscale(0.4) brightness(0.9);
