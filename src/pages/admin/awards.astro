@@ -134,6 +134,23 @@ const worksOptions = (worksData as any[]).map((w) => ({
         width: 100%;
         height: 100%;
         object-fit: cover;
+        cursor: grab;
+        user-select: none;
+        -webkit-user-drag: none;
+        touch-action: none;
+      }
+      .preview-bg img.is-dragging { cursor: grabbing; }
+      .preview-box .drag-hint {
+        position: absolute;
+        right: 0.4rem;
+        bottom: 0.3rem;
+        background: rgba(0, 0, 0, 0.6);
+        color: var(--text-dim);
+        padding: 0.12rem 0.45rem;
+        font-size: 0.58rem;
+        letter-spacing: 0.08em;
+        pointer-events: none;
+        z-index: 2;
       }
       .preview-content {
         position: relative;
@@ -315,7 +332,7 @@ const worksOptions = (worksData as any[]).map((w) => ({
             <div>
               <div class="preview-box">
                 <div class="preview-bg">
-                  <img src="${escapeAttr(effectivePoster)}" style="object-position: ${a.posterX}% ${a.posterY}%; transform: scale(${a.posterScale / 100});" alt="" />
+                  <img class="poster-img" data-i="${i}" draggable="false" src="${escapeAttr(effectivePoster)}" style="object-position: ${a.posterX}% ${a.posterY}%; transform: scale(${a.posterScale / 100});" alt="" />
                 </div>
                 <div class="preview-content">
                   <div class="meta-row ${a.status}">
@@ -325,6 +342,11 @@ const worksOptions = (worksData as any[]).map((w) => ({
                   <div class="work">${escape(a.workZh)}<span class="en">${escape(a.workEn)}</span></div>
                   <div class="award-line">${escape(a.awardZh)} <span class="en">${escape(a.awardEn)}</span></div>
                 </div>
+                <div class="drag-hint">拖曳改位置 · 滾輪縮放</div>
+              </div>
+              <div style="margin-top: 0.5rem; display: flex; gap: 0.5rem; align-items: center; font-size: 0.7rem; color: var(--text-dim);">
+                <span class="poster-readout" data-i="${i}">X ${a.posterX}% · Y ${a.posterY}% · ${a.posterScale}%</span>
+                <button type="button" class="btn" data-action="reset-poster" data-i="${i}" style="padding: 0.15rem 0.5rem; font-size: 0.62rem; margin-left: auto;">還原</button>
               </div>
             </div>
             <div>
@@ -366,24 +388,6 @@ const worksOptions = (worksData as any[]).map((w) => ({
                   <input type="text" data-field="poster" data-i="${i}" value="${escapeAttr(a.poster || '')}" placeholder="/stills/covers/..." />
                 </div>
                 <div class="form-row full">
-                  <label>海報位置與大小（即時預覽）</label>
-                  <div class="slider-row">
-                    <span>橫向 X</span>
-                    <input type="range" min="0" max="100" data-field="posterX" data-i="${i}" value="${a.posterX}" />
-                    <span class="val" id="vX-${i}">${a.posterX}%</span>
-                  </div>
-                  <div class="slider-row">
-                    <span>縱向 Y</span>
-                    <input type="range" min="0" max="100" data-field="posterY" data-i="${i}" value="${a.posterY}" />
-                    <span class="val" id="vY-${i}">${a.posterY}%</span>
-                  </div>
-                  <div class="slider-row">
-                    <span>縮放</span>
-                    <input type="range" min="50" max="250" data-field="posterScale" data-i="${i}" value="${a.posterScale}" />
-                    <span class="val" id="vS-${i}">${a.posterScale}%</span>
-                  </div>
-                </div>
-                <div class="form-row full">
                   <label>ID（不建議改，會影響穩定性）</label>
                   <input type="text" data-field="id" data-i="${i}" value="${escapeAttr(a.id)}" />
                 </div>
@@ -404,21 +408,6 @@ const worksOptions = (worksData as any[]).map((w) => ({
             const i = parseInt(t.dataset.i);
             const field = t.dataset.field;
             let v = t.value;
-            if (['posterX', 'posterY', 'posterScale'].includes(field)) {
-              v = parseInt(v);
-              const valEl = document.getElementById(`v${field === 'posterX' ? 'X' : field === 'posterY' ? 'Y' : 'S'}-${i}`);
-              if (valEl) valEl.textContent = v + '%';
-              const card = list.querySelectorAll('.award-card')[i];
-              const img = card.querySelector('.preview-bg img');
-              if (img) {
-                const a = awards[i];
-                const tempX = field === 'posterX' ? v : a.posterX;
-                const tempY = field === 'posterY' ? v : a.posterY;
-                const tempS = field === 'posterScale' ? v : a.posterScale;
-                img.style.objectPosition = `${tempX}% ${tempY}%`;
-                img.style.transform = `scale(${tempS / 100})`;
-              }
-            }
             if (field === 'status') {
               awards[i].statusZh = v === 'win' ? '獲獎' : '入圍';
               awards[i].statusEn = v === 'win' ? 'Winner' : 'Nominee';
@@ -441,6 +430,54 @@ const worksOptions = (worksData as any[]).map((w) => ({
           });
         });
 
+        // 海報拖曳 + 滾輪縮放（每張 award 一組）
+        list.querySelectorAll('img.poster-img').forEach((img) => {
+          const i = parseInt(img.dataset.i);
+          const readout = list.querySelector(`.poster-readout[data-i="${i}"]`);
+          const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
+          let dragStart = null;
+
+          function applyAndReadout() {
+            const a = awards[i];
+            img.style.objectPosition = `${a.posterX}% ${a.posterY}%`;
+            img.style.transform = `scale(${a.posterScale / 100})`;
+            if (readout) readout.textContent = `X ${a.posterX}% · Y ${a.posterY}% · ${a.posterScale}%`;
+          }
+
+          img.addEventListener('pointerdown', (e) => {
+            e.preventDefault();
+            img.setPointerCapture(e.pointerId);
+            img.classList.add('is-dragging');
+            const rect = img.getBoundingClientRect();
+            dragStart = { x: e.clientX, y: e.clientY, cx: awards[i].posterX, cy: awards[i].posterY, w: rect.width, h: rect.height };
+          });
+          img.addEventListener('pointermove', (e) => {
+            if (!dragStart) return;
+            const dx = e.clientX - dragStart.x;
+            const dy = e.clientY - dragStart.y;
+            awards[i].posterX = Math.round(clamp(dragStart.cx - (dx / dragStart.w) * 100, 0, 100));
+            awards[i].posterY = Math.round(clamp(dragStart.cy - (dy / dragStart.h) * 100, 0, 100));
+            applyAndReadout();
+            setDirty(true);
+          });
+          const endDrag = (e) => {
+            if (!dragStart) return;
+            img.releasePointerCapture(e.pointerId);
+            img.classList.remove('is-dragging');
+            dragStart = null;
+          };
+          img.addEventListener('pointerup', endDrag);
+          img.addEventListener('pointercancel', endDrag);
+
+          img.addEventListener('wheel', (e) => {
+            e.preventDefault();
+            const delta = e.deltaY > 0 ? -3 : 3;
+            awards[i].posterScale = clamp(awards[i].posterScale + delta, 50, 250);
+            applyAndReadout();
+            setDirty(true);
+          }, { passive: false });
+        });
+
         list.querySelectorAll('button[data-action]').forEach((btn) => {
           btn.addEventListener('click', () => {
             const action = btn.dataset.action;
@@ -448,13 +485,23 @@ const worksOptions = (worksData as any[]).map((w) => ({
             if (action === 'delete') {
               if (!confirm('確定刪除這筆得獎紀錄？')) return;
               awards.splice(i, 1);
+              setDirty(true);
+              render();
             } else if (action === 'up' && i > 0) {
               [awards[i - 1], awards[i]] = [awards[i], awards[i - 1]];
+              setDirty(true);
+              render();
             } else if (action === 'down' && i < awards.length - 1) {
               [awards[i], awards[i + 1]] = [awards[i + 1], awards[i]];
+              setDirty(true);
+              render();
+            } else if (action === 'reset-poster') {
+              awards[i].posterX = 50;
+              awards[i].posterY = 50;
+              awards[i].posterScale = 100;
+              setDirty(true);
+              render();
             }
-            setDirty(true);
-            render();
           });
         });
       }
