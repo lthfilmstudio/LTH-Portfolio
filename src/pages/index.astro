@@ -127,6 +127,11 @@ function thumbClass(slug: string): string {
   </div>
 
   <div class="featured-list-wrap">
+    <button class="featured-scroll-cue featured-scroll-cue--left" type="button" aria-label="向左捲動">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <path d="M19 12H5M12 5l-7 7 7 7" />
+      </svg>
+    </button>
     <div class="featured-list" id="featured-list">
       {selectedWorks.map((w, i) => (
         <a class="featured-item" href={w.hasDetail ? `/works/${w.slug}/` : '#'}>
@@ -145,7 +150,7 @@ function thumbClass(slug: string): string {
         </a>
       ))}
     </div>
-    <button class="featured-scroll-cue" type="button" aria-label="向右捲動看更多精選" data-target="featured-list">
+    <button class="featured-scroll-cue featured-scroll-cue--right" type="button" aria-label="向右捲動">
       <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
         <path d="M5 12h14M12 5l7 7-7 7" />
       </svg>
@@ -163,25 +168,34 @@ function thumbClass(slug: string): string {
 </section>
 
 <script>
-  // Selected Works 水平捲動箭頭：點擊滾動、到底自動隱藏
+  // Selected Works 左右捲動箭頭：依滾動位置顯示/隱藏
   document.addEventListener('DOMContentLoaded', () => {
     const list = document.getElementById('featured-list');
-    const cue = document.querySelector('.featured-scroll-cue');
-    if (!list || !cue) return;
+    const cueLeft = document.querySelector('.featured-scroll-cue--left');
+    const cueRight = document.querySelector('.featured-scroll-cue--right');
+    if (!list || !cueLeft || !cueRight) return;
 
-    const updateCue = () => {
+    const updateCues = () => {
       const overflow = list.scrollWidth - list.clientWidth;
-      if (overflow <= 4) { cue.setAttribute('hidden', ''); return; }
+      if (overflow <= 4) {
+        cueLeft.setAttribute('hidden', '');
+        cueRight.setAttribute('hidden', '');
+        return;
+      }
+      cueLeft.toggleAttribute('hidden', list.scrollLeft <= 4);
       const remaining = overflow - list.scrollLeft;
-      cue.toggleAttribute('hidden', remaining <= 4);
+      cueRight.toggleAttribute('hidden', remaining <= 4);
     };
 
-    cue.addEventListener('click', () => {
+    cueLeft.addEventListener('click', () => {
+      list.scrollBy({ left: -list.clientWidth * 0.7, behavior: 'smooth' });
+    });
+    cueRight.addEventListener('click', () => {
       list.scrollBy({ left: list.clientWidth * 0.7, behavior: 'smooth' });
     });
-    list.addEventListener('scroll', updateCue, { passive: true });
-    window.addEventListener('resize', updateCue);
-    updateCue();
+    list.addEventListener('scroll', updateCues, { passive: true });
+    window.addEventListener('resize', updateCues);
+    updateCues();
   });
 </script>
 

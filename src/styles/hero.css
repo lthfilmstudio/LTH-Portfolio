@@ -178,7 +178,7 @@
 
 /* HERO AWARDS */
 .hero-awards-label {
-  font-size: 0.62rem;
+  font-size: 0.78rem;
   letter-spacing: 0.35em;
   text-transform: uppercase;
   color: var(--text-faint);
@@ -198,13 +198,13 @@
 .hero-awards-row {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 1rem;
+  gap: 1.4rem;
   align-items: stretch;
 }
 
 .hero-award-item {
   position: relative;
-  padding: 0.5rem 0.9rem;
+  padding: 0.85rem 1.2rem;
   border: 1px solid var(--line-soft);
   transition: border-color 0.4s, transform 0.4s cubic-bezier(.2,.8,.2,1);
   cursor: pointer;
@@ -298,7 +298,7 @@
 }
 
 .award-status-sm {
-  font-size: 0.58rem;
+  font-size: 0.72rem;
   letter-spacing: 0.3em;
   text-transform: uppercase;
   color: var(--accent);
@@ -310,8 +310,8 @@
 .hero-award-item.nom .award-status-sm { color: var(--accent); }
 
 .award-status-sm .dot {
-  width: 4px;
-  height: 4px;
+  width: 5px;
+  height: 5px;
   border-radius: 50%;
   background: var(--accent);
 }
@@ -320,13 +320,13 @@
 
 .award-yr {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 0.78rem;
+  font-size: 0.95rem;
   color: var(--text-dim);
 }
 
 .award-work {
   font-family: 'Noto Serif TC', serif;
-  font-size: 0.78rem;
+  font-size: 0.98rem;
   color: var(--text);
   letter-spacing: 0.05em;
   margin-bottom: 0.2rem;
@@ -340,7 +340,7 @@
 .award-work .work-en {
   display: inline;
   font-family: 'Cormorant Garamond', serif;
-  font-size: 0.7rem;
+  font-size: 0.86rem;
   color: var(--text);
   margin-left: 0.4em;
   font-weight: 300;
@@ -351,10 +351,10 @@
 .hero-award-item:hover .work-en { color: var(--text); }
 
 .award-name-sm {
-  font-size: 0.66rem;
+  font-size: 0.82rem;
   letter-spacing: 0.08em;
   line-height: 1.4;
-  margin-top: 0.25rem;
+  margin-top: 0.4rem;
 }
 
 /* 中英同行：兩者都 inline，中間用 · 分隔（CSS pseudo） */
@@ -368,7 +368,7 @@
   display: inline;
   color: var(--text-dim);
   font-family: 'Cormorant Garamond', serif;
-  font-size: 0.62rem;
+  font-size: 0.78rem;
   letter-spacing: 0.06em;
   font-style: italic;
 }
@@ -459,7 +459,7 @@
 .featured-list {
   flex: 1;
   display: flex;
-  gap: 2.5rem;
+  gap: 2rem;
   overflow-x: auto;
   overflow-y: visible;
   padding: 0.25rem 0;
@@ -470,7 +470,7 @@
   scroll-behavior: smooth;
 }
 
-/* 水平捲動箭頭：跟 .scroll-cue-arrow 風格一致，方向朝右 */
+/* 水平捲動箭頭：跟 .scroll-cue-arrow 風格一致 */
 .featured-scroll-cue {
   flex-shrink: 0;
   width: 36px;
@@ -483,7 +483,6 @@
   justify-content: center;
   color: var(--text-faint);
   cursor: pointer;
-  animation: featured-scroll-cue-bounce 2.4s ease-in-out infinite;
   transition: color 0.3s, border-color 0.3s, opacity 0.3s;
   opacity: 0.9;
 }
@@ -496,9 +495,16 @@
 
 .featured-scroll-cue[hidden] { display: none; }
 
-@keyframes featured-scroll-cue-bounce {
+.featured-scroll-cue--right { animation: featured-scroll-cue-right 2.4s ease-in-out infinite; }
+.featured-scroll-cue--left { animation: featured-scroll-cue-left 2.4s ease-in-out infinite; }
+
+@keyframes featured-scroll-cue-right {
   0%, 100% { transform: translateX(0); }
   50% { transform: translateX(4px); }
+}
+@keyframes featured-scroll-cue-left {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-4px); }
 }
 
 .featured-list::-webkit-scrollbar { height: 6px; }
@@ -532,7 +538,7 @@
   grid-column: 1;
   grid-row: 1;
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(6rem, 13vw, 11rem);
+  font-size: clamp(5rem, 10vw, 8.5rem);
   font-weight: 400;
   line-height: 0.7;
   /* 強制等高數字（lining figures），預設 old-style 高低不齊很不舒服 */
@@ -559,7 +565,7 @@
 .featured-thumb {
   grid-column: 2;
   grid-row: 1;
-  width: 180px;
+  width: 170px;
   aspect-ratio: 27 / 40;
   position: relative;
   z-index: 1;
@@ -600,7 +606,7 @@
   gap: 0.15rem;
   min-width: 0;
   padding-top: 0.6rem;
-  width: 180px;
+  width: 170px;
 }
 
 .featured-item .title-zh {
