@@ -422,7 +422,7 @@
 }
 
 /* ===== SELECTED WORKS — HBO Top 10 風 ===== */
-/* 跨滿 hero 兩欄，水平 scroll，每個 item = 巨大 outline 數字 + A3 (297:420) 海報 */
+/* 跨滿 hero 兩欄，水平 scroll，每個 item = 巨大 outline 數字 + 27:40 海報 */
 .featured-label {
   grid-column: 1 / -1;
   font-size: 0.62rem;
@@ -518,7 +518,7 @@
   grid-column: 2;
   grid-row: 1;
   width: 130px;
-  aspect-ratio: 297 / 420;
+  aspect-ratio: 27 / 40;
   position: relative;
   z-index: 1;
 }
