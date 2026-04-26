@@ -60,7 +60,10 @@
         "label": "前導花絮 Making of"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "series": 0
+    }
   },
   {
     "slug": "summer-blue-hour-2025-trailer",
@@ -176,7 +179,10 @@
         "label": "片花"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "series": 1
+    }
   },
   {
     "slug": "百年原殤-虹霧-hongu-utux-2025",
@@ -320,7 +326,10 @@
         "label": "官方Facebook"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "series": 2
+    }
   },
   {
     "slug": "tabloid-2024-trailer",
@@ -387,7 +396,10 @@
         "label": "全集 Full Episodes (KKTV)"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "series": 6
+    }
   },
   {
     "slug": "wave-makers-2023-trailer",
@@ -442,7 +454,10 @@
         "label": "全集 Full Episodes (Hami)"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "series": 3
+    }
   },
   {
     "slug": "oxcart-trails-2023",
@@ -478,7 +493,10 @@
         "label": "全集 Full Episodes (Hami)"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "series": 4
+    }
   },
   {
     "slug": "you-will-never-know-2023",
@@ -539,7 +557,10 @@
         "label": "全集 Full Episodes (KKTV)"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "series": 7
+    }
   },
   {
     "slug": "copycat-killer-2023-trailer",
@@ -668,7 +689,10 @@
         "label": "全集 Full Episodes (Netflix)"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "series": 5
+    }
   },
   {
     "slug": "gold-leaf-2022-trailer",
@@ -769,7 +793,10 @@
         "label": "全集 Full Episodes (iQIYI)"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "series": 8
+    }
   },
   {
     "slug": "once-upon-a-time-in-the-bamboo-2020",
@@ -824,7 +851,10 @@
         "label": "全集 Full Episodes (iQIYI)"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "series": 11
+    }
   },
   {
     "slug": "waiting-for-you-in-the-future-2019",
@@ -855,7 +885,10 @@
         "label": "全集 Full Episodes (iQIYI)"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "series": 12
+    }
   },
   {
     "slug": "judo-high-2018",
@@ -880,7 +913,10 @@
         "label": "預告 Trailer"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "series": 17
+    }
   },
   {
     "slug": "bodhisattva-in-storm-2018",
@@ -911,7 +947,10 @@
         "label": "全集 Full Episodes (PTS)"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "series": 13
+    }
   },
   {
     "slug": "fish-out-of-water-2018",
@@ -1009,7 +1048,10 @@
         "label": "全集 Full Episodes (Youtube)"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "series": 9
+    }
   },
   {
     "slug": "across-the-ocean-to-see-you-2017",
@@ -1044,7 +1086,10 @@
         "label": "全集 Full Episodes (MyVideo)"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "series": 19
+    }
   },
   {
     "slug": "remembering-lichuan-2016",
@@ -1080,7 +1125,10 @@
         "label": "片花#2 Official Clip #2"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "series": 10
+    }
   },
   {
     "slug": "love-2016",
@@ -1110,7 +1158,10 @@
         "label": "愛我別走 預告 Trailer"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "series": 18
+    }
   },
   {
     "slug": "remembering-lichuan-2016-trailer",
@@ -1164,7 +1215,10 @@
     "covers": [
       "/stills/covers/ke.png"
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "series": 16
+    }
   },
   {
     "slug": "love-life-lie-2014",
@@ -1182,7 +1236,10 @@
     "covers": [
       "/stills/covers/yu.png"
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "series": 20
+    }
   },
   {
     "slug": "together-2012",
@@ -1253,7 +1310,10 @@
         "label": "全集 Full Episodes (Youtube)"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "series": 15
+    }
   },
   {
     "slug": "work-2011-回聲",
@@ -1306,7 +1366,10 @@
         "label": "片花 Official Clip"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "series": 21
+    }
   },
   {
     "slug": "the-kite-soaring-2010",
@@ -1339,7 +1402,10 @@
     ],
     "hasDetail": true,
     "coverX": 61,
-    "coverY": 16
+    "coverY": 16,
+    "orders": {
+      "series": 14
+    }
   },
   {
     "slug": "letter-1949-2009",
@@ -1365,7 +1431,10 @@
         "label": "序場+片頭 Title"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "series": 22
+    }
   },
   {
     "slug": "work-2009-應屆退休生",
