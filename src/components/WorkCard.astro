@@ -1,6 +1,7 @@
 ---
 import type { Work } from '../data/works';
 import { CATEGORY_LABELS, firstExternalLink, getWorkCategoryOrder } from '../data/works';
+import { versionedUrl } from '../data/cover-version';
 
 interface Props {
   work: Work;
@@ -30,7 +31,7 @@ const orderStyle = work.categories
 >
   {work.cover ? (
     <div class="work-cover work-cover--image">
-      <img src={work.cover} alt={`${work.titleZh} ${work.titleEn}`.trim()} loading="lazy" />
+      <img src={versionedUrl(work.cover)} alt={`${work.titleZh} ${work.titleEn}`.trim()} loading="lazy" />
     </div>
   ) : (
     <div class={`work-cover thumb th-${thumbNum}`} data-short={dataShort}></div>

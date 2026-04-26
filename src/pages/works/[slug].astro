@@ -4,6 +4,7 @@ import BrandMark from '../../components/BrandMark.astro';
 import SiteFooter from '../../components/SiteFooter.astro';
 import { works, CATEGORY_LABELS } from '../../data/works';
 import type { Work, LinkType } from '../../data/works';
+import { versionedUrl } from '../../data/cover-version';
 
 export async function getStaticPaths() {
   return works
@@ -130,7 +131,7 @@ const workSchema = {
     {work.cover ? (
       <div class="work-detail-cover work-detail-cover--image">
         <img
-          src={work.cover}
+          src={versionedUrl(work.cover)}
           alt={`${work.titleZh} ${work.titleEn}`.trim()}
           style={`object-position: ${work.coverX ?? 50}% ${work.coverY ?? 50}%; transform: scale(${(work.coverScale ?? 100) / 100});`}
         />

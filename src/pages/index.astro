@@ -7,6 +7,7 @@ import { works, CATEGORY_LABELS, CATEGORY_ORDER } from '../data/works';
 import awards from '../data/awards.json';
 import selectedSlugs from '../data/selected.json';
 import profile from '../data/profile.json';
+import { versionedUrl } from '../data/cover-version';
 
 // 由 workSlug 對到 works.json 的 cover；沒設或找不到時 fallback 到 a.poster
 const worksCoverBySlug = new Map(works.map((w: any) => [w.slug, w.cover]));
@@ -142,7 +143,7 @@ const combinedSchema = {
           <Tag class={`hero-award-item ${a.status}${href ? ' is-linked' : ''}`} {...(href ? { href } : {})}>
             <div class="award-bg" aria-hidden="true">
               <img
-                src={resolveAwardPoster(a)}
+                src={versionedUrl(resolveAwardPoster(a))}
                 alt=""
                 loading="lazy"
                 style={`object-position: ${a.posterX ?? 50}% ${a.posterY ?? 50}%; transform: scale(${(a.posterScale ?? 100) / 100});`}
@@ -181,7 +182,7 @@ const combinedSchema = {
           <span class="featured-num" aria-hidden="true">{i + 1}</span>
           {w.cover ? (
             <div class="featured-thumb featured-thumb--image">
-              <img src={w.cover} alt={`${w.titleZh} ${w.titleEn}`.trim()} loading="lazy" />
+              <img src={versionedUrl(w.cover)} alt={`${w.titleZh} ${w.titleEn}`.trim()} loading="lazy" />
             </div>
           ) : (
             <div class={`thumb featured-thumb ${thumbClass(w.slug)}`} data-short={w.titleZh.slice(0, 4)}></div>
