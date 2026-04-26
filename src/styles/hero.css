@@ -516,8 +516,7 @@
   gap: 2rem;
   overflow-x: auto;
   overflow-y: visible;
-  padding: 0.25rem 0.5rem 0.25rem 1rem;
-  scroll-padding-left: 1rem;
+  padding: 0.25rem 0;
   scroll-snap-type: x proximity;
   scrollbar-width: thin;
   scrollbar-color: var(--line-soft) transparent;
