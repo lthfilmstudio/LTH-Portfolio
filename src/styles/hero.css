@@ -47,9 +47,9 @@
   padding: 6rem 3rem 4rem;
   display: grid;
   grid-template-columns: 2fr 1fr;
-  gap: 0 4rem; /* row gap 0 — Selected Works 緊貼 hero-left 底，不留空 */
-  align-items: stretch; /* hero-right 拉滿 hero-left 高度，awards 底對齊 hero-profile 底 */
-  align-content: start; /* row 高度回到內容大小，避免 featured-label 列被撐出大空白 */
+  grid-template-rows: auto auto 1fr; /* row 3（Selected Works wrap）吃掉剩餘空間 */
+  gap: 0 4rem;
+  align-items: stretch;
   max-width: 1400px;
   margin: 0 auto;
   position: relative;
@@ -448,16 +448,21 @@
 
 .featured-list-wrap {
   grid-column: 1 / -1;
-  position: relative;
+  align-self: end; /* 推到 hero 底部，靠近下方 portfolio 區塊 */
+  display: flex;
+  align-items: center;
+  gap: 1rem;
   min-width: 0;
+  padding-bottom: 3rem; /* 給 scroll-cue 讓位 */
 }
 
 .featured-list {
+  flex: 1;
   display: flex;
   gap: 2.5rem;
   overflow-x: auto;
   overflow-y: visible;
-  padding: 0.25rem 2.5rem 0.25rem 0; /* 右邊留 padding 給捲動箭頭 */
+  padding: 0.25rem 0;
   scroll-snap-type: x proximity;
   scrollbar-width: thin;
   scrollbar-color: var(--line-soft) transparent;
@@ -467,24 +472,20 @@
 
 /* 水平捲動箭頭：跟 .scroll-cue-arrow 風格一致，方向朝右 */
 .featured-scroll-cue {
-  position: absolute;
-  right: 0.4rem;
-  top: 50%;
-  transform: translateY(-50%);
+  flex-shrink: 0;
   width: 36px;
   height: 36px;
   border: 1px solid var(--text-faint);
   border-radius: 50%;
-  background: rgba(10, 9, 8, 0.78); /* 海報背景上要看得清楚 */
+  background: transparent;
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--text-faint);
   cursor: pointer;
-  z-index: 4;
   animation: featured-scroll-cue-bounce 2.4s ease-in-out infinite;
-  transition: color 0.3s, border-color 0.3s, opacity 0.3s, transform 0.3s;
-  opacity: 0.85;
+  transition: color 0.3s, border-color 0.3s, opacity 0.3s;
+  opacity: 0.9;
 }
 
 .featured-scroll-cue:hover {
@@ -496,8 +497,8 @@
 .featured-scroll-cue[hidden] { display: none; }
 
 @keyframes featured-scroll-cue-bounce {
-  0%, 100% { transform: translateY(-50%) translateX(0); }
-  50% { transform: translateY(-50%) translateX(4px); }
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(4px); }
 }
 
 .featured-list::-webkit-scrollbar { height: 6px; }
@@ -558,7 +559,7 @@
 .featured-thumb {
   grid-column: 2;
   grid-row: 1;
-  width: 160px;
+  width: 180px;
   aspect-ratio: 27 / 40;
   position: relative;
   z-index: 1;
@@ -599,7 +600,7 @@
   gap: 0.15rem;
   min-width: 0;
   padding-top: 0.6rem;
-  width: 160px;
+  width: 180px;
 }
 
 .featured-item .title-zh {
