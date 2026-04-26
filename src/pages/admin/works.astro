@@ -829,7 +829,21 @@ const LINK_TYPES = [
         grid.innerHTML = '';
         const q = searchQuery.toLowerCase();
         let visible = 0;
-        works.forEach((w, idx) => {
+
+        // 有 activeFilter 時依 orders[filter] 排序，缺值 fallback 到 works 陣列位置
+        let entries = works.map((w, idx) => ({ w, idx }));
+        if (activeFilter) {
+          entries.sort((a, b) => {
+            const ao = a.w.orders && a.w.orders[activeFilter];
+            const bo = b.w.orders && b.w.orders[activeFilter];
+            if (ao !== undefined && bo !== undefined) return ao - bo;
+            if (ao !== undefined) return -1;
+            if (bo !== undefined) return 1;
+            return a.idx - b.idx;
+          });
+        }
+
+        entries.forEach(({ w, idx }) => {
           const cats = (w.categories || []).join(' ');
           const matchFilter = !activeFilter || cats.includes(activeFilter);
           const matchQuery =
