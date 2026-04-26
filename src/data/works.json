@@ -1290,6 +1290,7 @@
       }
     ],
     "hasDetail": true,
+    "coverScale": 88,
     "orders": {
       "feature": 4
     }
