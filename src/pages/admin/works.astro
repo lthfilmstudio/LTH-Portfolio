@@ -1051,7 +1051,10 @@ const LINK_TYPES = [
               <div class="preview">
                 ${(() => {
                   const src = pendingPosters.has(d.slug) ? pendingPosters.get(d.slug) : d.cover;
-                  return src ? `<img src="${src}" alt="cover" />` : '<span class="empty">無</span>';
+                  const cx = d.coverX ?? 50;
+                  const cy = d.coverY ?? 50;
+                  const cs = (d.coverScale ?? 100) / 100;
+                  return src ? `<img src="${src}" alt="cover" id="f-cover-preview" style="object-fit: cover; object-position: ${cx}% ${cy}%; transform: scale(${cs});" />` : '<span class="empty">無</span>';
                 })()}
               </div>
               <div class="info">
@@ -1064,6 +1067,26 @@ const LINK_TYPES = [
               </button>
             </div>
             ${drawerMode === 'new' ? '<div class="hint">新作品請先填好 Slug 再上傳海報；海報會跟作品一起在「全部存檔」時送出。</div>' : ''}
+            ${d.cover || pendingPosters.has(d.slug) ? `
+            <div class="field" style="margin-top: 0.9rem;">
+              <label style="display: flex; justify-content: space-between; align-items: center;">
+                <span>詳情頁海報位置與縮放（即時預覽）</span>
+                <button type="button" class="btn" id="f-cover-reset" style="padding: 0.2rem 0.6rem; font-size: 0.65rem;">還原預設</button>
+              </label>
+              <div style="display: grid; grid-template-columns: 60px 1fr 50px; gap: 0.6rem; align-items: center; font-size: 0.72rem; color: var(--text-dim); margin-top: 0.4rem;">
+                <span>橫向 X</span>
+                <input type="range" min="0" max="100" id="f-coverX" value="${d.coverX ?? 50}" />
+                <span id="f-coverX-val" style="text-align: right;">${d.coverX ?? 50}%</span>
+                <span>縱向 Y</span>
+                <input type="range" min="0" max="100" id="f-coverY" value="${d.coverY ?? 50}" />
+                <span id="f-coverY-val" style="text-align: right;">${d.coverY ?? 50}%</span>
+                <span>縮放</span>
+                <input type="range" min="50" max="250" id="f-coverScale" value="${d.coverScale ?? 100}" />
+                <span id="f-coverScale-val" style="text-align: right;">${d.coverScale ?? 100}%</span>
+              </div>
+              <div class="hint">只影響詳情頁顯示，不會改原始檔案。</div>
+            </div>
+            ` : ''}
           </fieldset>
 
           <fieldset>
@@ -1182,6 +1205,37 @@ const LINK_TYPES = [
               return;
             }
             openUploadModal(slug, drawerDraft.titleZh || '(未命名)', isWideRatio(drawerDraft));
+          });
+        }
+
+        // 海報位置/縮放 sliders（即時預覽）
+        const previewImg = get('f-cover-preview');
+        function applyCoverTransform() {
+          if (!previewImg) return;
+          const cx = drawerDraft.coverX ?? 50;
+          const cy = drawerDraft.coverY ?? 50;
+          const cs = (drawerDraft.coverScale ?? 100) / 100;
+          previewImg.style.objectPosition = `${cx}% ${cy}%`;
+          previewImg.style.transform = `scale(${cs})`;
+        }
+        ['coverX', 'coverY', 'coverScale'].forEach((field) => {
+          const el = get('f-' + field);
+          const valEl = get('f-' + field + '-val');
+          if (!el) return;
+          el.addEventListener('input', () => {
+            const v = parseInt(el.value);
+            drawerDraft[field] = v;
+            if (valEl) valEl.textContent = v + '%';
+            applyCoverTransform();
+          });
+        });
+        const resetCoverBtn = get('f-cover-reset');
+        if (resetCoverBtn) {
+          resetCoverBtn.addEventListener('click', () => {
+            delete drawerDraft.coverX;
+            delete drawerDraft.coverY;
+            delete drawerDraft.coverScale;
+            renderDrawerForm();
           });
         }
 

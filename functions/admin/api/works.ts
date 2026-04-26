@@ -53,6 +53,9 @@ type Work = {
   links?: Link[];
   hasDetail?: boolean;
   orders?: Record<string, number>;
+  coverX?: number;
+  coverY?: number;
+  coverScale?: number;
 };
 
 function isString(v: unknown): v is string {
@@ -114,6 +117,11 @@ function validateWork(w: any, idx: number): string | null {
       if (typeof w.orders[k] !== 'number' || !Number.isFinite(w.orders[k]))
         return `work[${idx}] (${w.slug}): orders["${k}"] must be number`;
     }
+  }
+
+  for (const f of ['coverX', 'coverY', 'coverScale']) {
+    if (w[f] !== undefined && (typeof w[f] !== 'number' || !Number.isFinite(w[f])))
+      return `work[${idx}] (${w.slug}): ${f} must be number`;
   }
 
   return null;
@@ -235,6 +243,9 @@ function normalize(w: Work): Work {
     });
   }
   if (w.hasDetail) out.hasDetail = true;
+  if (typeof w.coverX === 'number') out.coverX = clamp(w.coverX, 0, 100);
+  if (typeof w.coverY === 'number') out.coverY = clamp(w.coverY, 0, 100);
+  if (typeof w.coverScale === 'number') out.coverScale = clamp(w.coverScale, 50, 250);
   if (w.orders && Object.keys(w.orders).length > 0) {
     // 只保留 categories 內的 key + 整數
     const cleaned: Record<string, number> = {};
@@ -246,6 +257,10 @@ function normalize(w: Work): Work {
     if (Object.keys(cleaned).length > 0) out.orders = cleaned;
   }
   return out;
+}
+
+function clamp(n: number, min: number, max: number) {
+  return Math.max(min, Math.min(max, Math.round(n)));
 }
 
 class GitHub {

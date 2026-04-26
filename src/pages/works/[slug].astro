@@ -109,7 +109,11 @@ const workSchema = {
   <div class="work-detail-body">
     {work.cover ? (
       <div class="work-detail-cover work-detail-cover--image">
-        <img src={work.cover} alt={`${work.titleZh} ${work.titleEn}`.trim()} />
+        <img
+          src={work.cover}
+          alt={`${work.titleZh} ${work.titleEn}`.trim()}
+          style={`object-position: ${work.coverX ?? 50}% ${work.coverY ?? 50}%; transform: scale(${(work.coverScale ?? 100) / 100});`}
+        />
       </div>
     ) : (
       <div class={`work-detail-cover thumb th-${thumbNum}`} data-short={dataShort}></div>

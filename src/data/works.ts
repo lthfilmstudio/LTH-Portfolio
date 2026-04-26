@@ -38,6 +38,9 @@ export interface Work {
   links: WorkLink[];
   hasDetail: boolean;
   orders?: Partial<Record<Category, number>>;
+  coverX?: number;
+  coverY?: number;
+  coverScale?: number;
 }
 
 export const works = worksData as Work[];
