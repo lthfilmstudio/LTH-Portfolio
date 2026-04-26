@@ -116,9 +116,9 @@ const worksOptions = (worksData as any[]).map((w) => ({
 
       .preview-box {
         position: relative;
-        width: 480px;          /* 編輯時放大讓拖曳精準，仍對齊前台同比例 */
+        width: 380px;          /* 1:1 對齊前台實際尺寸（典型桌面 viewport） */
         max-width: 100%;
-        aspect-ratio: 18 / 5;  /* 對齊前台 hero-award-item 實際比例 ~3.6:1 */
+        aspect-ratio: 19 / 5;  /* 1:1 對齊前台實際比例 ~3.8:1（實測 357×94） */
         background: var(--surface-2);
         border: 1px solid var(--line-soft);
         overflow: hidden;
@@ -127,9 +127,31 @@ const worksOptions = (worksData as any[]).map((w) => ({
       .preview-bg {
         position: absolute;
         inset: 0;
-        opacity: 0.45; /* 為了編輯看清楚拉亮，前台實際 0.12（預設）/ 0.45（hover） */
+        opacity: 0.45;
         filter: grayscale(0.3);
+        transition: opacity 0.2s, filter 0.2s;
       }
+      /* 「前台實際樣子」 — 切換成訪客看到的低透明度狀態 */
+      .preview-box.is-realistic .preview-bg {
+        opacity: 0.12;
+        filter: grayscale(0.4) blur(0.5px);
+      }
+      .preview-box .realistic-toggle {
+        position: absolute;
+        top: 0.4rem;
+        right: 0.4rem;
+        background: rgba(0, 0, 0, 0.65);
+        color: var(--text-dim);
+        border: 1px solid var(--line);
+        padding: 0.2rem 0.55rem;
+        font-size: 0.62rem;
+        letter-spacing: 0.08em;
+        cursor: pointer;
+        z-index: 3;
+        border-radius: 2px;
+      }
+      .preview-box .realistic-toggle:hover { color: var(--accent); border-color: var(--accent); }
+      .preview-box.is-realistic .realistic-toggle { color: var(--accent); border-color: var(--accent); }
       .preview-bg img {
         width: 100%;
         height: 100%;
@@ -331,6 +353,7 @@ const worksOptions = (worksData as any[]).map((w) => ({
           card.innerHTML = `
             <div>
               <div class="preview-box">
+                <button type="button" class="realistic-toggle" data-action="toggle-realistic" data-i="${i}">前台實際樣子</button>
                 <div class="preview-bg">
                   <img class="poster-img" data-i="${i}" draggable="false" src="${escapeAttr(effectivePoster)}" style="object-position: ${a.posterX}% ${a.posterY}%; transform: scale(${a.posterScale / 100});" alt="" />
                 </div>
@@ -501,6 +524,10 @@ const worksOptions = (worksData as any[]).map((w) => ({
               awards[i].posterScale = 100;
               setDirty(true);
               render();
+            } else if (action === 'toggle-realistic') {
+              const card = list.querySelectorAll('.award-card')[i];
+              const box = card?.querySelector('.preview-box');
+              if (box) box.classList.toggle('is-realistic');
             }
           });
         });
