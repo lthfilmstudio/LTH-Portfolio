@@ -12,8 +12,8 @@
     "awardEn": "Golden Bell Awards",
     "poster": "",
     "posterX": 50,
-    "posterY": 65,
-    "posterScale": 100
+    "posterY": 63,
+    "posterScale": 104
   },
   {
     "id": "kite-soaring-2019",
@@ -28,7 +28,7 @@
     "awardEn": "Golden Bell Awards",
     "poster": "",
     "posterX": 50,
-    "posterY": 41,
+    "posterY": 38,
     "posterScale": 112
   },
   {
@@ -44,7 +44,7 @@
     "awardEn": "Golden Bell Awards",
     "poster": "",
     "posterX": 47,
-    "posterY": 68,
-    "posterScale": 106
+    "posterY": 67,
+    "posterScale": 107
   }
 ]
