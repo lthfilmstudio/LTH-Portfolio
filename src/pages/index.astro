@@ -214,12 +214,22 @@ function thumbClass(slug: string): string {
       return Math.max(0, items.length - 1);
     }
 
-    // 滾到指定 item 為左邊；若會超過 maxScroll（最後一頁），改成靠右對齊讓最後 N 個全顯示
+    // 滾到指定 item 為左邊；若是最後一頁（idx + N 已超出 items），直接 snap 到 maxScroll
+    // 讓最後 N 個靠右對齊全顯示，不會被切
     function scrollToIdx(idx: number) {
       const items = getItems();
       if (!items.length) return;
-      idx = Math.max(0, Math.min(items.length - 1, idx));
-      const maxScroll = list.scrollWidth - list.clientWidth;
+      const maxScroll = Math.max(0, list.scrollWidth - list.clientWidth);
+      if (idx <= 0) {
+        list.scrollTo({ left: 0, behavior: 'smooth' });
+        return;
+      }
+      // 最後一頁：要顯示的最右那張會是 items[idx + N - 1]，若超過陣列尾就 snap to max
+      if (idx + ITEMS_PER_PAGE - 1 >= items.length - 1) {
+        list.scrollTo({ left: maxScroll, behavior: 'smooth' });
+        return;
+      }
+      idx = Math.min(items.length - 1, idx);
       let target = items[idx].offsetLeft;
       if (target > maxScroll) target = maxScroll;
       list.scrollTo({ left: target, behavior: 'smooth' });
@@ -227,14 +237,14 @@ function thumbClass(slug: string): string {
 
     const updateCues = () => {
       const overflow = list.scrollWidth - list.clientWidth;
-      if (overflow <= 4) {
+      if (overflow <= 8) {
         cueLeft.setAttribute('hidden', '');
         cueRight.setAttribute('hidden', '');
         return;
       }
-      cueLeft.toggleAttribute('hidden', list.scrollLeft <= 4);
+      cueLeft.toggleAttribute('hidden', list.scrollLeft <= 8);
       const remaining = overflow - list.scrollLeft;
-      cueRight.toggleAttribute('hidden', remaining <= 4);
+      cueRight.toggleAttribute('hidden', remaining <= 8);
     };
 
     cueLeft.addEventListener('click', () => {
