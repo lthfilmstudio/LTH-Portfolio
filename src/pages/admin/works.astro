@@ -1322,17 +1322,35 @@ const LINK_TYPES = [
           },
           onEnd: (evt) => {
             document.body.classList.remove('is-dragging');
-            const oldIdx = +evt.item.dataset.idx;
-            // SortableJS reorders the DOM. We need to map this back to the works[] array.
-            // Read the new order from DOM after the drop.
             const newOrder = Array.from(grid.querySelectorAll('.card')).map((c) => c.dataset.slug);
-            // Build new works array following DOM order, preserving any filtered-out items in their relative positions.
-            // Simplest approach: only reorder if no filter active, otherwise warn.
-            if (activeFilter || searchQuery) {
-              showToast('⚠️ 套用篩選/搜尋時不能拖拉排序，請先清空篩選跟搜尋', 'err', 4000);
-              renderList(); // restore visual order
+
+            // 搜尋中拖拉沒意義（部分 hide）
+            if (searchQuery) {
+              showToast('⚠️ 搜尋時不能拖拉排序，請先清空搜尋', 'err', 4000);
+              renderList();
               return;
             }
+
+            // 有 activeFilter（分類）：更新該分類的 orders 欄位
+            if (activeFilter) {
+              newOrder.forEach((slug, i) => {
+                const w = works.find((x) => x.slug === slug);
+                if (!w) return;
+                if (!w.orders) w.orders = {};
+                w.orders[activeFilter] = i;
+              });
+              renderList();
+              checkDirty();
+              const moved = works.find((x) => x.slug === evt.item.dataset.slug);
+              showToast(
+                `已更新「${activeFilter}」分類排序：${moved ? moved.titleZh : ''} → 第 ${evt.newIndex + 1} 位`,
+                'ok',
+                2800,
+              );
+              return;
+            }
+
+            // 無 filter：拖整體 works 陣列（影響「全部」順序，不影響各分類自訂 order）
             const slugToWork = new Map(works.map((w) => [w.slug, w]));
             const reordered = newOrder.map((s) => slugToWork.get(s)).filter(Boolean);
             if (reordered.length !== works.length) {

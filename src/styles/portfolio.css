@@ -196,6 +196,15 @@
   display: none;
 }
 
+/* 各分類獨立排序：用每張 card 的 inline --ord-{cat} 對應 grid order */
+.works-grid[data-active-filter="feature"] .work-card { order: var(--ord-feature, 9999); }
+.works-grid[data-active-filter="series"] .work-card { order: var(--ord-series, 9999); }
+.works-grid[data-active-filter="trailer"] .work-card { order: var(--ord-trailer, 9999); }
+.works-grid[data-active-filter="short"] .work-card { order: var(--ord-short, 9999); }
+.works-grid[data-active-filter="commercial"] .work-card { order: var(--ord-commercial, 9999); }
+.works-grid[data-active-filter="mv"] .work-card { order: var(--ord-mv, 9999); }
+.works-grid[data-active-filter="tvmovie"] .work-card { order: var(--ord-tvmovie, 9999); }
+
 /* MV / 廣告 — YouTube 截圖比例（16:9）+ 較大格 */
 .works-grid[data-active-filter="mv"],
 .works-grid[data-active-filter="commercial"] {

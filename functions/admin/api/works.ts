@@ -52,6 +52,7 @@ type Work = {
   covers?: string[];
   links?: Link[];
   hasDetail?: boolean;
+  orders?: Record<string, number>;
 };
 
 function isString(v: unknown): v is string {
@@ -103,6 +104,17 @@ function validateWork(w: any, idx: number): string | null {
 
   if (w.hasDetail !== undefined && typeof w.hasDetail !== 'boolean')
     return `work[${idx}] (${w.slug}): hasDetail must be boolean`;
+
+  if (w.orders !== undefined) {
+    if (typeof w.orders !== 'object' || Array.isArray(w.orders))
+      return `work[${idx}] (${w.slug}): orders must be object`;
+    for (const k of Object.keys(w.orders)) {
+      if (!ALLOWED_CATEGORIES.has(k))
+        return `work[${idx}] (${w.slug}): invalid orders key "${k}"`;
+      if (typeof w.orders[k] !== 'number' || !Number.isFinite(w.orders[k]))
+        return `work[${idx}] (${w.slug}): orders["${k}"] must be number`;
+    }
+  }
 
   return null;
 }
@@ -223,6 +235,16 @@ function normalize(w: Work): Work {
     });
   }
   if (w.hasDetail) out.hasDetail = true;
+  if (w.orders && Object.keys(w.orders).length > 0) {
+    // 只保留 categories 內的 key + 整數
+    const cleaned: Record<string, number> = {};
+    for (const c of w.categories) {
+      if (typeof w.orders[c] === 'number') {
+        cleaned[c] = Math.round(w.orders[c]);
+      }
+    }
+    if (Object.keys(cleaned).length > 0) out.orders = cleaned;
+  }
   return out;
 }
 

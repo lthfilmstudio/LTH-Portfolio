@@ -1,6 +1,6 @@
 ---
 import type { Work } from '../data/works';
-import { CATEGORY_LABELS, firstExternalLink } from '../data/works';
+import { CATEGORY_LABELS, firstExternalLink, getWorkCategoryOrder } from '../data/works';
 
 interface Props {
   work: Work;
@@ -15,11 +15,17 @@ const thumbNum =
 const dataShort = work.titleZh.slice(0, 4);
 
 const categoryLabels = work.categories.map((c) => CATEGORY_LABELS[c]);
+
+// 每個分類各自的 effective order（CSS custom prop 給 portfolio.css 的 order rule 用）
+const orderStyle = work.categories
+  .map((c) => `--ord-${c}: ${getWorkCategoryOrder(work.slug, c)}`)
+  .join('; ');
 ---
 <a
   class="work-card"
   href={href ?? '#'}
   data-categories={work.categories.join(' ')}
+  style={orderStyle}
   {...(external ? { target: '_blank', rel: 'noopener' } : {})}
 >
   {work.cover ? (

@@ -37,6 +37,7 @@ export interface Work {
   covers: string[];
   links: WorkLink[];
   hasDetail: boolean;
+  orders?: Partial<Record<Category, number>>;
 }
 
 export const works = worksData as Work[];
@@ -60,6 +61,32 @@ export const CATEGORY_ORDER: Category[] = [
   'commercial',
   'mv',
 ];
+
+// 為每個 category 計算 work 在該分類內的 effective order（顯示用 CSS order 值）。
+// 顯式 work.orders[cat] 優先；缺值的 fallback 為 works.json 內的相對位置。
+const categoryOrderBySlug: Map<string, Map<Category, number>> = (() => {
+  const result = new Map<string, Map<Category, number>>();
+  for (const cat of CATEGORY_ORDER) {
+    const inCat = works.filter((w) => w.categories.includes(cat));
+    inCat.sort((a, b) => {
+      const ao = a.orders?.[cat];
+      const bo = b.orders?.[cat];
+      if (ao !== undefined && bo !== undefined) return ao - bo;
+      if (ao !== undefined) return -1;
+      if (bo !== undefined) return 1;
+      return works.indexOf(a) - works.indexOf(b);
+    });
+    inCat.forEach((w, i) => {
+      if (!result.has(w.slug)) result.set(w.slug, new Map());
+      result.get(w.slug)!.set(cat, i);
+    });
+  }
+  return result;
+})();
+
+export function getWorkCategoryOrder(slug: string, cat: Category): number {
+  return categoryOrderBySlug.get(slug)?.get(cat) ?? 9999;
+}
 
 export function worksByCategory(cat: Category): Work[] {
   return works.filter((w) => w.categories.includes(cat));
