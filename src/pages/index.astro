@@ -281,20 +281,23 @@ function thumbClass(slug: string): string {
 <!-- PORTFOLIO -->
 <section class="portfolio">
   <div class="filter-chips" role="tablist">
-    {CATEGORY_ORDER.map((cat) => {
+    {CATEGORY_ORDER.map((cat, idx) => {
       const count = works.filter((w) => w.categories.includes(cat)).length;
       if (count === 0) return null;
       const isDefault = cat === 'feature';
       return (
-        <button
-          class={`chip${isDefault ? ' active' : ''}`}
-          data-filter={cat}
-          type="button"
-          role="tab"
-          aria-selected={isDefault ? 'true' : 'false'}
-        >
-          {CATEGORY_LABELS[cat].zh} <span class="chip-en">{CATEGORY_LABELS[cat].en}</span>
-        </button>
+        <>
+          <button
+            class={`chip${isDefault ? ' active' : ''}`}
+            data-filter={cat}
+            type="button"
+            role="tab"
+            aria-selected={isDefault ? 'true' : 'false'}
+          >
+            {CATEGORY_LABELS[cat].zh} <span class="chip-en">{CATEGORY_LABELS[cat].en}</span>
+          </button>
+          {idx === 2 && <div class="chip-break" aria-hidden="true"></div>}
+        </>
       );
     })}
   </div>

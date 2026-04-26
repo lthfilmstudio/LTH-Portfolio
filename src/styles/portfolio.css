@@ -15,6 +15,9 @@
   border-bottom: 1px solid var(--line);
 }
 
+/* 桌面版藏起 chip-break，手機版才用它強制換行 */
+.chip-break { display: none; }
+
 .chip {
   background: transparent;
   border: 1px solid var(--line);
