@@ -248,10 +248,22 @@ function thumbClass(slug: string): string {
     };
 
     cueLeft.addEventListener('click', () => {
-      scrollToIdx(firstVisibleIdx() - ITEMS_PER_PAGE);
+      const items = getItems();
+      const target = firstVisibleIdx() - ITEMS_PER_PAGE;
+      // 預判：將回到開頭就先 hide 左箭頭
+      if (target <= 0) cueLeft.setAttribute('hidden', '');
+      cueRight.removeAttribute('hidden'); // 從尾巴往回，右箭頭一定要重新出現
+      scrollToIdx(target);
     });
     cueRight.addEventListener('click', () => {
-      scrollToIdx(firstVisibleIdx() + ITEMS_PER_PAGE);
+      const items = getItems();
+      const target = firstVisibleIdx() + ITEMS_PER_PAGE;
+      // 預判：將到底就先 hide 右箭頭，不等 smooth scroll 完成
+      if (target + ITEMS_PER_PAGE - 1 >= items.length - 1) {
+        cueRight.setAttribute('hidden', '');
+      }
+      cueLeft.removeAttribute('hidden'); // 從頭往後一定能往回
+      scrollToIdx(target);
     });
     list.addEventListener('scroll', updateCues, { passive: true });
     window.addEventListener('resize', updateCues);
