@@ -226,10 +226,16 @@ const combinedSchema = {
       return Array.from(list.querySelectorAll<HTMLElement>('.featured-item'));
     }
 
+    // .featured-list padding-left（CSS 1rem）— 用來把 item 左邊推離 overflow 邊界，
+    // 避免斜體數字左半被切；JS 對齊時要把它扣回去。
+    function listPadLeft(): number {
+      return parseFloat(getComputedStyle(list).paddingLeft) || 0;
+    }
+
     // 找目前最左邊那張可見的 item index
     function firstVisibleIdx(): number {
       const items = getItems();
-      const sl = list.scrollLeft;
+      const sl = list.scrollLeft + listPadLeft();
       for (let i = 0; i < items.length; i++) {
         if (items[i].offsetLeft >= sl - 4) return i;
       }
@@ -262,7 +268,8 @@ const combinedSchema = {
         return;
       }
       idx = Math.min(items.length - 1, idx);
-      let target = items[idx].offsetLeft;
+      let target = items[idx].offsetLeft - listPadLeft();
+      if (target < 0) target = 0;
       if (target > maxScroll) target = maxScroll;
       doScroll(target);
     }
