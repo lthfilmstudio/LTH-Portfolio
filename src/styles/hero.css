@@ -446,18 +446,58 @@
   text-transform: none;
 }
 
-.featured-list {
+.featured-list-wrap {
   grid-column: 1 / -1;
+  position: relative;
+  min-width: 0;
+}
+
+.featured-list {
   display: flex;
-  gap: 1.5rem;
+  gap: 2.5rem;
   overflow-x: auto;
   overflow-y: visible;
-  padding: 0.25rem 0 0.25rem;
+  padding: 0.25rem 2.5rem 0.25rem 0; /* 右邊留 padding 給捲動箭頭 */
   scroll-snap-type: x proximity;
   scrollbar-width: thin;
   scrollbar-color: var(--line-soft) transparent;
   min-width: 0;
-  max-width: 100%;
+  scroll-behavior: smooth;
+}
+
+/* 水平捲動箭頭：跟 .scroll-cue-arrow 風格一致，方向朝右 */
+.featured-scroll-cue {
+  position: absolute;
+  right: 0.4rem;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--text-faint);
+  border-radius: 50%;
+  background: rgba(10, 9, 8, 0.78); /* 海報背景上要看得清楚 */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-faint);
+  cursor: pointer;
+  z-index: 4;
+  animation: featured-scroll-cue-bounce 2.4s ease-in-out infinite;
+  transition: color 0.3s, border-color 0.3s, opacity 0.3s, transform 0.3s;
+  opacity: 0.85;
+}
+
+.featured-scroll-cue:hover {
+  color: var(--accent);
+  border-color: var(--accent);
+  opacity: 1;
+}
+
+.featured-scroll-cue[hidden] { display: none; }
+
+@keyframes featured-scroll-cue-bounce {
+  0%, 100% { transform: translateY(-50%) translateX(0); }
+  50% { transform: translateY(-50%) translateX(4px); }
 }
 
 .featured-list::-webkit-scrollbar { height: 6px; }
@@ -518,7 +558,7 @@
 .featured-thumb {
   grid-column: 2;
   grid-row: 1;
-  width: 180px;
+  width: 160px;
   aspect-ratio: 27 / 40;
   position: relative;
   z-index: 1;
@@ -559,7 +599,7 @@
   gap: 0.15rem;
   min-width: 0;
   padding-top: 0.6rem;
-  width: 180px;
+  width: 160px;
 }
 
 .featured-item .title-zh {

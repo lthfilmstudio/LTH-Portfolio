@@ -126,23 +126,30 @@ function thumbClass(slug: string): string {
     <span>Selected Works</span>
   </div>
 
-  <div class="featured-list">
-    {selectedWorks.map((w, i) => (
-      <a class="featured-item" href={w.hasDetail ? `/works/${w.slug}/` : '#'}>
-        <span class="featured-num" aria-hidden="true">{i + 1}</span>
-        {w.cover ? (
-          <div class="featured-thumb featured-thumb--image">
-            <img src={w.cover} alt={`${w.titleZh} ${w.titleEn}`.trim()} loading="lazy" />
-          </div>
-        ) : (
-          <div class={`thumb featured-thumb ${thumbClass(w.slug)}`} data-short={w.titleZh.slice(0, 4)}></div>
-        )}
-        <span class="title">
-          <span class="title-zh">{w.titleZh}</span>
-          {w.titleEn && <span class="title-en">{w.titleEn}</span>}
-        </span>
-      </a>
-    ))}
+  <div class="featured-list-wrap">
+    <div class="featured-list" id="featured-list">
+      {selectedWorks.map((w, i) => (
+        <a class="featured-item" href={w.hasDetail ? `/works/${w.slug}/` : '#'}>
+          <span class="featured-num" aria-hidden="true">{i + 1}</span>
+          {w.cover ? (
+            <div class="featured-thumb featured-thumb--image">
+              <img src={w.cover} alt={`${w.titleZh} ${w.titleEn}`.trim()} loading="lazy" />
+            </div>
+          ) : (
+            <div class={`thumb featured-thumb ${thumbClass(w.slug)}`} data-short={w.titleZh.slice(0, 4)}></div>
+          )}
+          <span class="title">
+            <span class="title-zh">{w.titleZh}</span>
+            {w.titleEn && <span class="title-en">{w.titleEn}</span>}
+          </span>
+        </a>
+      ))}
+    </div>
+    <button class="featured-scroll-cue" type="button" aria-label="向右捲動看更多精選" data-target="featured-list">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <path d="M5 12h14M12 5l7 7-7 7" />
+      </svg>
+    </button>
   </div>
 
   <a class="scroll-cue" href="#works" aria-label="往下看作品集">
@@ -154,6 +161,29 @@ function thumbClass(slug: string): string {
     </span>
   </a>
 </section>
+
+<script>
+  // Selected Works 水平捲動箭頭：點擊滾動、到底自動隱藏
+  document.addEventListener('DOMContentLoaded', () => {
+    const list = document.getElementById('featured-list');
+    const cue = document.querySelector('.featured-scroll-cue');
+    if (!list || !cue) return;
+
+    const updateCue = () => {
+      const overflow = list.scrollWidth - list.clientWidth;
+      if (overflow <= 4) { cue.setAttribute('hidden', ''); return; }
+      const remaining = overflow - list.scrollLeft;
+      cue.toggleAttribute('hidden', remaining <= 4);
+    };
+
+    cue.addEventListener('click', () => {
+      list.scrollBy({ left: list.clientWidth * 0.7, behavior: 'smooth' });
+    });
+    list.addEventListener('scroll', updateCue, { passive: true });
+    window.addEventListener('resize', updateCue);
+    updateCue();
+  });
+</script>
 
 <!-- PORTFOLIO SECTION DIVIDER -->
 <div class="section-divider" id="works">
