@@ -214,25 +214,35 @@ function thumbClass(slug: string): string {
       return Math.max(0, items.length - 1);
     }
 
-    // 滾到指定 item 為左邊；若是最後一頁（idx + N 已超出 items），直接 snap 到 maxScroll
-    // 讓最後 N 個靠右對齊全顯示，不會被切
+    // 動畫進行中，用 pendingTarget 取代真實 scrollLeft 來算 cue 顯示
+    let pendingTarget: number | null = null;
+    let pendingTimer = 0;
+
+    function doScroll(target: number) {
+      pendingTarget = target;
+      list.scrollTo({ left: target, behavior: 'smooth' });
+      window.clearTimeout(pendingTimer);
+      pendingTimer = window.setTimeout(() => {
+        pendingTarget = null;
+        updateCues();
+      }, 900);
+      updateCues();
+    }
+
+    // 滾到指定 item 為左邊；若是最後一頁就 snap 到 maxScroll
     function scrollToIdx(idx: number) {
       const items = getItems();
       if (!items.length) return;
       const maxScroll = Math.max(0, list.scrollWidth - list.clientWidth);
-      if (idx <= 0) {
-        list.scrollTo({ left: 0, behavior: 'smooth' });
-        return;
-      }
-      // 最後一頁：要顯示的最右那張會是 items[idx + N - 1]，若超過陣列尾就 snap to max
+      if (idx <= 0) { doScroll(0); return; }
       if (idx + ITEMS_PER_PAGE - 1 >= items.length - 1) {
-        list.scrollTo({ left: maxScroll, behavior: 'smooth' });
+        doScroll(maxScroll);
         return;
       }
       idx = Math.min(items.length - 1, idx);
       let target = items[idx].offsetLeft;
       if (target > maxScroll) target = maxScroll;
-      list.scrollTo({ left: target, behavior: 'smooth' });
+      doScroll(target);
     }
 
     const updateCues = () => {
@@ -242,28 +252,18 @@ function thumbClass(slug: string): string {
         cueRight.setAttribute('hidden', '');
         return;
       }
-      cueLeft.toggleAttribute('hidden', list.scrollLeft <= 8);
-      const remaining = overflow - list.scrollLeft;
+      // 動畫中以 target 為準，避免中途位置造成箭頭閃現
+      const effectiveLeft = pendingTarget !== null ? pendingTarget : list.scrollLeft;
+      cueLeft.toggleAttribute('hidden', effectiveLeft <= 8);
+      const remaining = overflow - effectiveLeft;
       cueRight.toggleAttribute('hidden', remaining <= 8);
     };
 
     cueLeft.addEventListener('click', () => {
-      const items = getItems();
-      const target = firstVisibleIdx() - ITEMS_PER_PAGE;
-      // 預判：將回到開頭就先 hide 左箭頭
-      if (target <= 0) cueLeft.setAttribute('hidden', '');
-      cueRight.removeAttribute('hidden'); // 從尾巴往回，右箭頭一定要重新出現
-      scrollToIdx(target);
+      scrollToIdx(firstVisibleIdx() - ITEMS_PER_PAGE);
     });
     cueRight.addEventListener('click', () => {
-      const items = getItems();
-      const target = firstVisibleIdx() + ITEMS_PER_PAGE;
-      // 預判：將到底就先 hide 右箭頭，不等 smooth scroll 完成
-      if (target + ITEMS_PER_PAGE - 1 >= items.length - 1) {
-        cueRight.setAttribute('hidden', '');
-      }
-      cueLeft.removeAttribute('hidden'); // 從頭往後一定能往回
-      scrollToIdx(target);
+      scrollToIdx(firstVisibleIdx() + ITEMS_PER_PAGE);
     });
     list.addEventListener('scroll', updateCues, { passive: true });
     window.addEventListener('resize', updateCues);
