@@ -215,7 +215,7 @@
   font-family: 'Cormorant Garamond', serif;
   font-style: italic;
   font-size: 1.02rem;
-  color: var(--accent);
+  color: var(--text);
   letter-spacing: 0.04em;
   white-space: nowrap;
 }
