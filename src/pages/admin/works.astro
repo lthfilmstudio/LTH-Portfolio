@@ -512,14 +512,6 @@ const LINK_TYPES = [
         line-height: 1.4;
         word-break: break-all;
       }
-      .cover-block .info .official {
-        color: var(--ok);
-        font-size: 0.65rem;
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
-        margin-bottom: 0.2rem;
-      }
-
       .drawer-foot {
         padding: 1rem 1.5rem;
         border-top: 1px solid var(--line);
@@ -950,7 +942,6 @@ const LINK_TYPES = [
 
       function renderDrawerForm() {
         const d = drawerDraft;
-        const isOfficial = (d.cover || '').includes('/official/');
         const wide = isWideRatio(d);
         drawerBody.innerHTML = `
           <fieldset>
@@ -1037,7 +1028,6 @@ const LINK_TYPES = [
                 ${d.cover ? `<img src="${d.cover}" alt="cover" />` : '<span class="empty">無</span>'}
               </div>
               <div class="info">
-                ${isOfficial ? '<div class="official">✓ 官方海報</div>' : ''}
                 ${d.cover ? escapeHtml(d.cover) : '尚未上傳海報'}
                 ${wide ? '<div style="font-size: 0.65rem; color: var(--text-faint); margin-top: 0.3rem;">封面比例：16:9（YouTube 截圖）</div>' : ''}
               </div>
