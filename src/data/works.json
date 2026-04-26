@@ -812,6 +812,8 @@
       }
     ],
     "hasDetail": true,
+    "coverX": 55,
+    "coverY": 48,
     "orders": {
       "series": 8
     }
