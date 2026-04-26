@@ -522,6 +522,12 @@
   scrollbar-color: var(--line-soft) transparent;
   min-width: 0;
   scroll-behavior: smooth;
+  will-change: scroll-position;
+  -webkit-overflow-scrolling: touch;
+}
+
+.featured-item {
+  contain: layout paint;
 }
 
 /* 水平捲動箭頭：跟 .scroll-cue-arrow 風格一致 */
