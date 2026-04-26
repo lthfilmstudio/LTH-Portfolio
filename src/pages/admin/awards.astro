@@ -116,7 +116,9 @@ const worksOptions = (worksData as any[]).map((w) => ({
 
       .preview-box {
         position: relative;
-        aspect-ratio: 4 / 1; /* 對齊前台 hero-award-item 實際比例（~430x110） */
+        width: 380px;          /* 對齊前台桌面 viewport 實際寬度 */
+        max-width: 100%;
+        aspect-ratio: 18 / 5;  /* 對齊前台 hero-award-item 實際比例 ~3.6:1 */
         background: var(--surface-2);
         border: 1px solid var(--line-soft);
         overflow: hidden;
@@ -125,7 +127,7 @@ const worksOptions = (worksData as any[]).map((w) => ({
       .preview-bg {
         position: absolute;
         inset: 0;
-        opacity: 0.45; /* 對齊前台 hover 狀態（讓編輯時看清楚） */
+        opacity: 0.45; /* 為了編輯看清楚拉亮，前台實際 0.12（預設）/ 0.45（hover） */
         filter: grayscale(0.3);
       }
       .preview-bg img {
