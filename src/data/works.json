@@ -11,7 +11,10 @@
     "director": "邱晧洲",
     "description": "賭債纏身的振凱（莊凱勛 飾）帶著妻子南湘（天心 飾）一家七口匆忙搬家，卻仍躲不過嗜血債主的糾纏。走投無路之下，振凱重拾早年信奉的邪教禁術，竟將幼子的運勢獻祭換取橫財。隨著錢財入袋，厄運卻接踵而來，全家人陸續出事。大女兒念琪（項婕如 飾）的同學小拓（曹佑寧 飾）出身宮廟，繼承母親靈媒體質，一眼看穿她背後纏繞的怨念。正當小拓試圖介入驅邪，才驚覺這場血祭藏著更可怕的秘密…",
     "cover": "/stills/covers/official/the-tao-exorcist.jpg",
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "feature": 0
+    }
   },
   {
     "slug": "the-world-between-us-after-the-flames-2025",
@@ -244,7 +247,10 @@
         "label": "官方Facebook"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "feature": 3
+    }
   },
   {
     "slug": "summer-blue-hour-2025",
@@ -275,7 +281,10 @@
         "label": "正式預告 Trailer"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "feature": 1
+    }
   },
   {
     "slug": "adrift-in-love-2025",
@@ -589,7 +598,10 @@
         "label": "正片 Full Movie (friDay)"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "feature": 2
+    }
   },
   {
     "slug": "beautiful-summer-noon-2022",
@@ -723,7 +735,10 @@
         "label": "正片 Full Movie (friDay)"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "feature": 4
+    }
   },
   {
     "slug": "the-arc-of-life-2021",
@@ -931,7 +946,10 @@
         "label": "正片 Full Movie (MyVideo)"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "feature": 5
+    }
   },
   {
     "slug": "all-because-of-love-2017",
@@ -957,7 +975,10 @@
         "label": "預告 Trailer"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "feature": 6
+    }
   },
   {
     "slug": "family-time-2017",
@@ -1193,7 +1214,10 @@
         "label": "正片 Full Movie (iQIYI)"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "feature": 7
+    }
   },
   {
     "slug": "love-you-while-we-were-drunk-2011",
@@ -1313,7 +1337,9 @@
         "label": "全集 Full Episodes (HakkaTV)"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "coverX": 61,
+    "coverY": 16
   },
   {
     "slug": "letter-1949-2009",
