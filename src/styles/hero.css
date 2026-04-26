@@ -214,18 +214,19 @@
 .hero-languages-list .lang-level {
   font-family: 'Cormorant Garamond', serif;
   font-style: italic;
-  font-size: 1.02rem;
+  font-size: 1.05rem;
   color: var(--accent);
-  letter-spacing: 0.04em;
+  letter-spacing: 0.01em;
+  line-height: 1.7;
   white-space: nowrap;
 }
 
 .hero-languages-list .lang-name {
-  font-family: 'Noto Serif TC', serif;
-  font-size: 0.95rem;
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1.05rem;
   color: var(--text-dim);
-  line-height: 1.5;
-  letter-spacing: 0.04em;
+  line-height: 1.7;
+  letter-spacing: 0.01em;
 }
 
 /* HERO AWARDS */
