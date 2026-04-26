@@ -430,7 +430,7 @@
   text-transform: uppercase;
   color: var(--text-faint);
   margin-top: 1.5rem;
-  margin-bottom: 1.2rem;
+  margin-bottom: 0.3rem;
   padding-top: 1.5rem;
   border-top: 1px solid var(--line); /* 跨左右兩欄的分隔線 */
   display: flex;
