@@ -37,11 +37,30 @@ const thumbNum =
   (work.slug.split('').reduce((a, c) => a + c.charCodeAt(0), 0) % 15) + 1;
 const dataShort = work.titleZh.slice(0, 4);
 
-const title = `${work.titleZh}${work.titleEn ? ' — ' + work.titleEn : ''} | 林姿嫺 Tzushien Lin`;
+const title = `${work.titleZh}${work.titleEn ? ' ' + work.titleEn : ''} | 林姿嫺 剪輯`;
 
 const description = work.description
   ? work.description.replace(/\s+/g, ' ').slice(0, 158)
-  : `${work.titleZh} ${work.titleEn} — 由林姿嫺剪輯。${CATEGORY_LABELS[work.primaryCategory].zh} · ${work.year}。`;
+  : `${work.titleZh}${work.titleEn ? ' ' + work.titleEn : ''}（${work.year || ''}）— 林姿嫺 Tzushien Lin 擔任剪輯指導。${CATEGORY_LABELS[work.primaryCategory].zh}${work.director ? '，導演：' + work.director : ''}。`;
+
+// 每作品專屬 OG 圖（用 cover），fallback 到全站 OG
+const ogImage = work.cover || '/og.png';
+
+// 作品專屬 keywords
+const keywords = [
+  work.titleZh,
+  work.titleEn,
+  '林姿嫺',
+  'Tzushien Lin',
+  '剪輯',
+  '剪輯指導',
+  CATEGORY_LABELS[work.primaryCategory].zh,
+  CATEGORY_LABELS[work.primaryCategory].en,
+  work.director,
+  work.writers,
+  '原本那間剪輯工作室',
+  'LTH Film Studio',
+].filter(Boolean).join(',');
 
 // Schema.org CreativeWork
 const workSchema = {
@@ -65,7 +84,7 @@ const workSchema = {
   author: work.writers ? { '@type': 'Person', name: work.writers } : undefined,
 };
 ---
-<BaseLayout title={title} description={description} schemaJsonLd={workSchema}>
+<BaseLayout title={title} description={description} ogImage={ogImage} keywords={keywords} schemaJsonLd={workSchema}>
 
 <div class="bokeh-bg"></div>
 

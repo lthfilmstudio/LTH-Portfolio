@@ -15,15 +15,19 @@ interface Props {
   description?: string;
   ogImage?: string;
   schemaJsonLd?: object;
+  keywords?: string;
 }
 
 const {
-  title = '林姿嫺 Tzushien Lin — Film & Series Editor',
-  description = '林姿嫺 Tzushien Lin — 電影／劇集剪輯指導。兩度金鐘獎最佳剪輯得主。Two-time Golden Bell Award winner for Best Editing.',
+  title = '林姿嫺 Tzushien Lin — 剪輯指導 Film & Series Editor｜兩度金鐘獎最佳剪輯',
+  description = '林姿嫺 Tzushien Lin，電影／劇集剪輯指導，兩度榮獲金鐘獎戲劇類最佳剪輯獎（《茶金》、《牽紙鷂的手》），並以《有生之年》入圍。代表作品包括《我們與惡的距離 II》、《拜六禮拜》、《那張照片裡的我們》、《人浮於愛》、《夏日最後的祕密》等。原本那間剪輯工作室 LTH Film Studio 創辦人。',
   ogImage = '/og.png',
   schemaJsonLd,
+  keywords = '林姿嫺,Tzushien Lin,剪輯指導,剪輯師,金鐘獎,最佳剪輯,茶金,牽紙鷂的手,有生之年,我們與惡的距離,拜六禮拜,那張照片裡的我們,人浮於愛,原本那間剪輯工作室,LTH Film Studio,台灣剪輯師,電影剪輯,劇集剪輯,Taiwan Film Editor,Drama Series Editor,Golden Bell Awards',
 } = Astro.props;
 
+// 部署在 *.pages.dev 預覽 URL 時，canonical 指回主網域並標 noindex 避免重複內容
+const isPreviewHost = Astro.url.hostname.endsWith('.pages.dev');
 const canonicalUrl = new URL(Astro.url.pathname, Astro.site).toString();
 const absOgImage = new URL(ogImage, Astro.site).toString();
 ---
@@ -34,7 +38,11 @@ const absOgImage = new URL(ogImage, Astro.site).toString();
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>{title}</title>
   <meta name="description" content={description} />
+  <meta name="keywords" content={keywords} />
+  <meta name="author" content="林姿嫺 Tzushien Lin" />
   <link rel="canonical" href={canonicalUrl} />
+  {isPreviewHost && <meta name="robots" content="noindex, nofollow" />}
+  <meta name="format-detection" content="telephone=no" />
 
   <!-- Favicon -->
   <link rel="icon" href="/favicon.ico" sizes="48x48" />

@@ -56,8 +56,27 @@ function thumbClass(slug: string): string {
   const n = (slug.split('').reduce((a, c) => a + c.charCodeAt(0), 0) % 15) + 1;
   return `th-${n}`;
 }
+
+// Schema.org ItemList — 首頁精選作品讓 Google rich snippet 看到列表
+const selectedListSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'ItemList',
+  name: '林姿嫺 精選代表作品',
+  itemListElement: selectedWorks.map((w, i) => ({
+    '@type': 'ListItem',
+    position: i + 1,
+    url: w.hasDetail ? `https://lthfilmstudio.com/works/${w.slug}/` : undefined,
+    name: w.titleZh + (w.titleEn ? ` ${w.titleEn}` : ''),
+  })),
+};
+
+// 把 Person + ItemList 合併輸出（Schema.org 支援 array of @graph）
+const combinedSchema = {
+  '@context': 'https://schema.org',
+  '@graph': [personSchema, selectedListSchema],
+};
 ---
-<BaseLayout schemaJsonLd={personSchema}>
+<BaseLayout schemaJsonLd={combinedSchema}>
 
 <div class="bokeh-bg"></div>
 
