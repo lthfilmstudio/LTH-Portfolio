@@ -1,0 +1,109 @@
+---
+// 共用網站 footer：首頁 + 作品詳情頁都用同一份
+---
+<footer id="contact">
+  <div class="footer-hero">
+    <img class="footer-logo" src="/logo/studio-white.png" alt="原本那間剪輯工作室 LTH Film Studio" loading="lazy" />
+    <p class="footer-sub">For new projects and collaborations<br/><span class="zh">合作邀約</span></p>
+
+    <form class="contact-form" id="contact-form" novalidate>
+      <div class="form-row">
+        <label class="form-field">
+          <span class="form-label">姓名 Name *</span>
+          <input type="text" name="name" required autocomplete="name" />
+        </label>
+        <label class="form-field">
+          <span class="form-label">公司或單位名 Company *</span>
+          <input type="text" name="company" required autocomplete="organization" />
+        </label>
+      </div>
+      <label class="form-field">
+        <span class="form-label">信箱 Email *</span>
+        <input type="email" name="email" required autocomplete="email" />
+      </label>
+      <label class="form-field">
+        <span class="form-label">想聊什麼？ What's on your mind? *</span>
+        <textarea name="message" rows="5" required placeholder="可以聊作品類型、預算、時程，或任何想問的。Project type, budget, timeline, or anything else you'd like to discuss."></textarea>
+      </label>
+
+      <button class="form-submit" type="submit">
+        <span class="submit-label">送出 Send Message</span>
+      </button>
+
+      <div class="form-status" id="form-status" role="status" aria-live="polite"></div>
+    </form>
+  </div>
+
+  <div class="footer-bottom">
+    <div>© 2026 LTH FILM STUDIO — All rights reserved</div>
+  </div>
+</footer>
+
+<script>
+  // === Contact form → Google Forms ===
+  const FORM_URL = 'https://docs.google.com/forms/d/e/1FAIpQLScLaazgZxKCSjlsWcTKhqQvMjO2yqr1_dadGpLVAeHINOiBmg/formResponse';
+  const FIELDS = {
+    name: 'entry.688686802',
+    company: 'entry.404711621',
+    email: 'entry.2041773789',
+    message: 'entry.1443719334',
+  } as const;
+
+  const form = document.getElementById('contact-form') as HTMLFormElement | null;
+  const status = document.getElementById('form-status');
+
+  if (form && status) {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const fd = new FormData(form);
+      const name = String(fd.get('name') || '').trim();
+      const email = String(fd.get('email') || '').trim();
+      const company = String(fd.get('company') || '').trim();
+      const message = String(fd.get('message') || '').trim();
+
+      if (!name || !company || !email || !message) {
+        status.textContent = '請填妥所有欄位。';
+        status.dataset.kind = 'err';
+        return;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        status.textContent = 'Email 格式好像不太對，再確認一下？';
+        status.dataset.kind = 'err';
+        return;
+      }
+
+      const submitBtn = form.querySelector('.form-submit') as HTMLButtonElement | null;
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.querySelector('.submit-label')!.textContent = '送出中...';
+      }
+      status.textContent = '';
+      status.dataset.kind = '';
+
+      try {
+        const body = new URLSearchParams();
+        body.append(FIELDS.name, name);
+        body.append(FIELDS.company, company);
+        body.append(FIELDS.email, email);
+        body.append(FIELDS.message, message);
+        await fetch(FORM_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+          body: body.toString(),
+        });
+        form.reset();
+        status.innerHTML = '✓ 訊息已送出，會盡快回覆您。<br/><span style="font-size: 0.78em; opacity: 0.7;">Thanks — your message is on its way.</span>';
+        status.dataset.kind = 'ok';
+      } catch (err) {
+        status.textContent = '送出失敗，請稍後再試或直接寄信到 lthfilmstudio@gmail.com';
+        status.dataset.kind = 'err';
+      } finally {
+        if (submitBtn) {
+          submitBtn.disabled = false;
+          submitBtn.querySelector('.submit-label')!.textContent = '送出 Send Message';
+        }
+      }
+    });
+  }
+</script>
