@@ -115,8 +115,9 @@
     flex-wrap: wrap;
     gap: 0.4rem;
     overflow: visible;
-    margin: 0 0 2rem;
-    padding: 0;
+    margin: 0 0 2.5rem;
+    padding: 0 0 2rem;
+    border-bottom: 1px solid var(--line);
   }
   .chip {
     flex: 0 0 calc((100% - 1.2rem) / 4); /* 4 等寬，扣 3 個 gap (0.4rem × 3 = 1.2rem) */
