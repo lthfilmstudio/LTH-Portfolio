@@ -215,7 +215,7 @@
   font-family: 'Cormorant Garamond', serif;
   font-style: italic;
   font-size: 1.02rem;
-  color: var(--text);
+  color: var(--accent);
   letter-spacing: 0.04em;
   white-space: nowrap;
 }
@@ -223,7 +223,7 @@
 .hero-languages-list .lang-name {
   font-family: 'Noto Serif TC', serif;
   font-size: 0.95rem;
-  color: var(--text);
+  color: var(--text-dim);
   line-height: 1.5;
   letter-spacing: 0.04em;
 }
