@@ -75,7 +75,7 @@
 
 .hero h1 {
   font-family: 'Noto Serif TC', serif;
-  font-size: clamp(1.2rem, 2.2vw, 1.7rem);
+  font-size: clamp(1.5rem, 2.6vw, 2.1rem);
   font-weight: 400;
   line-height: 1.15;
   letter-spacing: 0.12em;
@@ -85,7 +85,7 @@
 
 .hero .en-name {
   font-family: 'Cormorant Garamond', serif;
-  font-size: clamp(0.75rem, 1vw, 0.9rem);
+  font-size: clamp(0.9rem, 1.2vw, 1.1rem);
   color: var(--text-dim);
   font-weight: 300;
   letter-spacing: 0.1em;
@@ -97,25 +97,26 @@
   display: flex;
   flex-direction: row;
   align-items: baseline;
-  gap: 0.8rem;
+  gap: 1rem;
   flex-wrap: wrap;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1.5rem;
+  margin-bottom: 2rem;
+  padding-bottom: 2rem;
   border-bottom: 1px solid var(--line);
 }
 
 .hero-titles .role-zh {
   font-family: 'Noto Serif TC', serif;
-  font-size: 0.78rem;
+  font-size: 0.95rem;
   letter-spacing: 0.2em;
   color: var(--text);
 }
 
 .hero-titles .role-en {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 0.9rem;
+  font-size: 1.05rem;
   color: var(--text-dim);
   letter-spacing: 0.05em;
+  font-style: italic;
 }
 
 .hero-langs-inline {
@@ -137,8 +138,8 @@
 .hero-profile {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  column-gap: 2.5rem;
-  row-gap: 1rem;
+  column-gap: 3rem;
+  row-gap: 1.4rem;
   margin-bottom: 0;
   padding-bottom: 0;
   /* 橫線改放在 featured-label 上方，跨左右兩欄 */
@@ -147,49 +148,53 @@
 .hero-profile .lead-zh {
   font-family: 'Noto Serif TC', serif;
   color: var(--text);
-  font-size: 0.9rem;
-  line-height: 1.75;
+  font-size: 1.05rem;
+  line-height: 1.85;
   letter-spacing: 0.08em;
+  margin: 0;
 }
 
 .hero-profile .sub-zh {
   font-family: 'Noto Serif TC', serif;
   color: var(--text-dim);
-  font-size: 0.82rem;
-  line-height: 1.75;
+  font-size: 0.95rem;
+  line-height: 1.85;
   letter-spacing: 0.05em;
+  margin: 0;
 }
 
 .hero-profile .lead-en {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1rem;
+  font-size: 1.18rem;
   color: var(--text);
-  line-height: 1.65;
+  line-height: 1.7;
   letter-spacing: 0.01em;
+  margin: 0;
 }
 
 .hero-profile .sub-en {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 0.92rem;
+  font-size: 1.05rem;
   color: var(--text-dim);
-  line-height: 1.65;
+  line-height: 1.7;
   letter-spacing: 0.01em;
+  margin: 0;
 }
 
 /* ===== LANGUAGES — 兩欄無框線表格 ===== */
 .hero-languages {
-  margin-top: 2rem;
+  margin-top: 2.5rem;
   display: flex;
   flex-direction: column;
-  gap: 0.6rem;
+  gap: 0.8rem;
 }
 
 .hero-languages-label {
-  font-size: 0.62rem;
+  font-size: 0.78rem;
   letter-spacing: 0.35em;
   text-transform: uppercase;
   color: var(--text-faint);
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.4rem;
 }
 
 .hero-languages-list {
@@ -198,8 +203,8 @@
   padding: 0;
   display: grid;
   grid-template-columns: auto 1fr;
-  column-gap: 1.5rem;
-  row-gap: 0.45rem;
+  column-gap: 2rem;
+  row-gap: 0.7rem;
 }
 
 .hero-languages-list li {
@@ -209,7 +214,7 @@
 .hero-languages-list .lang-level {
   font-family: 'Cormorant Garamond', serif;
   font-style: italic;
-  font-size: 0.88rem;
+  font-size: 1.02rem;
   color: var(--accent);
   letter-spacing: 0.04em;
   white-space: nowrap;
@@ -217,7 +222,7 @@
 
 .hero-languages-list .lang-name {
   font-family: 'Noto Serif TC', serif;
-  font-size: 0.84rem;
+  font-size: 0.95rem;
   color: var(--text);
   line-height: 1.5;
   letter-spacing: 0.04em;
@@ -225,11 +230,11 @@
 
 /* HERO AWARDS */
 .hero-awards-label {
-  font-size: 0.78rem;
+  font-size: 0.85rem;
   letter-spacing: 0.35em;
   text-transform: uppercase;
   color: var(--text-faint);
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.8rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
