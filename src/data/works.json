@@ -1525,7 +1525,10 @@
         "label": "片花 Official Clip"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "coverX": 54,
+    "coverY": 55,
+    "coverScale": 109
   },
   {
     "slug": "s-h-e-飛輪海-新窩-2008",
