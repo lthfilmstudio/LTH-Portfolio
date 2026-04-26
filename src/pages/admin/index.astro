@@ -195,7 +195,10 @@ const links: AdminLink[] = [
   <body>
     <header class="admin-header">
       <h1>LTH Portfolio · Admin</h1>
-      <a href="/" class="back">← 回到網站</a>
+      <div style="display: flex; gap: 1rem; align-items: center;">
+        <a href="/" class="back">← 回到網站</a>
+        <a href="/cdn-cgi/access/logout" class="back" style="border: 1px solid var(--line); padding: 0.4rem 0.8rem; border-radius: 2px;" title="登出 CF Access">登出</a>
+      </div>
     </header>
 
     <main>
