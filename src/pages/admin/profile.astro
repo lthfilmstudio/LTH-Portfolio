@@ -424,7 +424,22 @@ const profile = profileData;
             body: JSON.stringify({ profile }),
           });
           const data = await res.json();
-          if (!res.ok) throw new Error(data.error || 'save failed');
+          if (!res.ok) {
+            // 401 unauthorized 顯示完整診斷資訊
+            if (res.status === 401) {
+              const detail = [
+                `❌ 存檔失敗：${data.error}`,
+                data.hint ? `<small>${data.hint}</small>` : '',
+                data.received_email ? `<small>實際信箱：${data.received_email}</small>` : '',
+                data.expected ? `<small>期望信箱：${data.expected}</small>` : '',
+              ].filter(Boolean).join('<br/>');
+              showToast(detail, 'err', 15000);
+              saveBtn.disabled = false;
+              saveBtn.textContent = '儲存並發布';
+              return;
+            }
+            throw new Error(data.error || 'save failed');
+          }
           showToast(
             `✅ 已存檔<br/><small>CF Pages 約 1-2 分鐘後更新</small><br/>` +
               (data.url ? `<a href="${data.url}" target="_blank">查看 commit</a>` : ''),
