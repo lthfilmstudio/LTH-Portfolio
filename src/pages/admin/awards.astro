@@ -109,14 +109,14 @@ const worksOptions = (worksData as any[]).map((w) => ({
         border: 1px solid var(--line);
         border-radius: 3px;
         padding: 1.2rem;
-        display: grid;
-        grid-template-columns: 220px 1fr;
-        gap: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
       }
 
       .preview-box {
         position: relative;
-        width: 380px;          /* 對齊前台桌面 viewport 實際寬度 */
+        width: 480px;          /* 編輯時放大讓拖曳精準，仍對齊前台同比例 */
         max-width: 100%;
         aspect-ratio: 18 / 5;  /* 對齊前台 hero-award-item 實際比例 ~3.6:1 */
         background: var(--surface-2);
