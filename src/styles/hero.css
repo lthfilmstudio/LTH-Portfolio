@@ -606,7 +606,7 @@
   font-feature-settings: "lnum" 1, "tnum" 1;
   color: transparent;
   -webkit-text-stroke: 2px rgba(177, 172, 165, 0.25); /* 比照 --text-dim 暖灰，亮度低 */
-  letter-spacing: -0.04em;
+  letter-spacing: -0.15em; /* 收緊兩位數字（10）的字距，避免最後一張 item 太寬把 6 擠出 list 邊界 */
   margin-right: -0.8rem; /* 數字往海報左邊延伸，部分被海報蓋住 */
   z-index: 0;
   user-select: none;
