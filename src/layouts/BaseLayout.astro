@@ -82,5 +82,29 @@ const absOgImage = new URL(ogImage, Astro.site).toString();
 </head>
 <body>
   <slot />
+  <script>
+    // 手機版專屬：滑到 viewport 中央 20% 區帶時，海報套上 .is-in-view（取代 hover）
+    // 桌面有滑鼠用 :hover；手機沒滑鼠改靠 IntersectionObserver 偵測中央位置
+    if (window.matchMedia('(max-width: 960px)').matches && 'IntersectionObserver' in window) {
+      const observer = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((e) => {
+            e.target.classList.toggle('is-in-view', e.isIntersecting);
+          });
+        },
+        { rootMargin: '-40% 0px -40% 0px', threshold: 0 },
+      );
+      const watch = () => {
+        document
+          .querySelectorAll<HTMLElement>('.featured-item, .work-card')
+          .forEach((el) => observer.observe(el));
+      };
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', watch);
+      } else {
+        watch();
+      }
+    }
+  </script>
 </body>
 </html>

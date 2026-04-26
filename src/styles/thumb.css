@@ -90,13 +90,24 @@
   background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9'/><feColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.6 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
   opacity: 0.15;
   mix-blend-mode: overlay;
+  transition: opacity 0.5s;
 }
 
-/* Hover：vignette 變淡（中央更亮）+ grain 透明度略降 */
+/* Hover / 手機 in-view：vignette 變淡（中央更亮）+ grain 消失 */
 .featured-item:hover .featured-thumb--image::before,
+.featured-item.is-in-view .featured-thumb--image::before,
 .work-card:hover .work-cover--image::before,
+.work-card.is-in-view .work-cover--image::before,
 .hero-award-item:hover .award-bg::before {
   opacity: 0.5;
+}
+
+.featured-item:hover .featured-thumb--image::after,
+.featured-item.is-in-view .featured-thumb--image::after,
+.work-card:hover .work-cover--image::after,
+.work-card.is-in-view .work-cover--image::after,
+.hero-award-item:hover .award-bg::after {
+  opacity: 0;
 }
 
 /* Film poster gradients (used in sections.css .film-poster) */

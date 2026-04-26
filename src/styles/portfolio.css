@@ -90,7 +90,8 @@
   transition: transform 0.4s cubic-bezier(.2,.8,.2,1);
 }
 
-.work-card:hover {
+.work-card:hover,
+.work-card.is-in-view {
   transform: translateY(-3px);
 }
 
@@ -112,12 +113,14 @@
   transition: transform 0.6s cubic-bezier(.2,.8,.2,1), filter 0.5s ease;
 }
 
-.work-card:hover .work-cover {
+.work-card:hover .work-cover,
+.work-card.is-in-view .work-cover {
   border-color: var(--accent-dim);
   box-shadow: 0 12px 32px -16px rgba(201, 169, 97, 0.55);
 }
 
-.work-card:hover .work-cover--image img {
+.work-card:hover .work-cover--image img,
+.work-card.is-in-view .work-cover--image img {
   transform: scale(1.04);
   filter: brightness(1) saturate(1);
 }
@@ -161,7 +164,8 @@
   transition: color 0.3s;
 }
 
-.work-card:hover .work-title-zh {
+.work-card:hover .work-title-zh,
+.work-card.is-in-view .work-title-zh {
   color: var(--accent);
 }
 

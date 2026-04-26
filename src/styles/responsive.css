@@ -83,6 +83,13 @@
     gap: 0.6rem;
   }
 
+  /* 手機海報拿掉 film grain（::after 顆粒層）— 桌面 hover 才顯眼，手機沒滑鼠不需要 */
+  .featured-thumb--image::after,
+  .work-cover--image::after,
+  .hero-award-item .award-bg::after {
+    display: none;
+  }
+
   /* Selected Works 手機 — 滾動箭頭縮小，海報寬度比例適中 */
   .featured-list-wrap { gap: 0.5rem; padding-bottom: 1.5rem; }
   .featured-scroll-cue { width: 30px; height: 30px; }
