@@ -49,6 +49,20 @@ nav .brand-en {
   font-size: 0.5rem;
   letter-spacing: 0.3em;
   color: var(--text-dim);
+  white-space: nowrap;
+}
+
+/* 手機版：中英並排成一行，職稱（Film & Series Editor）省略 */
+@media screen and (max-width: 640px) {
+  nav { padding: 0.7rem 1.2rem; }
+  nav .brand-text {
+    flex-direction: row;
+    align-items: baseline;
+    gap: 0.6rem;
+  }
+  nav .brand-zh { font-size: 0.62rem; }
+  nav .brand-en { font-size: 0.52rem; letter-spacing: 0.2em; }
+  nav .brand-en-role { display: none; }
 }
 
 nav ul {
