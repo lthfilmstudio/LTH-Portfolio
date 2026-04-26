@@ -1,6 +1,8 @@
 // Cloudflare Pages Function: POST /admin/api/profile
 // 寫入 src/data/profile.json
 
+import { getAccessEmail } from './_access';
+
 interface Env {
   GITHUB_TOKEN: string;
   GITHUB_REPO?: string;
@@ -47,21 +49,13 @@ function validate(p: any): string | null {
 }
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
-  const userEmail = request.headers.get('cf-access-authenticated-user-email');
+  const userEmail = await getAccessEmail(request);
   if (!userEmail || userEmail.toLowerCase() !== ALLOWED_EMAIL) {
-    const allHeaders: Record<string, string> = {};
-    request.headers.forEach((v, k) => {
-      const kl = k.toLowerCase();
-      if (kl.startsWith('cf-') || kl === 'cookie' || kl === 'host' || kl === 'origin' || kl === 'referer') {
-        allHeaders[k] = kl === 'cookie' ? v.split(';').map((c) => c.trim().split('=')[0]).join(', ') : v;
-      }
-    });
     return json({
       error: 'unauthorized',
-      hint: 'DEBUG MODE — header dump',
-      received_email: userEmail || '(無 cf-access-authenticated-user-email header)',
+      hint: 'CF Access 認證信箱不符或缺少 cookie — 試試右上角「登出」再重新登入',
+      received_email: userEmail || '(未通過 CF Access 驗證)',
       expected: ALLOWED_EMAIL,
-      debug_headers: allHeaders,
     }, 401);
   }
 

@@ -2,6 +2,8 @@
 // Protected by Cloudflare Access at the /admin path.
 // Atomically updates both the image file and works.json cover field in a single commit.
 
+import { getAccessEmail } from './_access';
+
 interface Env {
   GITHUB_TOKEN: string;
   GITHUB_REPO?: string;
@@ -12,12 +14,12 @@ const BRANCH = 'main';
 const WORKS_JSON_PATH = 'src/data/works.json';
 
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
-  const userEmail = request.headers.get('cf-access-authenticated-user-email');
+  const userEmail = await getAccessEmail(request);
   if (!userEmail || userEmail.toLowerCase() !== ALLOWED_EMAIL) {
     return json({
       error: 'unauthorized',
-      hint: 'CF Access 認證信箱不符或缺少 header — 試試右上角「登出」再重新登入',
-      received_email: userEmail || '(無 cf-access-authenticated-user-email header)',
+      hint: 'CF Access 認證信箱不符或缺少 cookie — 試試右上角「登出」再重新登入',
+      received_email: userEmail || '(未通過 CF Access 驗證)',
       expected: ALLOWED_EMAIL,
     }, 401);
   }
