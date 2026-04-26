@@ -49,11 +49,19 @@ function validate(p: any): string | null {
 export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
   const userEmail = request.headers.get('cf-access-authenticated-user-email');
   if (!userEmail || userEmail.toLowerCase() !== ALLOWED_EMAIL) {
+    const allHeaders: Record<string, string> = {};
+    request.headers.forEach((v, k) => {
+      const kl = k.toLowerCase();
+      if (kl.startsWith('cf-') || kl === 'cookie' || kl === 'host' || kl === 'origin' || kl === 'referer') {
+        allHeaders[k] = kl === 'cookie' ? v.split(';').map((c) => c.trim().split('=')[0]).join(', ') : v;
+      }
+    });
     return json({
       error: 'unauthorized',
-      hint: 'CF Access 認證信箱不符或缺少 header — 試試右上角「登出」再重新登入',
-      received_email: userEmail || '(無 cf-access-authenticated-user-email header — Access policy 未生效)',
+      hint: 'DEBUG MODE — header dump',
+      received_email: userEmail || '(無 cf-access-authenticated-user-email header)',
       expected: ALLOWED_EMAIL,
+      debug_headers: allHeaders,
     }, 401);
   }
 
