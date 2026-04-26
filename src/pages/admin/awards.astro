@@ -118,7 +118,7 @@ const worksOptions = (worksData as any[]).map((w) => ({
         position: relative;
         width: 380px;          /* 1:1 對齊前台實際尺寸（典型桌面 viewport） */
         max-width: 100%;
-        aspect-ratio: 19 / 5;  /* 1:1 對齊前台實際比例 ~3.8:1（實測 357×94） */
+        /* 不固定 aspect-ratio：讓 preview-content 文字撐出高度，跟前台 hero-award-item 邏輯一致 */
         background: var(--surface-2);
         border: 1px solid var(--line-soft);
         overflow: hidden;
@@ -174,30 +174,64 @@ const worksOptions = (worksData as any[]).map((w) => ({
         pointer-events: none;
         z-index: 2;
       }
+      /* 跟前台 hero-award-item 完全同步：padding、字體、行距 */
       .preview-content {
         position: relative;
         z-index: 1;
-        padding: 0.7rem 0.9rem;
+        padding: 0.85rem 1.2rem;
         display: flex;
         flex-direction: column;
         gap: 0.3rem;
-        font-size: 0.7rem;
       }
       .preview-content .meta-row {
         display: flex;
         justify-content: space-between;
+        align-items: center;
+        margin-bottom: 0.4rem;
+      }
+      .preview-content .meta-row > span:first-child {
         color: var(--accent);
-        font-size: 0.6rem;
-        letter-spacing: 0.2em;
+        font-size: 0.72rem;
+        letter-spacing: 0.3em;
+        text-transform: uppercase;
       }
-      .preview-content .meta-row.nom { color: var(--text-dim); }
+      .preview-content .meta-row > span:last-child {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 0.95rem;
+        color: var(--text-dim);
+      }
+      .preview-content .meta-row.nom > span:first-child { color: var(--accent); }
       .preview-content .work {
-        font-size: 0.75rem;
+        font-family: 'Noto Serif TC', serif;
+        font-size: 0.98rem;
         color: var(--text);
+        letter-spacing: 0.05em;
+        margin-bottom: 0.2rem;
+        line-height: 1.3;
       }
-      .preview-content .work .en { color: var(--text-dim); margin-left: 0.4em; font-style: italic; font-size: 0.65rem; }
-      .preview-content .award-line { font-size: 0.6rem; color: var(--text-dim); }
-      .preview-content .award-line .en { color: var(--text-faint); margin-left: 0.4em; font-style: italic; }
+      .preview-content .work .en {
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 0.86rem;
+        color: var(--text);
+        margin-left: 0.4em;
+        font-style: italic;
+        font-weight: 300;
+      }
+      .preview-content .award-line {
+        font-size: 0.82rem;
+        color: var(--text);
+        font-family: 'Noto Serif TC', serif;
+        letter-spacing: 0.08em;
+        line-height: 1.4;
+        margin-top: 0.4rem;
+      }
+      .preview-content .award-line .en {
+        color: var(--text-dim);
+        font-family: 'Cormorant Garamond', serif;
+        font-size: 0.78rem;
+        margin-left: 0.4em;
+        font-style: italic;
+      }
 
       .form-grid {
         display: grid;
