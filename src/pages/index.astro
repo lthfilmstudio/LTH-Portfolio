@@ -200,15 +200,29 @@ function thumbClass(slug: string): string {
 
     const ITEMS_PER_PAGE = 5;
 
-    function pageStride(): number {
-      const items = list.querySelectorAll<HTMLElement>('.featured-item');
-      if (items.length > ITEMS_PER_PAGE) {
-        return items[ITEMS_PER_PAGE].offsetLeft - items[0].offsetLeft;
+    function getItems(): HTMLElement[] {
+      return Array.from(list.querySelectorAll<HTMLElement>('.featured-item'));
+    }
+
+    // 找目前最左邊那張可見的 item index
+    function firstVisibleIdx(): number {
+      const items = getItems();
+      const sl = list.scrollLeft;
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].offsetLeft >= sl - 4) return i;
       }
-      if (items.length >= 2) {
-        return (items[1].offsetLeft - items[0].offsetLeft) * ITEMS_PER_PAGE;
-      }
-      return list.clientWidth;
+      return Math.max(0, items.length - 1);
+    }
+
+    // 滾到指定 item 為左邊；若會超過 maxScroll（最後一頁），改成靠右對齊讓最後 N 個全顯示
+    function scrollToIdx(idx: number) {
+      const items = getItems();
+      if (!items.length) return;
+      idx = Math.max(0, Math.min(items.length - 1, idx));
+      const maxScroll = list.scrollWidth - list.clientWidth;
+      let target = items[idx].offsetLeft;
+      if (target > maxScroll) target = maxScroll;
+      list.scrollTo({ left: target, behavior: 'smooth' });
     }
 
     const updateCues = () => {
@@ -224,11 +238,10 @@ function thumbClass(slug: string): string {
     };
 
     cueLeft.addEventListener('click', () => {
-      list.scrollTo({ left: Math.max(0, list.scrollLeft - pageStride()), behavior: 'smooth' });
+      scrollToIdx(firstVisibleIdx() - ITEMS_PER_PAGE);
     });
     cueRight.addEventListener('click', () => {
-      const max = list.scrollWidth - list.clientWidth;
-      list.scrollTo({ left: Math.min(max, list.scrollLeft + pageStride()), behavior: 'smooth' });
+      scrollToIdx(firstVisibleIdx() + ITEMS_PER_PAGE);
     });
     list.addEventListener('scroll', updateCues, { passive: true });
     window.addEventListener('resize', updateCues);
@@ -249,7 +262,7 @@ function thumbClass(slug: string): string {
     {CATEGORY_ORDER.map((cat) => {
       const count = works.filter((w) => w.categories.includes(cat)).length;
       if (count === 0) return null;
-      const isDefault = cat === 'series';
+      const isDefault = cat === 'feature';
       return (
         <button
           class={`chip${isDefault ? ' active' : ''}`}
@@ -264,7 +277,7 @@ function thumbClass(slug: string): string {
     })}
   </div>
 
-  <div class="works-grid" data-active-filter="series">
+  <div class="works-grid" data-active-filter="feature">
     {works.map((work) => (
       <WorkCard work={work} />
     ))}
