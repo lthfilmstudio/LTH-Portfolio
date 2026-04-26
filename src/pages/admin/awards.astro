@@ -1,6 +1,13 @@
 ---
 import awardsData from '../../data/awards.json';
+import worksData from '../../data/works.json';
 const awards = awardsData;
+const worksOptions = (worksData as any[]).map((w) => ({
+  slug: w.slug,
+  titleZh: w.titleZh,
+  titleEn: w.titleEn || '',
+  cover: w.cover || '',
+}));
 ---
 <!doctype html>
 <html lang="zh-Hant">
@@ -256,9 +263,18 @@ const awards = awardsData;
 
     <div class="toast" id="toast"></div>
 
-    <script define:vars={{ initialAwards: awards }}>
+    <script define:vars={{ initialAwards: awards, worksOptions }}>
       let awards = JSON.parse(JSON.stringify(initialAwards));
       let dirty = false;
+
+      // slug → cover 查表，後台預覽用
+      const worksCoverBySlug = new Map(worksOptions.map((w) => [w.slug, w.cover]));
+      function resolvePoster(a) {
+        if (a.workSlug && worksCoverBySlug.has(a.workSlug)) {
+          return worksCoverBySlug.get(a.workSlug) || a.poster || '';
+        }
+        return a.poster || '';
+      }
 
       const list = document.getElementById('award-list');
       const dirtyStatus = document.getElementById('dirty-status');
@@ -281,14 +297,23 @@ const awards = awardsData;
 
       function render() {
         list.innerHTML = '';
+        // 預先生成作品下拉選項 HTML（slug 排序：有海報的優先）
+        const optionsHtml = ['<option value="">— 不連結作品（用下方 poster 路徑）—</option>']
+          .concat(
+            worksOptions.map(
+              (w) => `<option value="${escapeAttr(w.slug)}">${escape(w.titleZh)}${w.titleEn ? ' · ' + escape(w.titleEn) : ''}</option>`,
+            ),
+          )
+          .join('');
         awards.forEach((a, i) => {
           const card = document.createElement('div');
           card.className = 'award-card';
+          const effectivePoster = resolvePoster(a);
           card.innerHTML = `
             <div>
               <div class="preview-box">
                 <div class="preview-bg">
-                  <img src="${escapeAttr(a.poster)}" style="object-position: ${a.posterX}% ${a.posterY}%; transform: scale(${a.posterScale / 100});" alt="" />
+                  <img src="${escapeAttr(effectivePoster)}" style="object-position: ${a.posterX}% ${a.posterY}%; transform: scale(${a.posterScale / 100});" alt="" />
                 </div>
                 <div class="preview-content">
                   <div class="meta-row ${a.status}">
@@ -330,8 +355,13 @@ const awards = awardsData;
                   <input type="text" data-field="awardEn" data-i="${i}" value="${escapeAttr(a.awardEn)}" />
                 </div>
                 <div class="form-row full">
-                  <label>海報路徑（/stills/covers/...）</label>
-                  <input type="text" data-field="poster" data-i="${i}" value="${escapeAttr(a.poster)}" />
+                  <label>連結作品（自動取海報）</label>
+                  <select data-field="workSlug" data-i="${i}">${optionsHtml.replace(`value="${escapeAttr(a.workSlug || '')}"`, `value="${escapeAttr(a.workSlug || '')}" selected`)}</select>
+                  <small style="color: var(--text-faint); font-size: 0.7rem;">${a.workSlug ? '海報來自 /admin/works／' + escape(a.workSlug) : '未連結 — 走下方手動 poster 路徑'}</small>
+                </div>
+                <div class="form-row full">
+                  <label>海報路徑（手動覆蓋；連結作品時可留空）</label>
+                  <input type="text" data-field="poster" data-i="${i}" value="${escapeAttr(a.poster || '')}" placeholder="/stills/covers/..." />
                 </div>
                 <div class="form-row full">
                   <label>海報位置與大小（即時預覽）</label>
@@ -392,6 +422,18 @@ const awards = awardsData;
               awards[i].statusEn = v === 'win' ? 'Winner' : 'Nominee';
             }
             awards[i][field] = v;
+            // workSlug 變動：更新預覽 img + 整列重繪 slug 提示
+            if (field === 'workSlug' || field === 'poster') {
+              const card = list.querySelectorAll('.award-card')[i];
+              const img = card.querySelector('.preview-bg img');
+              if (img) img.src = resolvePoster(awards[i]);
+              const hint = card.querySelector('select[data-field="workSlug"]')?.parentElement.querySelector('small');
+              if (hint) {
+                hint.textContent = awards[i].workSlug
+                  ? '海報來自 /admin/works／' + awards[i].workSlug
+                  : '未連結 — 走下方手動 poster 路徑';
+              }
+            }
             updatePreviewText(i);
             setDirty(true);
           });
@@ -428,12 +470,13 @@ const awards = awardsData;
         const line = card.querySelector('.award-line');
         if (line) line.innerHTML = `${escape(a.awardZh)} <span class="en">${escape(a.awardEn)}</span>`;
         const img = card.querySelector('.preview-bg img');
-        if (img) img.src = a.poster;
+        if (img) img.src = resolvePoster(a);
       }
 
       addBtn.addEventListener('click', () => {
         awards.push({
           id: 'new-' + Date.now(),
+          workSlug: '',
           status: 'win',
           statusZh: '獲獎',
           statusEn: 'Winner',
@@ -442,7 +485,7 @@ const awards = awardsData;
           workEn: '',
           awardZh: '',
           awardEn: '',
-          poster: '/stills/covers/official/',
+          poster: '',
           posterX: 50,
           posterY: 50,
           posterScale: 100,

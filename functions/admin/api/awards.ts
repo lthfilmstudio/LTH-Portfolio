@@ -12,6 +12,7 @@ const AWARDS_JSON_PATH = 'src/data/awards.json';
 
 interface Award {
   id: string;
+  workSlug?: string;
   status: 'win' | 'nom';
   statusZh: string;
   statusEn: string;
@@ -20,7 +21,7 @@ interface Award {
   workEn: string;
   awardZh: string;
   awardEn: string;
-  poster: string;
+  poster?: string;
   posterX?: number;
   posterY?: number;
   posterScale?: number;
@@ -52,9 +53,16 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     if (!a.workZh || !a.workEn || !a.awardZh || !a.awardEn || !a.year) {
       return json({ error: `missing required fields for ${a.id}` }, 400);
     }
-    if (!a.poster || !a.poster.startsWith('/')) {
-      return json({ error: `invalid poster path for ${a.id}` }, 400);
+    // workSlug 與 poster 至少要有一個（workSlug 走 works.json 查；poster 是 fallback/override）
+    const hasSlug = typeof a.workSlug === 'string' && a.workSlug.length > 0;
+    const hasPoster = typeof a.poster === 'string' && a.poster.startsWith('/');
+    if (!hasSlug && !hasPoster) {
+      return json({ error: `${a.id}: 至少要設 workSlug 或 poster 其中一個` }, 400);
     }
+    if (hasSlug && !/^[\p{L}\p{N}\-]+$/u.test(a.workSlug!)) {
+      return json({ error: `${a.id}: invalid workSlug "${a.workSlug}"` }, 400);
+    }
+    if (a.poster === undefined) a.poster = '';
     a.posterX = clamp(a.posterX ?? 50, 0, 100);
     a.posterY = clamp(a.posterY ?? 50, 0, 100);
     a.posterScale = clamp(a.posterScale ?? 100, 50, 250);

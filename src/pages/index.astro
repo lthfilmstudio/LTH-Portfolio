@@ -6,6 +6,15 @@ import { works, CATEGORY_LABELS, CATEGORY_ORDER } from '../data/works';
 import awards from '../data/awards.json';
 import selectedSlugs from '../data/selected.json';
 
+// 由 workSlug 對到 works.json 的 cover；沒設或找不到時 fallback 到 a.poster
+const worksCoverBySlug = new Map(works.map((w: any) => [w.slug, w.cover]));
+function resolveAwardPoster(a: any): string {
+  if (a.workSlug && worksCoverBySlug.has(a.workSlug)) {
+    return worksCoverBySlug.get(a.workSlug) || a.poster || '';
+  }
+  return a.poster || '';
+}
+
 // Schema.org Person — 讓 Google 搜尋結果顯示獎項、職稱
 const personSchema = {
   '@context': 'https://schema.org',
@@ -91,7 +100,7 @@ function thumbClass(slug: string): string {
         <div class={`hero-award-item ${a.status}`}>
           <div class="award-bg" aria-hidden="true">
             <img
-              src={a.poster}
+              src={resolveAwardPoster(a)}
               alt=""
               loading="lazy"
               style={`object-position: ${a.posterX ?? 50}% ${a.posterY ?? 50}%; transform: scale(${(a.posterScale ?? 100) / 100});`}
