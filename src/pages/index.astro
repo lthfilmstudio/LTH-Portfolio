@@ -199,7 +199,9 @@ function thumbClass(slug: string): string {
     const cueRight = document.querySelector('.featured-scroll-cue--right');
     if (!list || !cueLeft || !cueRight) return;
 
-    const ITEMS_PER_PAGE = 5;
+    // 手機版一次滾 2 個（海報大、視野窄），桌面 5 個
+    const mobileMQ = window.matchMedia('(max-width: 960px)');
+    function itemsPerPage() { return mobileMQ.matches ? 2 : 5; }
 
     function getItems(): HTMLElement[] {
       return Array.from(list.querySelectorAll<HTMLElement>('.featured-item'));
@@ -236,7 +238,7 @@ function thumbClass(slug: string): string {
       if (!items.length) return;
       const maxScroll = Math.max(0, list.scrollWidth - list.clientWidth);
       if (idx <= 0) { doScroll(0); return; }
-      if (idx + ITEMS_PER_PAGE - 1 >= items.length - 1) {
+      if (idx + itemsPerPage() - 1 >= items.length - 1) {
         doScroll(maxScroll);
         return;
       }
@@ -261,10 +263,10 @@ function thumbClass(slug: string): string {
     };
 
     cueLeft.addEventListener('click', () => {
-      scrollToIdx(firstVisibleIdx() - ITEMS_PER_PAGE);
+      scrollToIdx(firstVisibleIdx() - itemsPerPage());
     });
     cueRight.addEventListener('click', () => {
-      scrollToIdx(firstVisibleIdx() + ITEMS_PER_PAGE);
+      scrollToIdx(firstVisibleIdx() + itemsPerPage());
     });
     list.addEventListener('scroll', updateCues, { passive: true });
     window.addEventListener('resize', updateCues);
