@@ -176,6 +176,53 @@
   letter-spacing: 0.01em;
 }
 
+/* ===== LANGUAGES — 兩欄無框線表格 ===== */
+.hero-languages {
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.hero-languages-label {
+  font-size: 0.62rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 0.3rem;
+}
+
+.hero-languages-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: 1.5rem;
+  row-gap: 0.45rem;
+}
+
+.hero-languages-list li {
+  display: contents;
+}
+
+.hero-languages-list .lang-level {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.88rem;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.hero-languages-list .lang-name {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 0.84rem;
+  color: var(--text);
+  line-height: 1.5;
+  letter-spacing: 0.04em;
+}
+
 /* HERO AWARDS */
 .hero-awards-label {
   font-size: 0.78rem;
@@ -394,19 +441,14 @@
   margin-bottom: 1rem;
 }
 
-/* 右欄直排 + 垂直 scroll；max-height 限制不要主導 row 高度 */
+/* 右欄直排 — 字體放大後 3 個 award item 直接全顯示，不再 scroll */
 .hero-right .hero-awards-row {
   display: flex;
   flex-direction: column;
   grid-template-columns: none;
-  gap: 0.4rem;
-  max-height: 290px;
-  overflow-y: auto;
-  overflow-x: hidden;
-  padding-right: 0.5rem;
-  scroll-snap-type: y proximity;
-  scrollbar-width: thin;
-  scrollbar-color: var(--line-soft) transparent;
+  gap: 0.7rem;
+  overflow: visible;
+  padding-right: 0;
 }
 
 .hero-right .hero-awards-row::-webkit-scrollbar { width: 4px; }
