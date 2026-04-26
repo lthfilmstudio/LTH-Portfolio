@@ -156,24 +156,126 @@ const worksOptions = (worksData as any[]).map((w) => ({
         width: 100%;
         height: 100%;
         object-fit: cover;
+        user-select: none;
+        -webkit-user-drag: none;
+      }
+      .preview-box.is-clickable { cursor: pointer; transition: outline 0.2s; }
+      .preview-box.is-clickable:hover { outline: 1px solid var(--accent); outline-offset: 2px; }
+      .preview-box .click-hint {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        background: rgba(0, 0, 0, 0.78);
+        color: var(--text);
+        padding: 0.4rem 0.9rem;
+        font-size: 0.72rem;
+        letter-spacing: 0.18em;
+        pointer-events: none;
+        z-index: 4;
+        opacity: 0;
+        transition: opacity 0.2s;
+        border-radius: 2px;
+      }
+      .preview-box.is-clickable:hover .click-hint { opacity: 1; }
+
+      /* ===== Modal ===== */
+      .cover-modal-backdrop {
+        position: fixed; inset: 0;
+        background: rgba(0, 0, 0, 0.78);
+        z-index: 100;
+        display: none;
+        align-items: center;
+        justify-content: center;
+      }
+      .cover-modal-backdrop[data-open="true"] { display: flex; }
+      .cover-modal {
+        background: var(--surface);
+        border: 1px solid var(--line);
+        padding: 1.5rem;
+        max-width: 92vw;
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+      }
+      .cover-modal-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 1rem;
+      }
+      .cover-modal-head h3 {
+        margin: 0;
+        font-size: 0.85rem;
+        letter-spacing: 0.12em;
+        color: var(--text-dim);
+        font-weight: 500;
+      }
+      .cover-modal-head button.close-x {
+        background: transparent;
+        border: none;
+        color: var(--text-faint);
+        font-size: 1.4rem;
+        cursor: pointer;
+        line-height: 1;
+        padding: 0 0.3rem;
+      }
+      .cover-modal-head button.close-x:hover { color: var(--accent); }
+      /* 大尺寸編輯框 — 比實際前台放大 2 倍方便操作，仍維持比例 */
+      .cover-modal .editor-box {
+        position: relative;
+        width: 760px;
+        max-width: calc(92vw - 4rem);
+        background: var(--surface-2);
+        border: 1px solid var(--line);
+        overflow: hidden;
+      }
+      .cover-modal .editor-bg { position: absolute; inset: 0; opacity: 0.5; filter: grayscale(0.2); }
+      .cover-modal .editor-bg img {
+        width: 100%; height: 100%; object-fit: cover;
         cursor: grab;
         user-select: none;
         -webkit-user-drag: none;
         touch-action: none;
       }
-      .preview-bg img.is-dragging { cursor: grabbing; }
-      .preview-box .drag-hint {
-        position: absolute;
-        right: 0.4rem;
-        bottom: 0.3rem;
-        background: rgba(0, 0, 0, 0.6);
-        color: var(--text-dim);
-        padding: 0.12rem 0.45rem;
-        font-size: 0.58rem;
-        letter-spacing: 0.08em;
-        pointer-events: none;
-        z-index: 2;
+      .cover-modal .editor-bg img.is-dragging { cursor: grabbing; }
+      .cover-modal .editor-content {
+        position: relative;
+        z-index: 1;
+        padding: 1.7rem 2.4rem; /* 等比放大版前台 padding */
+        display: flex;
+        flex-direction: column;
+        gap: 0.3rem;
+        pointer-events: none; /* 不擋拖曳 */
       }
+      .cover-modal .editor-content .meta-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; }
+      .cover-modal .editor-content .meta-row > span:first-child { color: var(--accent); font-size: 1.44rem; letter-spacing: 0.3em; text-transform: uppercase; }
+      .cover-modal .editor-content .meta-row > span:last-child { font-family: 'Cormorant Garamond', serif; font-size: 1.9rem; color: var(--text-dim); }
+      .cover-modal .editor-content .work { font-family: 'Noto Serif TC', serif; font-size: 1.96rem; color: var(--text); letter-spacing: 0.05em; margin-bottom: 0.2rem; line-height: 1.3; }
+      .cover-modal .editor-content .work .en { font-family: 'Cormorant Garamond', serif; font-size: 1.72rem; color: var(--text); margin-left: 0.4em; font-style: italic; font-weight: 300; }
+      .cover-modal .editor-content .award-line { font-size: 1.64rem; color: var(--text); font-family: 'Noto Serif TC', serif; letter-spacing: 0.08em; line-height: 1.4; margin-top: 0.4rem; }
+      .cover-modal .editor-content .award-line .en { color: var(--text-dim); font-family: 'Cormorant Garamond', serif; font-size: 1.56rem; margin-left: 0.4em; font-style: italic; }
+      .cover-modal .editor-hint {
+        position: absolute;
+        right: 0.6rem;
+        bottom: 0.5rem;
+        background: rgba(0, 0, 0, 0.7);
+        color: var(--text-dim);
+        padding: 0.2rem 0.6rem;
+        font-size: 0.65rem;
+        letter-spacing: 0.1em;
+        pointer-events: none;
+        z-index: 5;
+      }
+      .cover-modal .editor-foot {
+        display: flex;
+        align-items: center;
+        gap: 0.8rem;
+        font-size: 0.78rem;
+        color: var(--text-dim);
+      }
+      .cover-modal .editor-foot .readout { font-variant-numeric: tabular-nums; }
+      .cover-modal .editor-foot .spacer { flex: 1; }
       /* 跟前台 hero-award-item 完全同步：padding、字體、行距 */
       .preview-content {
         position: relative;
@@ -338,6 +440,30 @@ const worksOptions = (worksData as any[]).map((w) => ({
 
     <div class="toast" id="toast"></div>
 
+    <!-- 海報位置編輯彈窗 -->
+    <div class="cover-modal-backdrop" id="cover-modal" role="dialog" aria-modal="true">
+      <div class="cover-modal">
+        <div class="cover-modal-head">
+          <h3 id="cover-modal-title">調整海報位置</h3>
+          <button type="button" class="close-x" id="cover-modal-close" aria-label="關閉">✕</button>
+        </div>
+        <div class="editor-box" id="cover-editor-box">
+          <div class="editor-bg">
+            <img id="cover-editor-img" draggable="false" src="" alt="" />
+          </div>
+          <div class="editor-content" id="cover-editor-content"></div>
+          <div class="editor-hint">拖曳改位置 · 滾輪縮放</div>
+        </div>
+        <div class="editor-foot">
+          <span class="readout" id="cover-editor-readout">X 50% · Y 50% · 100%</span>
+          <span class="spacer"></span>
+          <button type="button" class="btn" id="cover-editor-reset">還原預設</button>
+          <button type="button" class="btn" id="cover-editor-cancel">取消</button>
+          <button type="button" class="btn primary" id="cover-editor-done">完成</button>
+        </div>
+      </div>
+    </div>
+
     <script define:vars={{ initialAwards: awards, worksOptions }}>
       let awards = JSON.parse(JSON.stringify(initialAwards));
       let dirty = false;
@@ -386,7 +512,7 @@ const worksOptions = (worksData as any[]).map((w) => ({
           const effectivePoster = resolvePoster(a);
           card.innerHTML = `
             <div>
-              <div class="preview-box">
+              <div class="preview-box is-clickable" data-action="open-cover" data-i="${i}">
                 <button type="button" class="realistic-toggle" data-action="toggle-realistic" data-i="${i}">前台實際樣子</button>
                 <div class="preview-bg">
                   <img class="poster-img" data-i="${i}" draggable="false" src="${escapeAttr(effectivePoster)}" style="object-position: ${a.posterX}% ${a.posterY}%; transform: scale(${a.posterScale / 100});" alt="" />
@@ -399,7 +525,7 @@ const worksOptions = (worksData as any[]).map((w) => ({
                   <div class="work">${escape(a.workZh)}<span class="en">${escape(a.workEn)}</span></div>
                   <div class="award-line">${escape(a.awardZh)} <span class="en">${escape(a.awardEn)}</span></div>
                 </div>
-                <div class="drag-hint">拖曳改位置 · 滾輪縮放</div>
+                <div class="click-hint">點擊調整海報位置</div>
               </div>
               <div style="margin-top: 0.5rem; display: flex; gap: 0.5rem; align-items: center; font-size: 0.7rem; color: var(--text-dim);">
                 <span class="poster-readout" data-i="${i}">X ${a.posterX}% · Y ${a.posterY}% · ${a.posterScale}%</span>
@@ -487,52 +613,14 @@ const worksOptions = (worksData as any[]).map((w) => ({
           });
         });
 
-        // 海報拖曳 + 滾輪縮放（每張 award 一組）
-        list.querySelectorAll('img.poster-img').forEach((img) => {
-          const i = parseInt(img.dataset.i);
-          const readout = list.querySelector(`.poster-readout[data-i="${i}"]`);
-          const clamp = (n, min, max) => Math.max(min, Math.min(max, n));
-          let dragStart = null;
-
-          function applyAndReadout() {
-            const a = awards[i];
-            img.style.objectPosition = `${a.posterX}% ${a.posterY}%`;
-            img.style.transform = `scale(${a.posterScale / 100})`;
-            if (readout) readout.textContent = `X ${a.posterX}% · Y ${a.posterY}% · ${a.posterScale}%`;
-          }
-
-          img.addEventListener('pointerdown', (e) => {
-            e.preventDefault();
-            img.setPointerCapture(e.pointerId);
-            img.classList.add('is-dragging');
-            const rect = img.getBoundingClientRect();
-            dragStart = { x: e.clientX, y: e.clientY, cx: awards[i].posterX, cy: awards[i].posterY, w: rect.width, h: rect.height };
+        // 點擊預覽框 → 開啟編輯彈窗
+        list.querySelectorAll('.preview-box.is-clickable').forEach((box) => {
+          box.addEventListener('click', (e) => {
+            // 排除 toggle / button 等內部元素
+            if (e.target.closest('button')) return;
+            const i = parseInt(box.dataset.i);
+            openCoverEditor(i);
           });
-          img.addEventListener('pointermove', (e) => {
-            if (!dragStart) return;
-            const dx = e.clientX - dragStart.x;
-            const dy = e.clientY - dragStart.y;
-            awards[i].posterX = Math.round(clamp(dragStart.cx - (dx / dragStart.w) * 100, 0, 100));
-            awards[i].posterY = Math.round(clamp(dragStart.cy - (dy / dragStart.h) * 100, 0, 100));
-            applyAndReadout();
-            setDirty(true);
-          });
-          const endDrag = (e) => {
-            if (!dragStart) return;
-            img.releasePointerCapture(e.pointerId);
-            img.classList.remove('is-dragging');
-            dragStart = null;
-          };
-          img.addEventListener('pointerup', endDrag);
-          img.addEventListener('pointercancel', endDrag);
-
-          img.addEventListener('wheel', (e) => {
-            e.preventDefault();
-            const delta = e.deltaY > 0 ? -3 : 3;
-            awards[i].posterScale = clamp(awards[i].posterScale + delta, 50, 250);
-            applyAndReadout();
-            setDirty(true);
-          }, { passive: false });
         });
 
         list.querySelectorAll('button[data-action]').forEach((btn) => {
@@ -646,6 +734,133 @@ const worksOptions = (worksData as any[]).map((w) => ({
 
       window.addEventListener('beforeunload', (e) => {
         if (dirty) { e.preventDefault(); e.returnValue = ''; }
+      });
+
+      // ========================================
+      // 海報位置編輯 Modal
+      // ========================================
+      const coverModal = document.getElementById('cover-modal');
+      const coverModalTitle = document.getElementById('cover-modal-title');
+      const coverModalClose = document.getElementById('cover-modal-close');
+      const editorBox = document.getElementById('cover-editor-box');
+      const editorImg = document.getElementById('cover-editor-img');
+      const editorContent = document.getElementById('cover-editor-content');
+      const editorReadout = document.getElementById('cover-editor-readout');
+      const editorReset = document.getElementById('cover-editor-reset');
+      const editorCancel = document.getElementById('cover-editor-cancel');
+      const editorDone = document.getElementById('cover-editor-done');
+
+      let editingIdx = -1;
+      let editingSnapshot = null; // 取消時還原
+
+      function clamp(n, min, max) { return Math.max(min, Math.min(max, n)); }
+
+      function applyEditorState() {
+        if (editingIdx < 0) return;
+        const a = awards[editingIdx];
+        editorImg.style.objectPosition = `${a.posterX}% ${a.posterY}%`;
+        editorImg.style.transform = `scale(${a.posterScale / 100})`;
+        editorReadout.textContent = `X ${a.posterX}% · Y ${a.posterY}% · ${a.posterScale}%`;
+      }
+
+      function openCoverEditor(i) {
+        editingIdx = i;
+        const a = awards[i];
+        editingSnapshot = { posterX: a.posterX, posterY: a.posterY, posterScale: a.posterScale };
+        coverModalTitle.textContent = `${a.workZh}（${a.workEn}） — 調整海報位置`;
+        editorImg.src = resolvePoster(a);
+        editorContent.innerHTML = `
+          <div class="meta-row ${a.status}">
+            <span>● ${escape(a.statusZh)} · ${escape(a.statusEn)}</span>
+            <span>${escape(a.year)}</span>
+          </div>
+          <div class="work">${escape(a.workZh)}<span class="en">${escape(a.workEn)}</span></div>
+          <div class="award-line">${escape(a.awardZh)} <span class="en">${escape(a.awardEn)}</span></div>
+        `;
+        applyEditorState();
+        coverModal.setAttribute('data-open', 'true');
+      }
+
+      function closeCoverEditor(commit) {
+        if (!commit && editingSnapshot && editingIdx >= 0) {
+          // 取消 → 還原
+          awards[editingIdx].posterX = editingSnapshot.posterX;
+          awards[editingIdx].posterY = editingSnapshot.posterY;
+          awards[editingIdx].posterScale = editingSnapshot.posterScale;
+          render();
+        } else if (commit && editingIdx >= 0) {
+          // 套用 → 同步到 list 預覽
+          updatePreviewText(editingIdx);
+          const card = list.querySelectorAll('.award-card')[editingIdx];
+          const img = card?.querySelector('.preview-bg img');
+          const a = awards[editingIdx];
+          if (img) {
+            img.style.objectPosition = `${a.posterX}% ${a.posterY}%`;
+            img.style.transform = `scale(${a.posterScale / 100})`;
+          }
+          const ro = card?.querySelector('.poster-readout');
+          if (ro) ro.textContent = `X ${a.posterX}% · Y ${a.posterY}% · ${a.posterScale}%`;
+        }
+        editingIdx = -1;
+        editingSnapshot = null;
+        coverModal.setAttribute('data-open', 'false');
+      }
+
+      // editor img 拖曳
+      let dragStart = null;
+      editorImg.addEventListener('pointerdown', (e) => {
+        if (editingIdx < 0) return;
+        e.preventDefault();
+        editorImg.setPointerCapture(e.pointerId);
+        editorImg.classList.add('is-dragging');
+        const rect = editorImg.getBoundingClientRect();
+        const a = awards[editingIdx];
+        dragStart = { x: e.clientX, y: e.clientY, cx: a.posterX, cy: a.posterY, w: rect.width, h: rect.height };
+      });
+      editorImg.addEventListener('pointermove', (e) => {
+        if (!dragStart) return;
+        const dx = e.clientX - dragStart.x;
+        const dy = e.clientY - dragStart.y;
+        awards[editingIdx].posterX = Math.round(clamp(dragStart.cx - (dx / dragStart.w) * 100, 0, 100));
+        awards[editingIdx].posterY = Math.round(clamp(dragStart.cy - (dy / dragStart.h) * 100, 0, 100));
+        applyEditorState();
+        setDirty(true);
+      });
+      const editorEndDrag = (e) => {
+        if (!dragStart) return;
+        editorImg.releasePointerCapture(e.pointerId);
+        editorImg.classList.remove('is-dragging');
+        dragStart = null;
+      };
+      editorImg.addEventListener('pointerup', editorEndDrag);
+      editorImg.addEventListener('pointercancel', editorEndDrag);
+      editorImg.addEventListener('wheel', (e) => {
+        if (editingIdx < 0) return;
+        e.preventDefault();
+        const delta = e.deltaY > 0 ? -3 : 3;
+        awards[editingIdx].posterScale = clamp(awards[editingIdx].posterScale + delta, 50, 250);
+        applyEditorState();
+        setDirty(true);
+      }, { passive: false });
+
+      editorReset.addEventListener('click', () => {
+        if (editingIdx < 0) return;
+        awards[editingIdx].posterX = 50;
+        awards[editingIdx].posterY = 50;
+        awards[editingIdx].posterScale = 100;
+        applyEditorState();
+        setDirty(true);
+      });
+      editorCancel.addEventListener('click', () => closeCoverEditor(false));
+      editorDone.addEventListener('click', () => closeCoverEditor(true));
+      coverModalClose.addEventListener('click', () => closeCoverEditor(false));
+      coverModal.addEventListener('click', (e) => {
+        if (e.target === coverModal) closeCoverEditor(false);
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && coverModal.getAttribute('data-open') === 'true') {
+          closeCoverEditor(false);
+        }
       });
 
       render();
