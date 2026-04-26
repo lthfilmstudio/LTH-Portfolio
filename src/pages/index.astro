@@ -191,12 +191,45 @@ function thumbClass(slug: string): string {
 </section>
 
 <script>
-  // Selected Works 左右捲動箭頭：依滾動位置顯示/隱藏
+  // Selected Works 左右捲動箭頭：一次 5 個、自訂 ease-in-out 動畫
   document.addEventListener('DOMContentLoaded', () => {
     const list = document.getElementById('featured-list');
     const cueLeft = document.querySelector('.featured-scroll-cue--left');
     const cueRight = document.querySelector('.featured-scroll-cue--right');
     if (!list || !cueLeft || !cueRight) return;
+
+    const ITEMS_PER_PAGE = 5;
+    const DURATION_MS = 700;
+    const easeInOutCubic = (t: number) => (t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2);
+
+    let animFrame = 0;
+    function animateScrollTo(target: number) {
+      cancelAnimationFrame(animFrame);
+      const start = list.scrollLeft;
+      const delta = target - start;
+      if (Math.abs(delta) < 1) return;
+      const startTime = performance.now();
+      const tick = (now: number) => {
+        const elapsed = now - startTime;
+        const t = Math.min(1, elapsed / DURATION_MS);
+        list.scrollLeft = start + delta * easeInOutCubic(t);
+        if (t < 1) animFrame = requestAnimationFrame(tick);
+      };
+      animFrame = requestAnimationFrame(tick);
+    }
+
+    function pageStride(): number {
+      // 用前 N 個 item 的位置差 = 一頁滾動距離（含 gap），fallback 到 clientWidth
+      const items = list.querySelectorAll<HTMLElement>('.featured-item');
+      if (items.length > ITEMS_PER_PAGE) {
+        return items[ITEMS_PER_PAGE].offsetLeft - items[0].offsetLeft;
+      }
+      if (items.length >= 2) {
+        const stride = items[1].offsetLeft - items[0].offsetLeft;
+        return stride * ITEMS_PER_PAGE;
+      }
+      return list.clientWidth;
+    }
 
     const updateCues = () => {
       const overflow = list.scrollWidth - list.clientWidth;
@@ -211,10 +244,11 @@ function thumbClass(slug: string): string {
     };
 
     cueLeft.addEventListener('click', () => {
-      list.scrollBy({ left: -list.clientWidth * 0.7, behavior: 'smooth' });
+      animateScrollTo(Math.max(0, list.scrollLeft - pageStride()));
     });
     cueRight.addEventListener('click', () => {
-      list.scrollBy({ left: list.clientWidth * 0.7, behavior: 'smooth' });
+      const max = list.scrollWidth - list.clientWidth;
+      animateScrollTo(Math.min(max, list.scrollLeft + pageStride()));
     });
     list.addEventListener('scroll', updateCues, { passive: true });
     window.addEventListener('resize', updateCues);
