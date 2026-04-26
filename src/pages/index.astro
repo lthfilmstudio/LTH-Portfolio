@@ -5,14 +5,22 @@ import WorkCard from '../components/WorkCard.astro';
 import { works, CATEGORY_LABELS, CATEGORY_ORDER } from '../data/works';
 import awards from '../data/awards.json';
 import selectedSlugs from '../data/selected.json';
+import profile from '../data/profile.json';
 
 // 由 workSlug 對到 works.json 的 cover；沒設或找不到時 fallback 到 a.poster
 const worksCoverBySlug = new Map(works.map((w: any) => [w.slug, w.cover]));
+const worksBySlug = new Map(works.map((w: any) => [w.slug, w]));
 function resolveAwardPoster(a: any): string {
   if (a.workSlug && worksCoverBySlug.has(a.workSlug)) {
     return worksCoverBySlug.get(a.workSlug) || a.poster || '';
   }
   return a.poster || '';
+}
+function resolveAwardHref(a: any): string | null {
+  if (!a.workSlug) return null;
+  const w = worksBySlug.get(a.workSlug);
+  if (w && w.hasDetail) return `/works/${a.workSlug}/`;
+  return null;
 }
 
 // Schema.org Person — 讓 Google 搜尋結果顯示獎項、職稱
@@ -73,30 +81,32 @@ function thumbClass(slug: string): string {
 <section class="hero">
   <div class="hero-left">
     <div class="hero-name-row">
-      <h1>林姿嫺</h1>
-      <span class="en-name">Tzushien Lin</span>
+      <h1>{profile.nameZh}</h1>
+      <span class="en-name">{profile.nameEn}</span>
     </div>
 
     <div class="hero-titles">
-      <span class="role-zh">電影 / 劇集 剪輯指導</span>
-      <span class="role-en">Film & Series Editor</span>
+      <span class="role-zh">{profile.roleZh}</span>
+      <span class="role-en">{profile.roleEn}</span>
     </div>
 
     <div class="hero-profile">
-      <p class="lead-zh">以《茶金》、《牽紙鷂的手》兩度榮獲金鐘獎最佳剪輯獎，並以《有生之年》入圍金鐘獎最佳剪輯獎。</p>
-      <p class="lead-en">A two-time Golden Bell Award winner for Best Editing in a Drama Series, for Gold Leaf and The Kite Soaring, and a nominee for Best Editing for Living.</p>
-      <p class="sub-zh">近期作品包括《那張照片裡的我們》、《我們與惡的距離 II》、《拜六禮拜》、《人浮於愛》、《夏日最後的祕密》等。現成立「原本那間剪輯工作室」。</p>
-      <p class="sub-en">Recent works include The Photo from 1977, The World Between Us II: After the Flames, Holiday, Adrift in Love, and Summer Blue Hour. Founder of LTH Film Studio.</p>
+      <p class="lead-zh">{profile.leadZh}</p>
+      <p class="lead-en">{profile.leadEn}</p>
+      <p class="sub-zh">{profile.subZh}</p>
+      <p class="sub-en">{profile.subEn}</p>
     </div>
 
-    <div class="hero-languages">
-      <span class="hero-languages-label">Languages</span>
-      <ul class="hero-languages-list">
-        <li><span class="lang-level">Native</span><span class="lang-name">Mandarin Chinese · Taiwanese Hokkien</span></li>
-        <li><span class="lang-level">Conversant</span><span class="lang-name">English</span></li>
-        <li><span class="lang-level">Basic</span><span class="lang-name">Hakka · Thai</span></li>
-      </ul>
-    </div>
+    {profile.languages && profile.languages.length > 0 && (
+      <div class="hero-languages">
+        <span class="hero-languages-label">Languages</span>
+        <ul class="hero-languages-list">
+          {profile.languages.map((l: any) => (
+            <li><span class="lang-level">{l.level}</span><span class="lang-name">{l.name}</span></li>
+          ))}
+        </ul>
+      </div>
+    )}
   </div>
 
   <aside class="hero-right">
@@ -105,29 +115,33 @@ function thumbClass(slug: string): string {
     </div>
 
     <div class="hero-awards-row">
-      {awards.map((a: any) => (
-        <div class={`hero-award-item ${a.status}`}>
-          <div class="award-bg" aria-hidden="true">
-            <img
-              src={resolveAwardPoster(a)}
-              alt=""
-              loading="lazy"
-              style={`object-position: ${a.posterX ?? 50}% ${a.posterY ?? 50}%; transform: scale(${(a.posterScale ?? 100) / 100});`}
-            />
-          </div>
-          <div class="award-content">
-            <div class="award-meta">
-              <span class="award-status-sm"><span class="dot"></span> {a.statusZh} · {a.statusEn}</span>
-              <span class="award-yr">{a.year}</span>
+      {awards.map((a: any) => {
+        const href = resolveAwardHref(a);
+        const Tag = href ? 'a' : 'div';
+        return (
+          <Tag class={`hero-award-item ${a.status}${href ? ' is-linked' : ''}`} {...(href ? { href } : {})}>
+            <div class="award-bg" aria-hidden="true">
+              <img
+                src={resolveAwardPoster(a)}
+                alt=""
+                loading="lazy"
+                style={`object-position: ${a.posterX ?? 50}% ${a.posterY ?? 50}%; transform: scale(${(a.posterScale ?? 100) / 100});`}
+              />
             </div>
-            <div class="award-work">{a.workZh}<span class="work-en">{a.workEn}</span></div>
-            <div class="award-name-sm">
-              <span class="award-name-zh">{a.awardZh}</span>
-              <span class="award-name-en">{a.awardEn}</span>
+            <div class="award-content">
+              <div class="award-meta">
+                <span class="award-status-sm"><span class="dot"></span> {a.statusZh} · {a.statusEn}</span>
+                <span class="award-yr">{a.year}</span>
+              </div>
+              <div class="award-work">{a.workZh}<span class="work-en">{a.workEn}</span></div>
+              <div class="award-name-sm">
+                <span class="award-name-zh">{a.awardZh}</span>
+                <span class="award-name-en">{a.awardEn}</span>
+              </div>
             </div>
-          </div>
-        </div>
-      ))}
+          </Tag>
+        );
+      })}
     </div>
   </aside>
 

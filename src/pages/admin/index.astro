@@ -2,10 +2,12 @@
 import works from '../../data/works.json';
 import awards from '../../data/awards.json';
 import selected from '../../data/selected.json';
+import profile from '../../data/profile.json';
 
 const worksCount = (works as unknown[]).length;
 const awardsCount = (awards as unknown[]).length;
 const selectedCount = (selected as unknown[]).length;
+const langsCount = (profile.languages as unknown[]).length;
 
 type AdminLink = {
   href: string;
@@ -39,6 +41,14 @@ const links: AdminLink[] = [
     en: 'Selected Works',
     desc: '挑選首頁 hero 區的代表作清單，拖拉排序、增刪',
     count: `${selectedCount} 部`,
+    ready: true,
+  },
+  {
+    href: '/admin/profile/',
+    zh: '個人簡介',
+    en: 'Profile',
+    desc: '首頁左欄：姓名、職稱、中英 bio 段落、Languages 列表',
+    count: `${langsCount} 種語言`,
     ready: true,
   },
 ];

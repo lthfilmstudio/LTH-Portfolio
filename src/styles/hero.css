@@ -262,7 +262,13 @@
   cursor: pointer;
   overflow: hidden;
   box-sizing: border-box;
+  text-decoration: none;
+  color: inherit;
+  display: block;
 }
+
+.hero-award-item.is-linked { cursor: pointer; }
+.hero-award-item:not(.is-linked) { cursor: default; }
 
 .hero-award-item .award-bg {
   position: absolute;

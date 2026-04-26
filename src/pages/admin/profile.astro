@@ -1,0 +1,463 @@
+---
+import profileData from '../../data/profile.json';
+const profile = profileData;
+---
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>LTH Portfolio Admin · 個人簡介</title>
+    <style is:global>
+      :root {
+        --bg: #0a0908;
+        --surface: #141311;
+        --surface-2: #1a1816;
+        --line: #2a2824;
+        --line-soft: #1f1d1a;
+        --text: #ece9e1;
+        --text-dim: #a9a399;
+        --text-faint: #6a655c;
+        --accent: #c9a961;
+        --accent-dim: #8a7340;
+        --ok: #8aa569;
+        --danger: #b56363;
+      }
+      * { box-sizing: border-box; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: -apple-system, "Noto Sans TC", sans-serif;
+        font-size: 14px;
+        line-height: 1.5;
+      }
+      header.admin-header {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        backdrop-filter: blur(10px);
+        background: rgba(10, 9, 8, 0.85);
+        padding: 1rem 2rem;
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+      }
+      header.admin-header h1 {
+        font-size: 1rem;
+        margin: 0;
+        letter-spacing: 0.1em;
+        font-weight: 500;
+      }
+      header.admin-header .meta {
+        margin-left: auto;
+        font-size: 0.72rem;
+        color: var(--text-faint);
+        letter-spacing: 0.1em;
+      }
+      main {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 3rem 2rem 8rem;
+      }
+      .save-bar {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 1rem 2rem;
+        background: rgba(10, 9, 8, 0.92);
+        border-top: 1px solid var(--line);
+        backdrop-filter: blur(10px);
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        z-index: 40;
+      }
+      .save-bar .status {
+        font-size: 0.78rem;
+        color: var(--text-dim);
+      }
+      .save-bar .status.dirty {
+        color: var(--accent);
+      }
+      .save-bar .spacer { flex: 1; }
+      .btn {
+        padding: 0.55rem 1.2rem;
+        font-size: 0.78rem;
+        letter-spacing: 0.1em;
+        border: 1px solid var(--line);
+        background: var(--surface);
+        color: var(--text);
+        cursor: pointer;
+        border-radius: 2px;
+        transition: border-color 0.2s, color 0.2s, background 0.2s;
+      }
+      .btn:hover { border-color: var(--accent); color: var(--accent); }
+      .btn.primary {
+        background: var(--accent);
+        color: var(--bg);
+        border-color: var(--accent);
+      }
+      .btn.primary:hover {
+        background: transparent;
+        color: var(--accent);
+      }
+      .btn.primary:disabled {
+        opacity: 0.4;
+        cursor: not-allowed;
+        background: var(--surface);
+        color: var(--text-dim);
+        border-color: var(--line);
+      }
+      .btn.danger {
+        color: var(--danger);
+        border-color: var(--danger);
+      }
+      .btn.danger:hover {
+        background: var(--danger);
+        color: var(--bg);
+      }
+      fieldset {
+        border: 1px solid var(--line);
+        padding: 1.4rem 1.6rem;
+        margin: 0 0 1.6rem;
+        background: var(--surface);
+      }
+      legend {
+        padding: 0 0.6rem;
+        font-size: 0.72rem;
+        letter-spacing: 0.25em;
+        color: var(--text-faint);
+        text-transform: uppercase;
+      }
+      .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; margin-bottom: 1rem; }
+      .row.single { grid-template-columns: 1fr; }
+      .field { display: flex; flex-direction: column; gap: 0.4rem; }
+      .field label {
+        font-size: 0.72rem;
+        letter-spacing: 0.12em;
+        color: var(--text-faint);
+        text-transform: uppercase;
+      }
+      .field input,
+      .field textarea {
+        background: var(--bg);
+        border: 1px solid var(--line);
+        color: var(--text);
+        padding: 0.6rem 0.7rem;
+        font-family: inherit;
+        font-size: 0.88rem;
+        line-height: 1.6;
+        border-radius: 2px;
+        resize: vertical;
+      }
+      .field textarea { min-height: 5em; }
+      .field input:focus,
+      .field textarea:focus {
+        outline: none;
+        border-color: var(--accent-dim);
+      }
+      .field .hint {
+        font-size: 0.7rem;
+        color: var(--text-faint);
+      }
+      .lang-list {
+        display: flex;
+        flex-direction: column;
+        gap: 0.6rem;
+        margin-top: 0.6rem;
+      }
+      .lang-row {
+        display: grid;
+        grid-template-columns: 180px 1fr auto;
+        gap: 0.6rem;
+        align-items: center;
+      }
+      .lang-row input {
+        background: var(--bg);
+        border: 1px solid var(--line);
+        color: var(--text);
+        padding: 0.45rem 0.6rem;
+        font-family: inherit;
+        font-size: 0.85rem;
+        border-radius: 2px;
+      }
+      .lang-row input:focus {
+        outline: none;
+        border-color: var(--accent-dim);
+      }
+      .lang-row .small-btn {
+        padding: 0.35rem 0.7rem;
+        font-size: 0.7rem;
+        background: transparent;
+        border: 1px solid var(--line);
+        color: var(--text-dim);
+        cursor: pointer;
+        border-radius: 2px;
+      }
+      .lang-row .small-btn:hover { color: var(--danger); border-color: var(--danger); }
+
+      .toast {
+        position: fixed;
+        top: 4.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--surface);
+        border: 1px solid var(--line);
+        border-left: 4px solid var(--accent);
+        padding: 1rem 1.4rem;
+        max-width: 420px;
+        font-size: 0.82rem;
+        line-height: 1.5;
+        z-index: 200;
+        display: none;
+        box-shadow: 0 8px 28px rgba(0,0,0,0.5);
+      }
+      .toast[data-open="true"] { display: block; }
+      .toast.ok { border-left-color: var(--ok); }
+      .toast.err { border-left-color: var(--danger); }
+      .toast a { color: var(--accent); }
+    </style>
+  </head>
+  <body>
+    <header class="admin-header">
+      <h1>LTH Portfolio · Admin</h1>
+      <nav style="display: flex; gap: 1rem; flex: 1; margin-left: 2rem; align-items: center;">
+        <a href="/admin/" style="color: var(--text-faint); font-size: 0.72rem; letter-spacing: 0.08em; text-decoration: none;">← 後台首頁</a>
+        <a href="/admin/works/" style="color: var(--text-dim); padding: 0.4rem 0.8rem; border-radius: 2px; font-size: 0.78rem; letter-spacing: 0.08em; text-decoration: none;">作品資訊</a>
+        <a href="/admin/awards/" style="color: var(--text-dim); padding: 0.4rem 0.8rem; border-radius: 2px; font-size: 0.78rem; letter-spacing: 0.08em; text-decoration: none;">得獎入圍</a>
+        <a href="/admin/selected/" style="color: var(--text-dim); padding: 0.4rem 0.8rem; border-radius: 2px; font-size: 0.78rem; letter-spacing: 0.08em; text-decoration: none;">精選作品</a>
+        <a href="/admin/profile/" style="color: var(--accent); border: 1px solid var(--accent); padding: 0.4rem 0.8rem; border-radius: 2px; font-size: 0.78rem; letter-spacing: 0.08em; text-decoration: none;">個人簡介</a>
+      </nav>
+    </header>
+
+    <main>
+      <fieldset>
+        <legend>姓名</legend>
+        <div class="row">
+          <div class="field">
+            <label>中文姓名</label>
+            <input type="text" id="f-nameZh" value={profile.nameZh} />
+          </div>
+          <div class="field">
+            <label>英文姓名</label>
+            <input type="text" id="f-nameEn" value={profile.nameEn} />
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>職稱</legend>
+        <div class="row">
+          <div class="field">
+            <label>中文職稱</label>
+            <input type="text" id="f-roleZh" value={profile.roleZh} />
+            <div class="hint">例：電影 / 劇集 剪輯指導</div>
+          </div>
+          <div class="field">
+            <label>英文職稱</label>
+            <input type="text" id="f-roleEn" value={profile.roleEn} />
+            <div class="hint">例：Film & Series Editor</div>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>主段（Lead）</legend>
+        <div class="row">
+          <div class="field">
+            <label>中文</label>
+            <textarea id="f-leadZh" rows="3">{profile.leadZh}</textarea>
+          </div>
+          <div class="field">
+            <label>English</label>
+            <textarea id="f-leadEn" rows="3">{profile.leadEn}</textarea>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>副段（Sub）</legend>
+        <div class="row">
+          <div class="field">
+            <label>中文</label>
+            <textarea id="f-subZh" rows="3">{profile.subZh}</textarea>
+          </div>
+          <div class="field">
+            <label>English</label>
+            <textarea id="f-subEn" rows="3">{profile.subEn}</textarea>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend>Languages</legend>
+        <div class="hint" style="margin-bottom: 0.6rem;">層級（Native / Conversant / Basic 等）+ 語言名稱（多種用 · 串接）</div>
+        <div class="lang-list" id="lang-list"></div>
+        <button class="btn" id="add-lang" type="button" style="margin-top: 0.8rem;">＋ 新增一行</button>
+      </fieldset>
+    </main>
+
+    <div class="save-bar">
+      <span class="status" id="dirty-status">無變更</span>
+      <span class="spacer"></span>
+      <button class="btn" id="reset-btn" type="button" disabled>還原</button>
+      <button class="btn primary" id="save-btn" type="button" disabled>儲存並發布</button>
+    </div>
+
+    <div class="toast" id="toast"></div>
+
+    <script define:vars={{ initialProfile: profile }}>
+      let profile = JSON.parse(JSON.stringify(initialProfile));
+      const baseline = JSON.stringify(profile);
+
+      const dirtyStatus = document.getElementById('dirty-status');
+      const saveBtn = document.getElementById('save-btn');
+      const resetBtn = document.getElementById('reset-btn');
+      const toast = document.getElementById('toast');
+      const langList = document.getElementById('lang-list');
+
+      const fieldIds = ['nameZh', 'nameEn', 'roleZh', 'roleEn', 'leadZh', 'leadEn', 'subZh', 'subEn'];
+
+      function checkDirty() {
+        const cur = JSON.stringify(profile);
+        const dirty = cur !== baseline;
+        if (dirty) {
+          dirtyStatus.textContent = '有未儲存變更';
+          dirtyStatus.classList.add('dirty');
+          saveBtn.disabled = false;
+          resetBtn.disabled = false;
+        } else {
+          dirtyStatus.textContent = '無變更';
+          dirtyStatus.classList.remove('dirty');
+          saveBtn.disabled = true;
+          resetBtn.disabled = true;
+        }
+      }
+
+      function bindFields() {
+        fieldIds.forEach((f) => {
+          const el = document.getElementById('f-' + f);
+          if (!el) return;
+          el.value = profile[f] || '';
+          el.addEventListener('input', () => {
+            profile[f] = el.value;
+            checkDirty();
+          });
+        });
+      }
+
+      function renderLangs() {
+        langList.innerHTML = '';
+        profile.languages.forEach((l, i) => {
+          const row = document.createElement('div');
+          row.className = 'lang-row';
+          row.innerHTML = `
+            <input type="text" data-i="${i}" data-f="level" placeholder="Native / Conversant / Basic" value="${escapeAttr(l.level)}" />
+            <input type="text" data-i="${i}" data-f="name" placeholder="語言名稱（多種用 · 串接）" value="${escapeAttr(l.name)}" />
+            <button type="button" class="small-btn" data-i="${i}" data-action="del">刪除</button>
+          `;
+          langList.appendChild(row);
+        });
+        langList.querySelectorAll('input').forEach((el) => {
+          el.addEventListener('input', (e) => {
+            const t = e.target;
+            const i = parseInt(t.dataset.i);
+            const f = t.dataset.f;
+            profile.languages[i][f] = t.value;
+            checkDirty();
+          });
+        });
+        langList.querySelectorAll('button[data-action="del"]').forEach((btn) => {
+          btn.addEventListener('click', () => {
+            const i = parseInt(btn.dataset.i);
+            profile.languages.splice(i, 1);
+            renderLangs();
+            checkDirty();
+          });
+        });
+      }
+
+      function escapeAttr(s) {
+        return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+      }
+
+      function showToast(msg, kind = 'ok', ms = 5000) {
+        toast.className = 'toast ' + kind;
+        toast.innerHTML = msg;
+        toast.setAttribute('data-open', 'true');
+        clearTimeout(showToast._t);
+        showToast._t = setTimeout(() => toast.setAttribute('data-open', 'false'), ms);
+      }
+
+      document.getElementById('add-lang').addEventListener('click', () => {
+        profile.languages.push({ level: '', name: '' });
+        renderLangs();
+        checkDirty();
+      });
+
+      saveBtn.addEventListener('click', async () => {
+        // simple validation
+        for (const f of fieldIds) {
+          if (!String(profile[f] || '').trim()) {
+            showToast(`❌ 「${f}」必填`, 'err');
+            return;
+          }
+        }
+        for (let i = 0; i < profile.languages.length; i++) {
+          const l = profile.languages[i];
+          if (!l.level.trim() || !l.name.trim()) {
+            showToast(`❌ Languages 第 ${i + 1} 行有空欄位`, 'err');
+            return;
+          }
+        }
+
+        saveBtn.disabled = true;
+        saveBtn.textContent = '存檔中...';
+        try {
+          const res = await fetch('/admin/api/profile', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ profile }),
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || 'save failed');
+          showToast(
+            `✅ 已存檔<br/><small>CF Pages 約 1-2 分鐘後更新</small><br/>` +
+              (data.url ? `<a href="${data.url}" target="_blank">查看 commit</a>` : ''),
+            'ok',
+            8000,
+          );
+          // 更新 baseline
+          location.reload();
+        } catch (e) {
+          showToast(`❌ 存檔失敗：${e.message}`, 'err', 8000);
+          saveBtn.disabled = false;
+        } finally {
+          saveBtn.textContent = '儲存並發布';
+        }
+      });
+
+      resetBtn.addEventListener('click', () => {
+        if (!confirm('還原所有未存檔的變更？')) return;
+        profile = JSON.parse(baseline);
+        bindFields();
+        renderLangs();
+        checkDirty();
+      });
+
+      window.addEventListener('beforeunload', (e) => {
+        if (JSON.stringify(profile) !== baseline) {
+          e.preventDefault();
+          e.returnValue = '';
+        }
+      });
+
+      bindFields();
+      renderLangs();
+      checkDirty();
+    </script>
+  </body>
+</html>
