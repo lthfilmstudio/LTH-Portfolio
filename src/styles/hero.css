@@ -536,8 +536,8 @@
   overflow-y: visible;
   padding: 0.25rem 0;
   scroll-snap-type: x proximity;
-  scrollbar-width: thin;
-  scrollbar-color: var(--line-soft) transparent;
+  scrollbar-width: none;             /* Firefox 隱藏 scrollbar */
+  -ms-overflow-style: none;          /* IE/Edge 隱藏 scrollbar */
   min-width: 0;
   scroll-behavior: smooth;
   will-change: scroll-position;
@@ -585,13 +585,8 @@
   50% { transform: translateX(-4px); }
 }
 
-.featured-list::-webkit-scrollbar { height: 6px; }
-.featured-list::-webkit-scrollbar-track { background: transparent; }
-.featured-list::-webkit-scrollbar-thumb {
-  background: var(--line-soft);
-  border-radius: 3px;
-}
-.featured-list::-webkit-scrollbar-thumb:hover { background: var(--line); }
+/* Chrome/Safari 隱藏 scrollbar — 改用左右箭頭按鈕導航 */
+.featured-list::-webkit-scrollbar { display: none; }
 
 .featured-item {
   flex-shrink: 0;
