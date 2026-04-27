@@ -25,16 +25,24 @@ const ALLOWED_CATEGORIES = new Set([
 
 const ALLOWED_LINK_TYPES = new Set([
   'youtube',
+  'vimeo',
   'facebook',
   'netflix',
+  'prime',
+  'disney',
+  'appletv',
+  'max',
+  'linetv',
+  'kktv',
+  'litv',
+  'wetv',
   'iqiyi',
   'catchplay',
   'friday',
-  'hakkatv',
-  'hami',
-  'kktv',
   'myvideo',
+  'hami',
   'pts',
+  'hakkatv',
   'link',
 ]);
 
