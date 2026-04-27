@@ -19,9 +19,8 @@
 }
 
 .scroll-cue-label {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 0.7rem;
-  letter-spacing: 0.25em;
+  font-size: 0.85rem;
+  letter-spacing: 0.35em;
   text-transform: uppercase;
 }
 
@@ -190,7 +189,7 @@
 }
 
 .hero-languages-label {
-  font-size: 0.78rem;
+  font-size: 0.85rem;
   letter-spacing: 0.35em;
   text-transform: uppercase;
   color: var(--text-faint);
@@ -480,7 +479,7 @@
 /* 跨滿 hero 兩欄，水平 scroll，每個 item = 巨大 outline 數字 + 27:40 海報 */
 .featured-label {
   grid-column: 1 / -1;
-  font-size: 0.62rem;
+  font-size: 0.85rem;
   letter-spacing: 0.35em;
   text-transform: uppercase;
   color: var(--text-faint);
