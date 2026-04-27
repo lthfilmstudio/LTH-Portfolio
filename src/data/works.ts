@@ -6,8 +6,15 @@ export type LinkType =
   | 'youtube'
   | 'facebook'
   | 'netflix'
+  | 'prime'
+  | 'disney'
+  | 'appletv'
+  | 'max'
   | 'iqiyi'
   | 'kktv'
+  | 'linetv'
+  | 'litv'
+  | 'wetv'
   | 'catchplay'
   | 'friday'
   | 'myvideo'
@@ -101,7 +108,7 @@ export function primaryYoutubeLink(w: Work): string | null {
 }
 
 export function firstExternalLink(w: Work): string | null {
-  const pref: LinkType[] = ['youtube', 'vimeo', 'netflix', 'iqiyi', 'kktv', 'catchplay', 'facebook', 'link'];
+  const pref: LinkType[] = ['youtube', 'vimeo', 'netflix', 'prime', 'disney', 'appletv', 'max', 'linetv', 'iqiyi', 'kktv', 'litv', 'wetv', 'catchplay', 'friday', 'facebook', 'link'];
   for (const p of pref) {
     const hit = w.links.find((l) => l.type === p);
     if (hit) return hit.url;
