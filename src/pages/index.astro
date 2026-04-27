@@ -294,14 +294,8 @@ const combinedSchema = {
   });
 </script>
 
-<!-- PORTFOLIO SECTION DIVIDER -->
-<div class="section-divider" id="works">
-  <span class="num">01 / Portfolio</span>
-  <div class="line"></div>
-</div>
-
 <!-- PORTFOLIO -->
-<section class="portfolio">
+<section id="works" class="portfolio">
   <div class="filter-chips" role="tablist">
     {CATEGORY_ORDER.map((cat, idx) => {
       const count = works.filter((w) => w.categories.includes(cat)).length;
