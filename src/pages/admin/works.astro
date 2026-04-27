@@ -1158,6 +1158,23 @@ const LINK_TYPES = [
             const i = +t.dataset.i;
             const f = t.dataset.f;
             drawerDraft.links[i][f] = t.value;
+
+            // 改 type 成 OTT 平台時自動預填 label（只在 label 是空時，不覆蓋已填內容）
+            if (f === 'type') {
+              const OTT_TYPES = ['netflix','prime','disney','appletv','max','linetv','kktv','litv','wetv','iqiyi','catchplay','friday','myvideo','hami','pts','hakkatv'];
+              const currentLabel = (drawerDraft.links[i].label || '').trim();
+              if (OTT_TYPES.includes(t.value) && !currentLabel) {
+                const cats = drawerDraft.categories || [];
+                let suggested = '';
+                if (cats.includes('series')) suggested = '全集 Full Episodes';
+                else if (cats.includes('feature') || cats.includes('short')) suggested = '正片 Full Movie';
+                if (suggested) {
+                  drawerDraft.links[i].label = suggested;
+                  const labelInput = list.querySelector(`input[data-i="${i}"][data-f="label"]`);
+                  if (labelInput) labelInput.value = suggested;
+                }
+              }
+            }
           });
         });
         list.querySelectorAll('.del').forEach((b) => {
