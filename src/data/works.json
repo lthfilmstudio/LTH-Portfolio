@@ -521,6 +521,16 @@
         "type": "hami",
         "url": "https://hamivideo.hinet.net/product/236094.do?cs=2",
         "label": "全集 Full Episodes"
+      },
+      {
+        "type": "pts",
+        "url": "https://www.ptsplus.tv/zh/programs/a4da07f3-0eb1-4a94-9c09-5e3b57ca8fef",
+        "label": "全集 Full Episodes"
+      },
+      {
+        "type": "iqiyi",
+        "url": "https://www.ptsplus.tv/zh/programs/a4da07f3-0eb1-4a94-9c09-5e3b57ca8fef",
+        "label": "全集 Full Episodes"
       }
     ],
     "hasDetail": true,
