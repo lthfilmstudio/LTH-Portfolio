@@ -506,7 +506,7 @@
   letter-spacing: 0.35em;
   text-transform: uppercase;
   color: var(--text-faint);
-  margin-top: 1.5rem;
+  margin-top: 2.5rem;
   margin-bottom: 1.2rem; /* Inter 字體 leading 上 2px / 下 3.75px 不對稱，用 19.2px 補；
                             上方 border 1 + padding 24 + leading 2 = 27px；
                             下方 margin 19.2 + list padding 4 + leading 3.75 ≈ 27px 視覺對齊 */
