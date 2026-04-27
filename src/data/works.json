@@ -120,7 +120,10 @@
         "label": "正式預告 Trailer"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "trailer": 0
+    }
   },
   {
     "slug": "mangotaay-2025",
@@ -145,7 +148,10 @@
         "label": "預告 Trailer"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "short": 0
+    }
   },
   {
     "slug": "dngusun-2025",
@@ -170,7 +176,10 @@
         "label": "預告 Trailer"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "short": 1
+    }
   },
   {
     "slug": "holiday-2025",
@@ -239,7 +248,10 @@
         "label": "預告 Trailer"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "short": 2
+    }
   },
   {
     "slug": "the-photo-from-1977-2025",
@@ -416,7 +428,10 @@
     "covers": [
       "/stills/covers/tabloid.png"
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "trailer": 1
+    }
   },
   {
     "slug": "mission-2024-trailer",
@@ -434,7 +449,10 @@
     "covers": [
       "/stills/covers/463259780_1090933659703076_8309139677173519757_n.jpg"
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "trailer": 2
+    }
   },
   {
     "slug": "genius-chef-junior-let-s-cook-lunch-2023",
@@ -487,7 +505,10 @@
     "covers": [
       "/stills/covers/p.jpg"
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "trailer": 3
+    }
   },
   {
     "slug": "living-2023",
@@ -606,7 +627,10 @@
         "label": "IMDB"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "short": 4
+    }
   },
   {
     "slug": "genius-chef-junior-ghost-festival-2023",
@@ -659,7 +683,10 @@
     "covers": [
       "/stills/covers/ck.png"
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "trailer": 4
+    }
   },
   {
     "slug": "workers-the-movie-2023",
@@ -729,7 +756,10 @@
         "label": "預告 Trailer"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "short": 3
+    }
   },
   {
     "slug": "gold-leaf-2022",
@@ -814,7 +844,10 @@
         "label": "前導 Teaser #2"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "trailer": 5
+    }
   },
   {
     "slug": "leave-me-alone-2021",
@@ -915,7 +948,10 @@
         "label": "IMDB"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "short": 5
+    }
   },
   {
     "slug": "the-gravity-of-a-rainbow-2019",
@@ -992,7 +1028,7 @@
     ],
     "hasDetail": true,
     "orders": {
-      "series": 11
+      "series": 10
     }
   },
   {
@@ -1235,7 +1271,7 @@
     ],
     "hasDetail": true,
     "orders": {
-      "series": 10
+      "series": 11
     }
   },
   {
@@ -1306,7 +1342,10 @@
         "label": "片花#2 Official Clip #2"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "trailer": 6
+    }
   },
   {
     "slug": "diamond-lover-2015",
@@ -1455,7 +1494,10 @@
         "label": "正片 Full Movie"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "tvmovie": 2
+    }
   },
   {
     "slug": "work-2011-回首留蘭香",
@@ -1573,7 +1615,10 @@
         "label": "正片 Full Movie"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "tvmovie": 0
+    }
   },
   {
     "slug": "work-2009-不死搖滾夢",
@@ -1598,7 +1643,10 @@
         "label": "正片 Full Movie"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "tvmovie": 1
+    }
   },
   {
     "slug": "work-2008-敬盛堂的春大神",
@@ -1626,7 +1674,10 @@
     "hasDetail": true,
     "coverX": 54,
     "coverY": 55,
-    "coverScale": 109
+    "coverScale": 109,
+    "orders": {
+      "tvmovie": 3
+    }
   },
   {
     "slug": "s-h-e-飛輪海-新窩-2008",
@@ -1913,7 +1964,10 @@
         "label": "正片 Full Movie"
       }
     ],
-    "hasDetail": true
+    "hasDetail": true,
+    "orders": {
+      "short": 6
+    }
   },
   {
     "slug": "wanna-2007",
