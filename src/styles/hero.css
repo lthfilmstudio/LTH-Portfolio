@@ -59,13 +59,14 @@
   position: relative;
 }
 
-/* hero 底部分割線：在「作品集 PORTFOLIO」標題上方，視覺上分隔 hero 跟 portfolio */
+/* hero 底部分割線：位於精選作品 cards 跟「剪輯作品集 PORTFOLIO」標題之間視覺中央
+   playwright 量過 cards 底 1133 / label 頂 1167，中央 1150 = hero bottom - 99px ≈ 6.2rem */
 .hero::after {
   content: '';
   position: absolute;
   left: 3rem;
   right: 3rem;
-  bottom: 7.5rem;
+  bottom: 6.2rem;
   height: 1px;
   background: var(--line);
   pointer-events: none;
