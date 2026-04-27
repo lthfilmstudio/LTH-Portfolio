@@ -1,0 +1,342 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import BrandMark from '../components/BrandMark.astro';
+
+const sections = [
+  {
+    n: '01',
+    zh: {
+      h: '本站著作權',
+      body: '本網站之網站設計與版面排版，著作權為本站所有人所有。未經書面同意，不得以任何形式重製、修改、公開傳輸或作商業用途。',
+    },
+    en: {
+      h: 'Website Copyright',
+      body: 'The design and layout of this website are the intellectual property of the site owner. No part may be reproduced, modified, publicly transmitted, or used for commercial purposes without prior written consent.',
+    },
+  },
+  {
+    n: '02',
+    zh: {
+      h: '影視作品版權歸屬',
+      body: '本站所列之影視作品，本人僅以剪輯參與者之身分列出參與經歷，作品本身之著作權均屬其製作公司、發行公司或合法權利人所有。本站不提供任何作品之影像檔案或可下載內容，所有觀看連結均導向 Netflix、YouTube 等合法播放平台，觀看時請依各該平台之服務條款使用。',
+    },
+    en: {
+      h: 'Film & Television Credits',
+      body: "Works listed on this site reflect the site owner's professional credits as an editor. All rights to the listed productions belong to their respective production companies, distributors, or rightful owners. This site does not host or distribute any video files; all viewing links direct to authorized platforms such as Netflix and YouTube, where viewing is subject to each platform's terms of service.",
+    },
+  },
+  {
+    n: '03',
+    zh: {
+      h: '第三方素材聲明',
+      body: '本網站所使用之海報、劇照、片名標準字（logo）、商標、相關宣傳物及作品介紹文字，部分內容引自維基百科、作品官方網站或公開網路資料，其著作權與商標權均屬原製作公司、發行公司或其合法權利人所有。本站僅基於作品經歷展示之目的進行引用，並無任何商業營利行為，亦無意主張任何權利或暗示與權利人之合作或代言關係。',
+    },
+    en: {
+      h: 'Third-Party Materials',
+      body: 'Posters, stills, title logos, trademarks, promotional artwork, and descriptive text about the listed works displayed on this site are, in part, sourced from Wikipedia, official websites, and publicly available online resources. All such materials remain the property of their respective production companies, distributors, or rightful owners. They are used solely to illustrate professional credits, with no commercial intent and no claim of endorsement or affiliation.',
+    },
+  },
+  {
+    n: '04',
+    zh: {
+      h: '合理使用主張',
+      body: '本網站所引用之第三方素材，係基於介紹與作品經歷展示之目的，主張符合著作權法第 65 條合理使用之範疇。若權利人認為本站使用方式有不適當之處，敬請透過本站聯絡表單告知。',
+    },
+    en: {
+      h: 'Fair Use Statement',
+      body: 'The use of third-party copyrighted material on this website is asserted in good faith as falling within the scope of fair use, for purposes of commentary and portfolio presentation. If a rights holder believes such use to be inappropriate, please reach out via the contact form on this site.',
+    },
+  },
+  {
+    n: '05',
+    zh: {
+      h: '權利通知與撤下機制',
+      body: '若您為相關權利人或其授權代表，認為本網站內容有侵權之虞，請透過本站聯絡表單提供下列資料：受侵害之作品名稱與網址、權利證明文件、聯絡方式。本站收到通知後將於合理時間內進行確認並下架相關內容。',
+    },
+    en: {
+      h: 'Notice and Takedown',
+      body: 'If you are a rights holder or authorized representative who believes content on this site infringes your rights, please use the contact form to provide the following: the name and URL of the work in question, proof of rights ownership, and your contact information. Upon receipt of a valid notice, we will review and remove the relevant content within a reasonable time frame.',
+    },
+  },
+  {
+    n: '06',
+    zh: {
+      h: '責任限制',
+      body: '本網站所提供之資訊已盡力確保正確性，惟不保證內容完整無誤。因使用本網站內容所衍生之任何直接或間接損失，本站不負法律責任。',
+    },
+    en: {
+      h: 'Limitation of Liability',
+      body: "While reasonable efforts are made to ensure accuracy, no warranty is given as to the completeness or correctness of information on this site. The site owner shall not be held liable for any direct or indirect loss arising from use of the website's contents.",
+    },
+  },
+  {
+    n: '07',
+    zh: {
+      h: '外部連結',
+      body: '本網站包含指向 Netflix、YouTube 等第三方網站之連結，該等網站之內容、隱私政策與服務條款均與本站無涉，本站不對其負責。',
+    },
+    en: {
+      h: 'External Links',
+      body: 'This site contains links to third-party platforms such as Netflix and YouTube. The content, privacy practices, and terms of service of such sites are independent of this website, and we accept no responsibility for them.',
+    },
+  },
+  {
+    n: '08',
+    zh: {
+      h: '條款更新',
+      body: '本站保留隨時修改本聲明之權利，修改後之內容將公告於本頁面，不另行個別通知。',
+    },
+    en: {
+      h: 'Updates',
+      body: 'We reserve the right to modify this notice at any time. Any changes will be posted on this page without separate individual notification.',
+    },
+  },
+];
+---
+<BaseLayout
+  title="法律聲明 Legal Notice — 林姿嫺 Tzushien Lin"
+  description="lthfilmstudio.com 著作權聲明與免責聲明 / Copyright Notice & Disclaimer."
+>
+  <nav>
+    <a class="brand" href="/">
+      <BrandMark />
+      <div class="brand-text">
+        <span class="brand-zh">林姿嫺</span>
+        <span class="brand-en"><span class="brand-en-name">Tzushien Lin</span><span class="brand-en-role"> · Film & Series Editor</span></span>
+      </div>
+    </a>
+    <ul>
+      <li><a href="/#works">Works</a></li>
+      <li><a href="/#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <main class="legal-page">
+    <header class="legal-header">
+      <p class="legal-eyebrow">Legal · 法律</p>
+      <h1>
+        <span class="zh">著作權聲明與免責聲明</span>
+        <span class="en">Copyright Notice &amp; Disclaimer</span>
+      </h1>
+      <p class="legal-intro">
+        <span class="zh">本網站（lthfilmstudio.com）為個人作品集展示用途，僅供非商業性質之瀏覽與參考。瀏覽本網站即視為已閱讀並同意以下條款。</span>
+        <span class="en">This website (lthfilmstudio.com) serves as a personal portfolio for non-commercial viewing and reference purposes only. By accessing this site, you acknowledge that you have read and agreed to the terms below.</span>
+      </p>
+    </header>
+
+    <ol class="legal-sections">
+      {sections.map((s) => (
+        <li class="legal-section">
+          <span class="legal-num" aria-hidden="true">{s.n}</span>
+          <div class="legal-col legal-col--zh">
+            <h2>{s.zh.h}</h2>
+            <p>{s.zh.body}</p>
+          </div>
+          <div class="legal-col legal-col--en">
+            <h2>{s.en.h}</h2>
+            <p>{s.en.body}</p>
+          </div>
+        </li>
+      ))}
+    </ol>
+
+    <footer class="legal-footer">
+      <p>最後更新：2026 年 4 月　·　Last updated: April 2026</p>
+      <p>© 2026 原本那間剪輯工作室　·　LTH Film Studio. All rights reserved.</p>
+    </footer>
+  </main>
+
+  <SiteFooter />
+</BaseLayout>
+
+<style>
+  .legal-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 8rem 3rem 6rem;
+    color: var(--text-dim);
+  }
+
+  .legal-header {
+    text-align: center;
+    margin-bottom: 5rem;
+    padding-bottom: 3rem;
+    border-bottom: 1px solid var(--line);
+  }
+
+  .legal-eyebrow {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    letter-spacing: 0.35em;
+    text-transform: uppercase;
+    color: var(--text-faint);
+    margin: 0 0 1.5rem;
+  }
+
+  .legal-header h1 {
+    font-weight: 400;
+    margin: 0 0 2.5rem;
+    line-height: 1.3;
+    color: var(--text);
+  }
+
+  .legal-header h1 .zh {
+    display: block;
+    font-family: 'Noto Serif TC', serif;
+    font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+    letter-spacing: 0.12em;
+  }
+
+  .legal-header h1 .en {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+    color: var(--text-dim);
+    margin-top: 0.5rem;
+    letter-spacing: 0.04em;
+  }
+
+  .legal-intro {
+    max-width: 880px;
+    margin: 0 auto;
+    line-height: 1.8;
+  }
+
+  .legal-intro .zh,
+  .legal-intro .en {
+    display: block;
+  }
+
+  .legal-intro .zh {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 0.95rem;
+    color: var(--text-dim);
+  }
+
+  .legal-intro .en {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 0.95rem;
+    color: var(--text-faint);
+    margin-top: 0.6rem;
+  }
+
+  .legal-sections {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: legal;
+  }
+
+  .legal-section {
+    display: grid;
+    grid-template-columns: auto 1fr 1fr;
+    gap: 2.5rem 3rem;
+    padding: 3rem 0;
+    border-bottom: 1px solid var(--line-soft);
+    position: relative;
+  }
+
+  .legal-section:last-child {
+    border-bottom: none;
+  }
+
+  .legal-num {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: 1.75rem;
+    color: var(--text-faint);
+    line-height: 1;
+    align-self: start;
+    padding-top: 0.2rem;
+    min-width: 2.5rem;
+  }
+
+  .legal-col h2 {
+    font-weight: 400;
+    margin: 0 0 1rem;
+    line-height: 1.4;
+  }
+
+  .legal-col--zh h2 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 1.05rem;
+    letter-spacing: 0.1em;
+    color: var(--text);
+  }
+
+  .legal-col--en h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    letter-spacing: 0.04em;
+    color: var(--text);
+  }
+
+  .legal-col p {
+    margin: 0;
+    line-height: 1.85;
+    font-size: 0.92rem;
+  }
+
+  .legal-col--zh p {
+    font-family: 'Noto Serif TC', serif;
+    color: var(--text-dim);
+  }
+
+  .legal-col--en p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1rem;
+    color: var(--text-faint);
+  }
+
+  .legal-footer {
+    margin-top: 5rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--line);
+    text-align: center;
+  }
+
+  .legal-footer p {
+    margin: 0.4rem 0;
+    font-size: 0.78rem;
+    color: var(--text-faint);
+    font-family: 'Noto Serif TC', serif;
+    letter-spacing: 0.1em;
+  }
+
+  /* mobile：條目改成中文上、英文下單欄 */
+  @media (max-width: 960px) {
+    .legal-page {
+      padding: 6rem 1.5rem 4rem;
+    }
+
+    .legal-header {
+      margin-bottom: 3rem;
+      padding-bottom: 2rem;
+    }
+
+    .legal-section {
+      grid-template-columns: auto 1fr;
+      gap: 1.5rem 1.2rem;
+      padding: 2.2rem 0;
+    }
+
+    .legal-num {
+      font-size: 1.4rem;
+      min-width: 1.8rem;
+    }
+
+    .legal-col--zh,
+    .legal-col--en {
+      grid-column: 2;
+    }
+
+    .legal-col--en {
+      margin-top: 0.5rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--line-soft);
+    }
+  }
+</style>

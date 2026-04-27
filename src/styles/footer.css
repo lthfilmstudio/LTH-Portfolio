@@ -150,11 +150,52 @@ footer {
 /* BOTTOM — 版權 */
 .footer-bottom {
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   padding-top: 2.5rem;
   border-top: 1px solid var(--line);
   font-size: 0.68rem;
   color: var(--text-faint);
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.footer-copy {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.footer-copy p {
+  margin: 0;
+}
+
+.footer-copy-zh {
+  font-family: 'Noto Serif TC', serif;
+  letter-spacing: 0.08em;
+}
+
+.footer-copy-en {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.78rem;
+  color: var(--text-dim);
+  opacity: 0.75;
+}
+
+.footer-copy .sep {
+  display: inline-block;
+  margin: 0 0.4rem;
+  opacity: 0.5;
+}
+
+.footer-copy a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+  transition: color 0.3s, border-color 0.3s;
+}
+
+.footer-copy a:hover {
+  color: var(--accent);
+  border-bottom-color: var(--accent-dim);
 }
