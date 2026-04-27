@@ -109,6 +109,14 @@
   font-style: italic;
 }
 
+/* 名字 + 職稱 整塊：跨 hero 兩欄獨佔最上方 row，底部分割線往右延伸到 hero 整寬 */
+.hero-name-block {
+  grid-column: 1 / -1;
+  padding-bottom: 2rem;
+  margin-bottom: 2rem;
+  border-bottom: 1px solid var(--line);
+}
+
 /* 職稱列：中英並排 */
 .hero-titles {
   display: flex;
@@ -116,9 +124,6 @@
   align-items: baseline;
   gap: 1rem;
   flex-wrap: wrap;
-  margin-bottom: 2rem;
-  padding-bottom: 2rem;
-  border-bottom: 1px solid var(--line);
 }
 
 .hero-titles .role-zh {
@@ -459,7 +464,7 @@
 .hero-right {
   border-left: 1px solid var(--line);
   padding-left: 3rem;
-  padding-top: 1.5rem; /* 對齊 h1 林姿嫺的 margin-top */
+  padding-top: 0; /* 名字區已抽到上方獨立 row，AWARDS 直接對齊 left 欄 hero-profile 頂端 */
   padding-bottom: 0;
   min-width: 0;
   display: flex;
