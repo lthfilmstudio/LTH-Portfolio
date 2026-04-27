@@ -501,7 +501,9 @@
   text-transform: uppercase;
   color: var(--text-faint);
   margin-top: 1.5rem;
-  margin-bottom: 1.3125rem; /* 21px + .featured-list padding-top 4px = 25px，跟上方 border 1px + padding 24px 對稱 */
+  margin-bottom: 1.2rem; /* Inter 字體 leading 上 2px / 下 3.75px 不對稱，用 19.2px 補；
+                            上方 border 1 + padding 24 + leading 2 = 27px；
+                            下方 margin 19.2 + list padding 4 + leading 3.75 ≈ 27px 視覺對齊 */
   padding-top: 1.5rem;
   border-top: 1px solid var(--line); /* 跨左右兩欄的分隔線 */
   display: flex;
