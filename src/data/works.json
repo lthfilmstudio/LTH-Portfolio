@@ -978,6 +978,11 @@
         "type": "iqiyi",
         "url": "https://www.iq.com/play/%E6%88%91%E5%9C%A8%E6%9C%AA%E4%BE%86%E7%AD%89%E4%BD%A0-%E7%AC%AC1%E9%9B%86-19rsu3sgxg?lang=zh_tw",
         "label": "全集 Full Episodes"
+      },
+      {
+        "type": "iqiyi",
+        "url": "https://www.iq.com/album/19rrhzn34x",
+        "label": "全集 Full Episodes"
       }
     ],
     "hasDetail": true,
