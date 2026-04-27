@@ -3,6 +3,15 @@
   padding: 0 3rem 5rem;
   max-width: 1400px;
   margin: 0 auto;
+  /* desktop 點 nav WORKS：portfolio 進 viewport 192px → PORTFOLIO label（在 portfolio top
+     上方約 82px）會落在 viewport 110px，剛好在 navbar 下方留呼吸距離 */
+  scroll-margin-top: 192px;
+}
+
+@media screen and (max-width: 960px) {
+  .portfolio {
+    scroll-margin-top: 80px; /* mobile 沒 PORTFOLIO label，scroll 到 chips 起始留 80px buffer */
+  }
 }
 
 /* Filter chips */
@@ -11,6 +20,7 @@
   flex-wrap: wrap;
   gap: 0.6rem;
   margin-bottom: 3rem;
+  scroll-margin-top: 80px; /* 點 scroll-cue ⬇️ 跳這 anchor，落在 navbar 下方留 22px 呼吸 */
 }
 
 /* 桌面版藏起 chip-break，手機版才用它強制換行 */

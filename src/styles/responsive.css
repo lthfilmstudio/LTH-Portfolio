@@ -18,6 +18,9 @@
   /* 手機隱藏 scroll-cue：hero 內容塞滿一欄，箭頭會卡在 Selected Works 中間，反而干擾 */
   .scroll-cue { display: none; }
 
+  /* 手機沒 PORTFOLIO label，hero::after 線會變孤立的條，連帶隱藏 */
+  .hero::after { display: none; }
+
   .hero {
     grid-template-columns: 1fr;
     grid-template-rows: auto;

@@ -203,7 +203,7 @@ const combinedSchema = {
     </button>
   </div>
 
-  <a class="scroll-cue" id="works" href="#portfolio-grid" aria-label="往下看作品集">
+  <a class="scroll-cue" href="#portfolio-chips" aria-label="往下看作品集">
     <span class="scroll-cue-label">剪輯作品集 Editing Portfolio</span>
     <span class="scroll-cue-arrow" aria-hidden="true">
       <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5">
@@ -297,8 +297,8 @@ const combinedSchema = {
 </script>
 
 <!-- PORTFOLIO -->
-<section id="portfolio-grid" class="portfolio">
-  <div class="filter-chips" role="tablist">
+<section id="works" class="portfolio">
+  <div class="filter-chips" id="portfolio-chips" role="tablist">
     {CATEGORY_ORDER.map((cat, idx) => {
       const count = works.filter((w) => w.categories.includes(cat)).length;
       if (count === 0) return null;
