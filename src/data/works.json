@@ -619,12 +619,12 @@
       {
         "type": "youtube",
         "url": "https://youtu.be/AfzUmkTVL9I?si=lE89_ePRADrycxai",
-        "label": "Full Ver."
+        "label": "完整版 Full Version"
       },
       {
         "type": "link",
         "url": "https://www.imdb.com/title/tt28230029/",
-        "label": "IMDB"
+        "label": "作品資料 IMDb"
       }
     ],
     "hasDetail": true,
@@ -945,7 +945,7 @@
       {
         "type": "link",
         "url": "https://www.imdb.com/title/tt12348560/",
-        "label": "IMDB"
+        "label": "作品資料 IMDb"
       }
     ],
     "hasDetail": true,
@@ -1697,7 +1697,7 @@
       {
         "type": "youtube",
         "url": "https://www.youtube.com/watch?v=mtdimg62BLs",
-        "label": "Music Video"
+        "label": "音樂錄影帶 Music Video"
       }
     ]
   },
@@ -1719,7 +1719,7 @@
       {
         "type": "youtube",
         "url": "https://youtu.be/pbfi0XFUgbo?si=Hk-TdgQXxrqoVmEd",
-        "label": "Music Video"
+        "label": "音樂錄影帶 Music Video"
       }
     ]
   },
@@ -1741,7 +1741,7 @@
       {
         "type": "youtube",
         "url": "https://youtu.be/B8VjW5pofDQ?si=0Q4J2YVbrImTxD9u",
-        "label": "Commercial"
+        "label": "廣告 Commercial"
       }
     ]
   },
@@ -1763,7 +1763,7 @@
       {
         "type": "youtube",
         "url": "https://www.youtube.com/watch?v=s_y-s9nhe74",
-        "label": "Music Video"
+        "label": "音樂錄影帶 Music Video"
       }
     ]
   },
@@ -1785,7 +1785,7 @@
       {
         "type": "link",
         "url": "https://www.bilibili.com/video/BV19D4y1W7SU/?share_source=copy_web",
-        "label": "Music Video"
+        "label": "音樂錄影帶 Music Video"
       }
     ]
   },
@@ -1807,7 +1807,7 @@
       {
         "type": "youtube",
         "url": "https://youtu.be/Ca2R8tvp41Q?si=cI-lxfE1BDSskxV0",
-        "label": "Music Video"
+        "label": "音樂錄影帶 Music Video"
       }
     ]
   },
@@ -1829,7 +1829,7 @@
       {
         "type": "link",
         "url": "https://www.bilibili.com/video/BV1N4411K76g/?share_source=copy_web",
-        "label": "Music Video"
+        "label": "音樂錄影帶 Music Video"
       }
     ]
   },
@@ -1851,7 +1851,7 @@
       {
         "type": "youtube",
         "url": "https://youtu.be/v5kNzOjC1vk?si=vPEbSu1-g0x8h0iP",
-        "label": "Commercial"
+        "label": "廣告 Commercial"
       }
     ]
   },
@@ -1873,7 +1873,7 @@
       {
         "type": "youtube",
         "url": "https://youtu.be/dmtwySeQDtE?si=Nf558FCU40C0fQtI",
-        "label": "Commerical"
+        "label": "廣告 Commercial"
       }
     ]
   },
@@ -1895,7 +1895,7 @@
       {
         "type": "link",
         "url": "https://www.bilibili.com/video/BV19P4y1m7nt/?share_source=copy_web",
-        "label": "Music Video"
+        "label": "音樂錄影帶 Music Video"
       }
     ]
   },
@@ -1917,7 +1917,7 @@
       {
         "type": "youtube",
         "url": "https://youtu.be/e2g-sYZWEtg?si=YPzcE-9zhzy9bPdg",
-        "label": "Music Video"
+        "label": "音樂錄影帶 Music Video"
       }
     ]
   },
@@ -1939,7 +1939,7 @@
       {
         "type": "link",
         "url": "https://www.bilibili.com/video/BV1tz411z7Tf/?share_source=copy_web",
-        "label": "Music Video"
+        "label": "音樂錄影帶 Music Video"
       }
     ]
   },
@@ -1988,7 +1988,7 @@
       {
         "type": "youtube",
         "url": "https://www.youtube.com/watch?v=EFsYiU6i7ZQ",
-        "label": "Music Video"
+        "label": "音樂錄影帶 Music Video"
       }
     ]
   },
@@ -2010,7 +2010,7 @@
       {
         "type": "youtube",
         "url": "https://youtu.be/ROgiiCY-PN0?si=DEpwh0BBNvt3j4oI",
-        "label": "Music Video"
+        "label": "音樂錄影帶 Music Video"
       }
     ]
   },
@@ -2032,7 +2032,7 @@
       {
         "type": "youtube",
         "url": "https://youtu.be/WYV-KCTvr7A?si=XBzO7gvP-wHAlQfr",
-        "label": "Music Video"
+        "label": "音樂錄影帶 Music Video"
       }
     ]
   },
@@ -2054,7 +2054,7 @@
       {
         "type": "link",
         "url": "https://www.bilibili.com/video/BV1N8411Y7r4/?share_source=copy_web",
-        "label": "Music Video"
+        "label": "音樂錄影帶 Music Video"
       }
     ]
   },
@@ -2077,7 +2077,7 @@
       {
         "type": "youtube",
         "url": "https://youtu.be/CGffay26lug?si=wznw0yCIBqxkIlhc",
-        "label": "Music Video"
+        "label": "音樂錄影帶 Music Video"
       }
     ]
   },
@@ -2099,7 +2099,7 @@
       {
         "type": "youtube",
         "url": "https://youtu.be/jyE6ugYFYlQ?si=1dGir2LpStLQ4Edo",
-        "label": "Music Video"
+        "label": "音樂錄影帶 Music Video"
       }
     ]
   },
@@ -2121,7 +2121,7 @@
       {
         "type": "youtube",
         "url": "https://youtu.be/9sHSs5mGy1M?si=ARrvs4v6oajVokvx",
-        "label": "Music Video"
+        "label": "音樂錄影帶 Music Video"
       }
     ]
   },
@@ -2143,7 +2143,7 @@
       {
         "type": "youtube",
         "url": "https://youtu.be/ZOhZsUH-kqg?si=GAoff3yXdXZVR9lk",
-        "label": "Commercial"
+        "label": "廣告 Commercial"
       }
     ]
   },
@@ -2165,7 +2165,7 @@
       {
         "type": "link",
         "url": "https://www.bilibili.com/video/BV1ZV4y1N7gW/?share_source=copy_web",
-        "label": "Music Video"
+        "label": "音樂錄影帶 Music Video"
       }
     ]
   },
@@ -2186,7 +2186,7 @@
       {
         "type": "link",
         "url": "https://www.bilibili.com/video/BV14gsFeeESE/?share_source=copy_web",
-        "label": "Music Video"
+        "label": "音樂錄影帶 Music Video"
       }
     ]
   },
@@ -2208,7 +2208,7 @@
       {
         "type": "link",
         "url": "https://www.bilibili.com/video/BV1jL411p7mE/?share_source=copy_web",
-        "label": "Music Video"
+        "label": "音樂錄影帶 Music Video"
       }
     ]
   },
@@ -2230,7 +2230,7 @@
       {
         "type": "link",
         "url": "https://www.bilibili.com/video/BV1VL4y1578U/?share_source=copy_web",
-        "label": "Music Video"
+        "label": "音樂錄影帶 Music Video"
       }
     ]
   },
@@ -2252,7 +2252,7 @@
       {
         "type": "link",
         "url": "https://www.bilibili.com/video/BV1Dq4y127RY/?share_source=copy_web",
-        "label": "Music Video"
+        "label": "音樂錄影帶 Music Video"
       }
     ]
   },
@@ -2274,7 +2274,7 @@
       {
         "type": "link",
         "url": "https://www.bilibili.com/video/BV1Yz421y7fS/?share_source=copy_web",
-        "label": "Music Video"
+        "label": "音樂錄影帶 Music Video"
       }
     ]
   },
@@ -2296,7 +2296,7 @@
       {
         "type": "youtube",
         "url": "https://youtu.be/TzDgS_E_GIk?si=x9Px_h_Xm3QHqgul",
-        "label": "Music Video"
+        "label": "音樂錄影帶 Music Video"
       }
     ]
   },
@@ -2318,7 +2318,7 @@
       {
         "type": "link",
         "url": "https://www.bilibili.com/video/BV12S4y1C7a5/?share_source=copy_web",
-        "label": "Music Video"
+        "label": "音樂錄影帶 Music Video"
       }
     ]
   },
@@ -2340,7 +2340,7 @@
       {
         "type": "youtube",
         "url": "https://youtu.be/VG5YVL-WyQI?si=edsXLHA9oG5BJd-V",
-        "label": "Music Video"
+        "label": "音樂錄影帶 Music Video"
       }
     ]
   },
@@ -2362,7 +2362,7 @@
       {
         "type": "youtube",
         "url": "https://youtu.be/cqYqhB1YTnA?si=vdORim0yRM6kRBm9",
-        "label": "Music Video"
+        "label": "音樂錄影帶 Music Video"
       }
     ]
   },
@@ -2384,7 +2384,7 @@
       {
         "type": "youtube",
         "url": "https://youtu.be/uXX6m356CsM?si=UfwnkBKHQCGLN9o5",
-        "label": "Commercial"
+        "label": "廣告 Commercial"
       }
     ]
   }
