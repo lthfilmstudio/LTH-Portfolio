@@ -372,6 +372,26 @@
         "type": "facebook",
         "url": "https://www.facebook.com/Adriefinlove",
         "label": "官方Facebook"
+      },
+      {
+        "type": "netflix",
+        "url": "https://qr.netflix.com/tw/title/82157504",
+        "label": "全集 Full Episodes"
+      },
+      {
+        "type": "myvideo",
+        "url": "https://www.myvideo.net.tw/details/3/31871",
+        "label": "全集 Full Episodes"
+      },
+      {
+        "type": "pts",
+        "url": "https://www.ptsplus.tv/zh/programs/5d550a85-687e-44ce-8be2-f905040ed268",
+        "label": "全集 Full Episodes"
+      },
+      {
+        "type": "iqiyi",
+        "url": "https://www.iq.com/album/2f5nblz18wl",
+        "label": "全集 Full Episodes"
       }
     ],
     "hasDetail": true,
