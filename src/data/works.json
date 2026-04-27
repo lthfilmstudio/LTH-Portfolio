@@ -437,7 +437,7 @@
       {
         "type": "kktv",
         "url": "https://www.kktv.me/play/02000404",
-        "label": "全集 Full Episodes (KKTV)"
+        "label": "全集 Full Episodes"
       }
     ],
     "hasDetail": true,
@@ -490,12 +490,12 @@
       {
         "type": "netflix",
         "url": "https://www.netflix.com/title/81703393",
-        "label": "全集 Full Episodes (Netflix)"
+        "label": "全集 Full Episodes"
       },
       {
         "type": "hami",
         "url": "https://hamivideo.hinet.net/product/236094.do?cs=2",
-        "label": "全集 Full Episodes (Hami)"
+        "label": "全集 Full Episodes"
       }
     ],
     "hasDetail": true,
@@ -732,7 +732,7 @@
       {
         "type": "netflix",
         "url": "https://www.netflix.com/tw/title/81516613",
-        "label": "全集 Full Episodes (Netflix)"
+        "label": "全集 Full Episodes"
       }
     ],
     "hasDetail": true,
@@ -836,7 +836,7 @@
       {
         "type": "iqiyi",
         "url": "https://www.iq.com/album/%E5%A5%B9%E5%80%91%E5%89%B5%E6%A5%AD%E7%9A%84%E9%82%A3%E4%BA%9B%E9%B3%A5%E4%BA%8B-2021-289fg6fgdl1?lang=zh_tw",
-        "label": "全集 Full Episodes (iQIYI)"
+        "label": "全集 Full Episodes"
       }
     ],
     "hasDetail": true,
@@ -898,7 +898,7 @@
       {
         "type": "iqiyi",
         "url": "https://www.iq.com/play/%E5%BD%A9%E8%99%B9%E7%9A%84%E9%87%8D%E5%8A%9B-%E7%AC%AC1%E9%9B%86-19rttuaqa4?lang=zh_tw",
-        "label": "全集 Full Episodes (iQIYI)"
+        "label": "全集 Full Episodes"
       }
     ],
     "hasDetail": true,
@@ -932,7 +932,7 @@
       {
         "type": "iqiyi",
         "url": "https://www.iq.com/play/%E6%88%91%E5%9C%A8%E6%9C%AA%E4%BE%86%E7%AD%89%E4%BD%A0-%E7%AC%AC1%E9%9B%86-19rsu3sgxg?lang=zh_tw",
-        "label": "全集 Full Episodes (iQIYI)"
+        "label": "全集 Full Episodes"
       }
     ],
     "hasDetail": true,
@@ -995,7 +995,7 @@
       {
         "type": "pts",
         "url": "https://www.ptsplus.tv/zh/programs/48477d4a-19bd-425a-a944-a31705ca83d7",
-        "label": "全集 Full Episodes (PTS)"
+        "label": "全集 Full Episodes"
       }
     ],
     "hasDetail": true,
@@ -1097,7 +1097,7 @@
       {
         "type": "youtube",
         "url": "https://www.youtube.com/playlist?list=PLyHieqImaj4yhNFT1D0xByD_IKbD2ljwA",
-        "label": "全集 Full Episodes (Youtube)"
+        "label": "全集 Full Episodes"
       }
     ],
     "hasDetail": true,
@@ -1131,12 +1131,12 @@
       {
         "type": "kktv",
         "url": "https://www.kktv.me/titles/03000940",
-        "label": "全集 Full Episodes (KKTV)"
+        "label": "全集 Full Episodes"
       },
       {
         "type": "myvideo",
         "url": "https://www.myvideo.net.tw/details/3/23656",
-        "label": "全集 Full Episodes (MyVideo)"
+        "label": "全集 Full Episodes"
       }
     ],
     "hasDetail": true,
@@ -1359,12 +1359,12 @@
       {
         "type": "netflix",
         "url": "https://www.netflix.com/watch/80111917?source=35",
-        "label": "全集 Full Episodes (Netflix)"
+        "label": "全集 Full Episodes"
       },
       {
         "type": "youtube",
         "url": "https://www.youtube.com/watch?v=RrVRomWV0G4&list=PL_N94HRA643pJEfyWUU6E0ZcERrBkPnXQ",
-        "label": "全集 Full Episodes (Youtube)"
+        "label": "全集 Full Episodes"
       }
     ],
     "hasDetail": true,
@@ -1456,7 +1456,7 @@
       {
         "type": "hakkatv",
         "url": "https://www.hakkatv.org.tw/series/1624270018408236",
-        "label": "全集 Full Episodes (HakkaTV)"
+        "label": "全集 Full Episodes"
       }
     ],
     "hasDetail": true,
@@ -1515,7 +1515,7 @@
       {
         "type": "youtube",
         "url": "https://youtu.be/sOaGIL0jkWc?si=xDL-EViK7PPQhUVY",
-        "label": "正片 Full Movie (Youtube)"
+        "label": "正片 Full Movie"
       }
     ],
     "hasDetail": true
@@ -1540,7 +1540,7 @@
       {
         "type": "youtube",
         "url": "https://youtu.be/3m7lRineq4U?si=QZ3LoscuSzSOm7Pz",
-        "label": "正片 Full Movie (Youtube)"
+        "label": "正片 Full Movie"
       }
     ],
     "hasDetail": true
@@ -1855,7 +1855,7 @@
       {
         "type": "youtube",
         "url": "https://www.youtube.com/watch?v=sYI1vpZ_PwM",
-        "label": "Full Movie (Youtube)"
+        "label": "正片 Full Movie"
       }
     ],
     "hasDetail": true
