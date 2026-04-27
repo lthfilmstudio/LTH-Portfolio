@@ -75,6 +75,11 @@
         "type": "youtube",
         "url": "https://youtu.be/Z1HTxQ2WjPs?si=JMmVIN1a7BZ3xkz3",
         "label": "前導花絮 Making of"
+      },
+      {
+        "type": "youtube",
+        "url": "https://www.primevideo.com/-/zh_TW/detail/%E6%88%91%E5%80%91%E8%88%87%E6%83%A1%E7%9A%84%E8%B7%9D%E9%9B%A2ll/0PPVXHYW05WN1FIX502Z8SAYBM",
+        "label": "全集 Full Episodes"
       }
     ],
     "hasDetail": true,
@@ -194,6 +199,11 @@
         "type": "youtube",
         "url": "https://www.youtube.com/watch?v=Q4lSvwemH9w",
         "label": "片花"
+      },
+      {
+        "type": "netflix",
+        "url": "https://www.netflix.com/tw/title/83077409",
+        "label": "全集"
       }
     ],
     "hasDetail": true,
@@ -504,12 +514,12 @@
       {
         "type": "netflix",
         "url": "https://www.netflix.com/tw/title/81731767",
-        "label": "全集 Full Episodes (Netflix)"
+        "label": "全集 Full Episodes"
       },
       {
         "type": "hami",
         "url": "https://hamivideo.hinet.net/product/210517.do?cs=2",
-        "label": "全集 Full Episodes (Hami)"
+        "label": "全集 Full Episodes"
       }
     ],
     "hasDetail": true,
@@ -574,7 +584,7 @@
       {
         "type": "kktv",
         "url": "https://www.kktv.me/titles/02000405",
-        "label": "全集 Full Episodes (KKTV)"
+        "label": "全集 Full Episodes"
       }
     ],
     "hasDetail": true,
