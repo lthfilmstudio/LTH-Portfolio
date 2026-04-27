@@ -24,19 +24,22 @@ footer {
 }
 
 .footer-sub {
-  font-family: 'Cormorant Garamond', serif;
-  font-size: 1rem;
-  color: var(--text-dim);
-  letter-spacing: 0.06em;
   line-height: 1.7;
   margin: 0 0 2.8rem;
 }
 
 .footer-sub .zh {
   font-family: 'Noto Serif TC', serif;
+  font-size: 1rem;
+  color: var(--text-dim);
+  letter-spacing: 0.18em;
+}
+
+.footer-sub .en {
+  font-family: 'Cormorant Garamond', serif;
   font-size: 0.85rem;
   color: var(--text-faint);
-  letter-spacing: 0.18em;
+  letter-spacing: 0.06em;
   display: inline-block;
   margin-top: 0.3rem;
 }
