@@ -6,9 +6,19 @@ footer {
   text-align: center;
 }
 
-/* footer 內的 divider 不留上 padding，讓 line 直接貼到上方 portfolio 色塊底端 */
+/* footer 內的 divider：line 完全貼齊 portfolio 色塊底端，
+   02 / Contact 文字垂直中心騎在 line 上（一半在棕色、一半在黑色） */
 footer > .section-divider {
   padding-top: 0;
+  padding-bottom: 0;
+  align-items: center;
+  transform: translateY(-50%);
+  position: relative;
+  z-index: 2;
+}
+
+footer > .section-divider .num {
+  line-height: 1;
 }
 
 /* HERO — logo 當 section opener，下方副標一句話 + 表單 */
