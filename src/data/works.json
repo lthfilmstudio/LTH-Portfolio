@@ -80,6 +80,11 @@
         "type": "prime",
         "url": "https://www.primevideo.com/-/zh_TW/detail/%E6%88%91%E5%80%91%E8%88%87%E6%83%A1%E7%9A%84%E8%B7%9D%E9%9B%A2ll/0PPVXHYW05WN1FIX502Z8SAYBM",
         "label": "全集 Full Episodes"
+      },
+      {
+        "type": "iqiyi",
+        "url": "https://www.iq.com/album/16h7sth2wzp",
+        "label": "全集 Full Episodes"
       }
     ],
     "hasDetail": true,
@@ -650,7 +655,7 @@
         "label": "預告 Trailer"
       },
       {
-        "type": "disney",
+        "type": "link",
         "url": "https://www.disneyplus.com/zh-tw/movies/workers-the-movie/70UFKUpi7xQf",
         "label": "正片 Full Movie"
       },
@@ -1395,7 +1400,7 @@
         "label": "預告 Trailer"
       },
       {
-        "type": "litv",
+        "type": "link",
         "url": "https://www.litv.tv/drama/watch/VOD00075230",
         "label": "正片 Full Movie"
       }
