@@ -221,30 +221,43 @@
   padding: 0;
   display: grid;
   grid-template-columns: auto 1fr;
-  column-gap: 2rem;
-  row-gap: 0.7rem;
+  column-gap: 2.4rem;
+  row-gap: 1.2rem; /* 中英並陳每 cell 變兩行，加大 row gap */
 }
 
 .hero-languages-list li {
   display: contents;
 }
 
-.hero-languages-list .lang-level {
-  font-family: 'Cormorant Garamond', serif;
-  font-style: italic;
-  font-size: 1.05rem;
-  color: var(--accent);
-  letter-spacing: 0.01em;
-  line-height: 1.7;
-  white-space: nowrap;
+.hero-languages-list .lang-level,
+.hero-languages-list .lang-name {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  line-height: 1.4;
 }
 
-.hero-languages-list .lang-name {
+.hero-languages-list .lang-level { white-space: nowrap; }
+
+/* 中文主標 */
+.hero-languages-list .lang-level .zh,
+.hero-languages-list .lang-name .zh {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+}
+
+.hero-languages-list .lang-level .zh { color: var(--accent); }
+.hero-languages-list .lang-name .zh { color: var(--text); }
+
+/* 英文副標 */
+.hero-languages-list .lang-level .en,
+.hero-languages-list .lang-name .en {
   font-family: 'Cormorant Garamond', serif;
-  font-size: 1.05rem;
-  color: var(--text-dim);
-  line-height: 1.7;
-  letter-spacing: 0.01em;
+  font-style: italic;
+  font-size: 0.78rem;
+  color: var(--text-faint);
+  letter-spacing: 0.02em;
 }
 
 /* HERO AWARDS */

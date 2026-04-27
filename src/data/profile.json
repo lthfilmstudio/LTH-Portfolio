@@ -10,15 +10,21 @@
   "languages": [
     {
       "level": "Native",
-      "name": "Mandarin Chinese · Taiwanese Hokkien"
+      "levelZh": "母語",
+      "name": "Mandarin Chinese · Taiwanese Hokkien",
+      "nameZh": "華語 · 台語"
     },
     {
       "level": "Conversant",
-      "name": "English"
+      "levelZh": "流利",
+      "name": "English",
+      "nameZh": "英文"
     },
     {
       "level": "Basic",
-      "name": "Hakka · Thai"
+      "levelZh": "略懂",
+      "name": "Hakka · Thai",
+      "nameZh": "客語 · 泰語"
     }
   ]
 }

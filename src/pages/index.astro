@@ -122,10 +122,19 @@ const combinedSchema = {
 
     {profile.languages && profile.languages.length > 0 && (
       <div class="hero-languages">
-        <span class="hero-languages-label">Languages</span>
+        <span class="hero-languages-label">語言 Languages</span>
         <ul class="hero-languages-list">
           {profile.languages.map((l: any) => (
-            <li><span class="lang-level">{l.level}</span><span class="lang-name">{l.name}</span></li>
+            <li>
+              <div class="lang-level">
+                <span class="zh">{l.levelZh ?? l.level}</span>
+                <span class="en">{l.level}</span>
+              </div>
+              <div class="lang-name">
+                <span class="zh">{l.nameZh ?? l.name}</span>
+                <span class="en">{l.name}</span>
+              </div>
+            </li>
           ))}
         </ul>
       </div>
