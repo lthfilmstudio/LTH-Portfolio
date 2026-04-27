@@ -768,6 +768,16 @@
         "type": "netflix",
         "url": "https://www.netflix.com/tw/title/81516613",
         "label": "全集 Full Episodes"
+      },
+      {
+        "type": "pts",
+        "url": "https://www.ptsplus.tv/zh/programs/1075b4c1-de46-4255-94e3-e22272dcddbe",
+        "label": "全集 Full Episodes"
+      },
+      {
+        "type": "litv",
+        "url": "https://www.litv.tv/drama/watch/VOD00296262",
+        "label": "全集 Full Episodes"
       }
     ],
     "hasDetail": true,
