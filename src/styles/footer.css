@@ -6,6 +6,11 @@ footer {
   text-align: center;
 }
 
+/* footer 內的 divider 不留上 padding，讓 line 直接貼到上方 portfolio 色塊底端 */
+footer > .section-divider {
+  padding-top: 0;
+}
+
 /* HERO — logo 當 section opener，下方副標一句話 + 表單 */
 .footer-hero {
   max-width: 720px;
