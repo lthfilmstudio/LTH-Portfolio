@@ -45,7 +45,8 @@ const thumbNum =
   (work.slug.split('').reduce((a, c) => a + c.charCodeAt(0), 0) % 15) + 1;
 const dataShort = work.titleZh.slice(0, 4);
 
-const title = `${work.titleZh}${work.titleEn ? ' ' + work.titleEn : ''} | 林姿嫺 剪輯`;
+// title 把「剪輯」緊貼片名，命中「茶金剪輯」「人浮於愛剪輯」這類中文 long tail
+const title = `${work.titleZh}${work.titleEn ? ' ' + work.titleEn : ''} 剪輯 | 林姿嫺 Tzushien Lin`;
 
 const description = work.description
   ? work.description.replace(/\s+/g, ' ').slice(0, 158)
@@ -53,6 +54,7 @@ const description = work.description
 
 // 每作品專屬 OG 圖（用 cover），fallback 到全站 OG
 const ogImage = work.cover || '/og.png';
+const ogImageAlt = `${work.titleZh}${work.titleEn ? ' ' + work.titleEn : ''} 海報 — 林姿嫺 剪輯`;
 
 // 作品專屬 keywords
 const keywords = [
@@ -70,7 +72,7 @@ const keywords = [
   'LTH Film Studio',
 ].filter(Boolean).join(',');
 
-// Schema.org CreativeWork
+// Schema.org CreativeWork — inLanguage + countryOfOrigin 讓 Google 識別中文/台灣作品
 const workSchema = {
   '@context': 'https://schema.org',
   '@type':
@@ -87,12 +89,14 @@ const workSchema = {
   alternateName: work.titleEn || undefined,
   datePublished: work.year || undefined,
   description: work.description || undefined,
+  inLanguage: 'zh-TW',
+  countryOfOrigin: { '@type': 'Country', name: 'TW' },
   director: work.director ? { '@type': 'Person', name: work.director } : undefined,
   editor: { '@type': 'Person', name: '林姿嫺 Tzushien Lin' },
   author: work.writers ? { '@type': 'Person', name: work.writers } : undefined,
 };
 ---
-<BaseLayout title={title} description={description} ogImage={ogImage} keywords={keywords} schemaJsonLd={workSchema}>
+<BaseLayout title={title} description={description} ogImage={ogImage} ogImageAlt={ogImageAlt} keywords={keywords} schemaJsonLd={workSchema}>
 
 <div class="bokeh-bg"></div>
 

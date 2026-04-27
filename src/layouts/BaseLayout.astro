@@ -14,17 +14,27 @@ interface Props {
   title?: string;
   description?: string;
   ogImage?: string;
+  ogImageAlt?: string;
   schemaJsonLd?: object;
   keywords?: string;
+  noindex?: boolean;
 }
 
 const {
   title = '林姿嫺 Tzushien Lin — 剪輯指導 Film & Series Editor｜兩度金鐘獎最佳剪輯',
   description = '林姿嫺 Tzushien Lin，電影／劇集剪輯指導，兩度榮獲金鐘獎戲劇類最佳剪輯獎（《茶金》、《牽紙鷂的手》），並以《有生之年》入圍。代表作品包括《我們與惡的距離 II》、《拜六禮拜》、《那張照片裡的我們》、《人浮於愛》、《夏日最後的祕密》等。原本那間剪輯工作室 LTH Film Studio 創辦人。',
   ogImage = '/og.png',
+  ogImageAlt = '林姿嫺 Tzushien Lin — 剪輯指導 Film & Series Editor',
   schemaJsonLd,
   keywords = '林姿嫺,Tzushien Lin,剪輯指導,剪輯師,金鐘獎,最佳剪輯,茶金,牽紙鷂的手,有生之年,我們與惡的距離,拜六禮拜,那張照片裡的我們,人浮於愛,原本那間剪輯工作室,LTH Film Studio,台灣剪輯師,電影剪輯,劇集剪輯,Taiwan Film Editor,Drama Series Editor,Golden Bell Awards',
+  noindex = false,
 } = Astro.props;
+
+// OG image MIME type 從副檔名推斷
+const ogImageType = ogImage.endsWith('.png') ? 'image/png'
+  : (ogImage.endsWith('.jpg') || ogImage.endsWith('.jpeg')) ? 'image/jpeg'
+  : ogImage.endsWith('.webp') ? 'image/webp'
+  : 'image/jpeg';
 
 // 部署在 *.pages.dev 預覽 URL 時，canonical 指回主網域並標 noindex 避免重複內容
 const isPreviewHost = Astro.url.hostname.endsWith('.pages.dev');
@@ -41,7 +51,7 @@ const absOgImage = new URL(ogImage, Astro.site).toString();
   <meta name="keywords" content={keywords} />
   <meta name="author" content="林姿嫺 Tzushien Lin" />
   <link rel="canonical" href={canonicalUrl} />
-  {isPreviewHost && <meta name="robots" content="noindex, nofollow" />}
+  {(isPreviewHost || noindex) && <meta name="robots" content="noindex, nofollow" />}
   <meta name="format-detection" content="telephone=no" />
 
   <!-- Favicon -->
@@ -56,8 +66,10 @@ const absOgImage = new URL(ogImage, Astro.site).toString();
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
   <meta property="og:image" content={absOgImage} />
+  <meta property="og:image:type" content={ogImageType} />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content={ogImageAlt} />
   <meta property="og:site_name" content="林姿嫺 Tzushien Lin" />
   <meta property="og:locale" content="zh_TW" />
   <meta property="og:locale:alternate" content="en_US" />
@@ -67,6 +79,7 @@ const absOgImage = new URL(ogImage, Astro.site).toString();
   <meta name="twitter:title" content={title} />
   <meta name="twitter:description" content={description} />
   <meta name="twitter:image" content={absOgImage} />
+  <meta name="twitter:image:alt" content={ogImageAlt} />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
