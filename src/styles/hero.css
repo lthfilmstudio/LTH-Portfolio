@@ -24,6 +24,11 @@
   text-transform: uppercase;
 }
 
+/* navbar fixed 高度 ~58px，scroll target 落點下推給 label 跟 line 留呼吸距離 */
+#works.scroll-cue {
+  scroll-margin-top: 130px;
+}
+
 .scroll-cue-arrow {
   display: flex;
   align-items: center;
@@ -52,6 +57,18 @@
   max-width: 1400px;
   margin: 0 auto;
   position: relative;
+}
+
+/* hero 底部分割線：在「作品集 PORTFOLIO」標題上方，視覺上分隔 hero 跟 portfolio */
+.hero::after {
+  content: '';
+  position: absolute;
+  left: 3rem;
+  right: 3rem;
+  bottom: 7.5rem;
+  height: 1px;
+  background: var(--line);
+  pointer-events: none;
 }
 
 /* Selected Works 區塊不要被 stretch 撐高，回到 start */

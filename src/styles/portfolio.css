@@ -11,8 +11,6 @@
   flex-wrap: wrap;
   gap: 0.6rem;
   margin-bottom: 3rem;
-  padding-bottom: 3rem;
-  border-bottom: 1px solid var(--line);
 }
 
 /* 桌面版藏起 chip-break，手機版才用它強制換行 */
