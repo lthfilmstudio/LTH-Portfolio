@@ -313,6 +313,11 @@
         "type": "youtube",
         "url": "https://www.youtube.com/watch?v=Ee0bpCHmbww",
         "label": "正式預告 Trailer"
+      },
+      {
+        "type": "friday",
+        "url": "https://video.friday.tw/movie/detail/132388",
+        "label": "正片 Full Movie"
       }
     ],
     "hasDetail": true,
@@ -637,17 +642,17 @@
       {
         "type": "link",
         "url": "https://www.disneyplus.com/zh-tw/movies/workers-the-movie/70UFKUpi7xQf",
-        "label": "正片 Full Movie (Disney+)"
+        "label": "正片 Full Movie"
       },
       {
         "type": "catchplay",
         "url": "https://www.catchplay.com/tw/video/3736cd7f-93ab-4cb9-bdf3-f1c42fbb5757",
-        "label": "正片 Full Movie (Catchplay)"
+        "label": "正片 Full Movie"
       },
       {
         "type": "friday",
         "url": "https://video.friday.tw/movie/detail/96217/%E5%81%9A%E5%B7%A5%E7%9A%84%E4%BA%BA-%E9%9B%BB%E5%BD%B1%E7%89%88",
-        "label": "正片 Full Movie (friDay)"
+        "label": "正片 Full Movie"
       }
     ],
     "hasDetail": true,
