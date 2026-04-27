@@ -83,13 +83,13 @@ const combinedSchema = {
 
 <!-- NAV -->
 <nav>
-  <div class="brand">
+  <a class="brand" href="/" onclick="if(location.pathname==='/'){event.preventDefault();window.scrollTo({top:0,behavior:'smooth'});}">
     <BrandMark />
     <div class="brand-text">
       <span class="brand-zh">林姿嫺</span>
       <span class="brand-en"><span class="brand-en-name">Tzushien Lin</span><span class="brand-en-role"> · Film & Series Editor</span></span>
     </div>
-  </div>
+  </a>
   <ul>
     <li><a href="#works">Works</a></li>
     <li><a href="#contact">Contact</a></li>
