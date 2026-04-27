@@ -944,6 +944,11 @@
         "type": "iqiyi",
         "url": "https://www.iq.com/play/%E5%BD%A9%E8%99%B9%E7%9A%84%E9%87%8D%E5%8A%9B-%E7%AC%AC1%E9%9B%86-19rttuaqa4?lang=zh_tw",
         "label": "全集 Full Episodes"
+      },
+      {
+        "type": "wetv",
+        "url": "https://wetv.vip/zh-tw/play/ev25w5r1xoro8m7/i00326c3dki-%E5%BD%A9%E8%99%B9%E7%9A%84%E9%87%8D%E5%8A%9B_01",
+        "label": "全集 Full Episodes"
       }
     ],
     "hasDetail": true,
