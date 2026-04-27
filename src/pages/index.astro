@@ -83,7 +83,7 @@ const combinedSchema = {
 
 <!-- NAV -->
 <nav>
-  <a class="brand" href="/" onclick="if(location.pathname==='/'){event.preventDefault();window.scrollTo({top:0,behavior:'smooth'});}">
+  <a class="brand" href="/" onclick="if(location.pathname==='/'){event.preventDefault();window.scrollTo({top:0,behavior:'smooth'});history.replaceState(null,'',location.pathname);}">
     <BrandMark />
     <div class="brand-text">
       <span class="brand-zh">林姿嫺</span>
