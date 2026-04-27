@@ -161,14 +161,22 @@ const workSchema = {
         <div class="wd-section">
           <h2 class="wd-section-title">延伸資訊 <span class="en">More</span></h2>
           <ul class="wd-links">
-            {work.links!.map((l) => (
-              <li>
-                <a href={l.url} target="_blank" rel="noopener" class={`wd-link wd-link--${l.type}`}>
-                  <span class="wd-link-icon" aria-hidden="true">▶</span>
-                  <span class="wd-link-label">{l.label ?? LINK_LABELS[l.type]}</span>
-                </a>
-              </li>
-            ))}
+            {work.links!.map((l) => {
+              const platformName = LINK_LABELS[l.type];
+              const mainLabel = l.label ?? platformName;
+              const showPlatform = l.label && l.label.trim().toLowerCase() !== platformName.toLowerCase();
+              return (
+                <li>
+                  <a href={l.url} target="_blank" rel="noopener" class={`wd-link wd-link--${l.type}`}>
+                    <span class="wd-link-icon" aria-hidden="true">▶</span>
+                    <span class="wd-link-content">
+                      <span class="wd-link-label">{mainLabel}</span>
+                      {showPlatform && <span class="wd-link-platform">{platformName}</span>}
+                    </span>
+                  </a>
+                </li>
+              );
+            })}
           </ul>
         </div>
       )}
