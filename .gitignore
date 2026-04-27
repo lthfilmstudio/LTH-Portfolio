@@ -19,6 +19,16 @@ tmp/
 .env.local
 .env.*.local
 
+# secrets (defensive — 即使現在沒這類檔，也擋住未來不小心放進來)
+credentials.json
+**/credentials*.json
+**/credentials*.local
+*.local
+*.local.*
+*-key.json
+*-token.json
+client_secret*
+
 # macOS
 .DS_Store
 
