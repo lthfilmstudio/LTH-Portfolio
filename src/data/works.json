@@ -1029,12 +1029,12 @@
       {
         "type": "catchplay",
         "url": "https://www.catchplay.com/tw/video/df3365c8-c5b0-4680-beb0-492db4e030ec",
-        "label": "正片 Full Movie (Catchplay)"
+        "label": "正片 Full Movie"
       },
       {
         "type": "myvideo",
         "url": "https://www.myvideo.net.tw/details/0/194681",
-        "label": "正片 Full Movie (MyVideo)"
+        "label": "正片 Full Movie"
       }
     ],
     "hasDetail": true,
