@@ -44,10 +44,10 @@
 /* ===== HERO ===== */
 .hero {
   min-height: 100vh;
-  padding: 6rem 3rem 4rem;
+  padding: 4.5rem 3rem 2.5rem;
   display: grid;
   grid-template-columns: 2fr 1fr;
-  grid-template-rows: auto auto 1fr; /* row 3（Selected Works wrap）吃掉剩餘空間 */
+  grid-template-rows: auto auto;
   gap: 0 4rem;
   align-items: stretch;
   max-width: 1400px;
@@ -55,23 +55,12 @@
   position: relative;
 }
 
-/* hero 底部分割線：位於精選作品 cards 跟「剪輯作品集 PORTFOLIO」標題之間視覺中央
-   playwright 量過 cards 底 1133 / label 頂 1167，中央 1150 = hero bottom - 99px ≈ 6.2rem */
-.hero::after {
-  content: '';
-  position: absolute;
-  left: 3rem;
-  right: 3rem;
-  bottom: 6.2rem;
-  height: 1px;
-  background: var(--line);
-  pointer-events: none;
-}
-
-/* Selected Works 區塊不要被 stretch 撐高，回到 start */
-.hero > .featured-label,
-.hero > .featured-list {
-  align-self: start;
+/* ===== SELECTED WORKS section（從 hero 拆出來，hero 一屏裝得下 scroll-cue） ===== */
+.selected-works {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 3rem 4rem;
+  scroll-margin-top: 5rem; /* 點 ⬇ 跳轉時讓 nav 不蓋住 Selected Works 標題 */
 }
 
 .hero-left { position: relative; padding-top: 0; min-width: 0; }
@@ -82,7 +71,7 @@
   align-items: baseline;
   gap: 0.8rem;
   flex-wrap: wrap;
-  margin-top: 1.5rem;
+  margin-top: 0.5rem;
   margin-bottom: 1rem;
 }
 
@@ -108,8 +97,8 @@
 /* 名字 + 職稱 整塊：跨 hero 兩欄獨佔最上方 row，底部分割線往右延伸到 hero 整寬 */
 .hero-name-block {
   grid-column: 1 / -1;
-  padding-bottom: 2rem;
-  margin-bottom: 2rem;
+  padding-bottom: 1.25rem;
+  margin-bottom: 1.25rem;
   border-bottom: 1px solid var(--line);
 }
 
@@ -201,7 +190,7 @@
 
 /* ===== LANGUAGES — 兩欄無框線表格 ===== */
 .hero-languages {
-  margin-top: 2.5rem;
+  margin-top: 1.5rem;
   display: flex;
   flex-direction: column;
   gap: 0.8rem;
@@ -510,7 +499,6 @@
 /* ===== SELECTED WORKS — HBO Top 10 風 ===== */
 /* 跨滿 hero 兩欄，水平 scroll，每個 item = 巨大 outline 數字 + 27:40 海報 */
 .featured-label {
-  grid-column: 1 / -1;
   font-size: 0.85rem;
   letter-spacing: 0.35em;
   text-transform: uppercase;
@@ -534,13 +522,10 @@
 }
 
 .featured-list-wrap {
-  grid-column: 1 / -1;
-  align-self: end; /* 推到 hero 底部，靠近下方 portfolio 區塊 */
   display: flex;
   align-items: center;
   gap: 1rem;
   min-width: 0;
-  padding-bottom: 3rem; /* 給 scroll-cue 讓位 */
 }
 
 .featured-list {

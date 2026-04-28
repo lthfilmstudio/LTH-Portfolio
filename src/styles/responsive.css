@@ -15,11 +15,8 @@
   nav { padding: 1.2rem 1.5rem; }
   nav ul { gap: 1.2rem; font-size: 0.65rem; }
 
-  /* 手機隱藏 scroll-cue：hero 內容塞滿一欄，箭頭會卡在 Selected Works 中間，反而干擾 */
+  /* 手機隱藏 scroll-cue：hero 內容塞滿一欄，箭頭會卡在內容中間，反而干擾 */
   .scroll-cue { display: none; }
-
-  /* 手機沒 PORTFOLIO label，hero::after 線會變孤立的條，連帶隱藏 */
-  .hero::after { display: none; }
 
   .hero {
     grid-template-columns: 1fr;
@@ -27,6 +24,10 @@
     padding: 6rem 1.5rem 3rem;
     gap: 2.5rem;
     min-height: auto;
+  }
+
+  .selected-works {
+    padding: 0 1.5rem 2.5rem;
   }
 
   /* h1 / titles 縮一級 */
