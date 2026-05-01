@@ -40,7 +40,7 @@
 
 /* ===== HERO ===== */
 .hero {
-  padding: 4.5rem 3rem 2.5rem;
+  padding: 7rem 3rem 2.5rem;
   display: grid;
   grid-template-columns: 2fr 1fr;
   grid-template-rows: auto auto;
