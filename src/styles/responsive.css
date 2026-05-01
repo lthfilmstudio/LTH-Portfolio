@@ -59,8 +59,8 @@
   .hero-languages { margin-top: 1.8rem; gap: 0.5rem; }
   .hero-languages-label { font-size: 0.74rem; margin-bottom: 0.2rem; }
   .hero-languages-list { column-gap: 1.2rem; row-gap: 0.5rem; }
-  .hero-languages-list .lang-level { font-size: 0.95rem; line-height: 1.5; }
-  .hero-languages-list .lang-name { font-size: 0.95rem; line-height: 1.5; }
+  .hero-languages-list .lang-level .en,
+  .hero-languages-list .lang-name .en { font-size: 0.95rem; }
 
   /* Awards */
   .hero-right {

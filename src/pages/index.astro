@@ -127,11 +127,9 @@ const combinedSchema = {
           {profile.languages.map((l: any) => (
             <li>
               <div class="lang-level">
-                <span class="zh">{l.levelZh ?? l.level}</span>
                 <span class="en">{l.level}</span>
               </div>
               <div class="lang-name">
-                <span class="zh">{l.nameZh ?? l.name}</span>
                 <span class="en">{l.name}</span>
               </div>
             </li>
@@ -176,15 +174,6 @@ const combinedSchema = {
       })}
     </div>
   </aside>
-
-  <a class="scroll-cue" href="#selected-works" aria-label="往下看作品集">
-    <span class="scroll-cue-label">剪輯作品集 Editing Portfolio</span>
-    <span class="scroll-cue-arrow" aria-hidden="true">
-      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5">
-        <path d="M12 5v14M5 12l7 7 7-7" />
-      </svg>
-    </span>
-  </a>
 </section>
 
 <!-- SELECTED WORKS -->
@@ -223,6 +212,15 @@ const combinedSchema = {
       </svg>
     </button>
   </div>
+
+  <a class="scroll-cue" href="#works" aria-label="往下看完整作品集">
+    <span class="scroll-cue-label">剪輯作品集 Editing Portfolio</span>
+    <span class="scroll-cue-arrow" aria-hidden="true">
+      <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M12 5v14M5 12l7 7 7-7" />
+      </svg>
+    </span>
+  </a>
 </section>
 
 <script>

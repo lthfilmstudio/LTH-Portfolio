@@ -1,17 +1,14 @@
-/* ===== SCROLL CUE — 引導往下看作品集 ===== */
+/* ===== SCROLL CUE — 引導往下看完整作品集 ===== */
 .scroll-cue {
-  position: absolute;
-  bottom: 1.5rem;
-  left: 50%;
-  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.5rem;
+  margin: 3rem auto 1rem;
+  width: max-content;
   text-decoration: none;
   color: var(--text-faint);
   transition: color 0.3s, transform 0.3s;
-  z-index: 5;
 }
 
 .scroll-cue:hover {
@@ -43,13 +40,13 @@
 
 /* ===== HERO ===== */
 .hero {
-  min-height: 100vh;
   padding: 4.5rem 3rem 2.5rem;
   display: grid;
   grid-template-columns: 2fr 1fr;
   grid-template-rows: auto auto;
-  gap: 0 4rem;
-  align-items: stretch;
+  gap: 2rem 4rem;
+  align-items: start;
+  align-content: start;
   max-width: 1400px;
   margin: 0 auto;
   position: relative;
@@ -211,7 +208,7 @@
   display: grid;
   grid-template-columns: auto 1fr;
   column-gap: 2.4rem;
-  row-gap: 1.2rem; /* 中英並陳每 cell 變兩行，加大 row gap */
+  row-gap: 0.6rem;
 }
 
 .hero-languages-list li {
@@ -220,32 +217,23 @@
 
 .hero-languages-list .lang-level,
 .hero-languages-list .lang-name {
-  display: flex;
-  flex-direction: column;
-  gap: 0.1rem;
-  line-height: 1.4;
+  line-height: 1.5;
 }
 
 .hero-languages-list .lang-level { white-space: nowrap; }
 
-/* 中文主標 */
-.hero-languages-list .lang-level .zh,
-.hero-languages-list .lang-name .zh {
-  font-family: 'Noto Serif TC', serif;
-  font-size: 0.95rem;
-  letter-spacing: 0.08em;
-}
-
-.hero-languages-list .lang-level .zh { color: var(--accent); }
-.hero-languages-list .lang-name .zh { color: var(--text); }
-
-/* 英文副標 */
-.hero-languages-list .lang-level .en,
-.hero-languages-list .lang-name .en {
+.hero-languages-list .lang-level .en {
   font-family: 'Cormorant Garamond', serif;
   font-style: italic;
-  font-size: 0.78rem;
-  color: var(--text-faint);
+  font-size: 1rem;
+  color: var(--accent);
+  letter-spacing: 0.04em;
+}
+
+.hero-languages-list .lang-name .en {
+  font-family: 'Cormorant Garamond', serif;
+  font-size: 1rem;
+  color: var(--text);
   letter-spacing: 0.02em;
 }
 
