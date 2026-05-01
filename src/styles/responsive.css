@@ -15,8 +15,8 @@
   nav { padding: 1.2rem 1.5rem; }
   nav ul { gap: 1.2rem; font-size: 0.65rem; }
 
-  /* 手機隱藏 scroll-cue：hero 內容塞滿一欄，箭頭會卡在內容中間，反而干擾 */
-  .scroll-cue { display: none; }
+  /* 手機 scroll-cue 在 selected-works 結尾，作為海報帶到 portfolio grid 的視覺過渡 */
+  .scroll-cue { margin: 2rem auto 0.5rem; }
 
   .hero {
     grid-template-columns: 1fr;
