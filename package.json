@@ -11,9 +11,12 @@
     "astro": "astro"
   },
   "dependencies": {
-    "@astrojs/cloudflare": "^13.2.1",
+    "@astrojs/cloudflare": "^13.5.2",
     "@astrojs/sitemap": "^3.7.2",
     "astro": "^6.1.9",
     "cropperjs": "^2.1.1"
+  },
+  "overrides": {
+    "ws": "^8.20.1"
   }
 }
