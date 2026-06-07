@@ -12,6 +12,7 @@ dist/
 .astro/
 .wrangler/
 tmp/
+public/stills/covers/_generated/
 
 # environment
 .env

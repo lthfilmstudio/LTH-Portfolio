@@ -1,7 +1,7 @@
 ---
 import type { Work } from '../data/works';
 import { CATEGORY_LABELS, firstExternalLink, getWorkCategoryOrder } from '../data/works';
-import { versionedUrl } from '../data/cover-version';
+import { optimizedCoverSrcSet, optimizedCoverUrl } from '../data/cover-version';
 
 interface Props {
   work: Work;
@@ -16,6 +16,8 @@ const thumbNum =
 const dataShort = work.titleZh.slice(0, 4);
 
 const categoryLabels = work.categories.map((c) => CATEGORY_LABELS[c]);
+const imageAlt = [work.titleZh, work.titleEn].map((part) => part?.trim()).filter(Boolean).join(' ');
+const isWide = work.primaryCategory === 'mv' || work.primaryCategory === 'commercial';
 
 // 每個分類各自的 effective order（CSS custom prop 給 portfolio.css 的 order rule 用）
 const orderStyle = work.categories
@@ -31,7 +33,15 @@ const orderStyle = work.categories
 >
   {work.cover ? (
     <div class="work-cover work-cover--image">
-      <img src={versionedUrl(work.cover)} alt={`${work.titleZh} ${work.titleEn}`.trim()} loading="lazy" />
+      <img
+        src={optimizedCoverUrl(work.cover, 720)}
+        srcset={optimizedCoverSrcSet(work.cover, [360, 720])}
+        sizes="(max-width: 700px) calc(100vw - 48px), (max-width: 960px) calc((100vw - 72px) / 2), (max-width: 1280px) calc((100vw - 120px) / 4), 260px"
+        width="720"
+        height={isWide ? 405 : 1067}
+        alt={imageAlt}
+        loading="lazy"
+      />
     </div>
   ) : (
     <div class={`work-cover thumb th-${thumbNum}`} data-short={dataShort}></div>
