@@ -7,7 +7,7 @@ import { works, CATEGORY_LABELS, CATEGORY_ORDER } from '../data/works';
 import awards from '../data/awards.json';
 import selectedSlugs from '../data/selected.json';
 import profile from '../data/profile.json';
-import { versionedUrl } from '../data/cover-version';
+import { optimizedCoverSrcSet, optimizedCoverUrl } from '../data/cover-version';
 
 // 由 workSlug 對到 works.json 的 cover；沒設或找不到時 fallback 到 a.poster
 const worksCoverBySlug = new Map(works.map((w: any) => [w.slug, w.cover]));
@@ -23,6 +23,9 @@ function resolveAwardHref(a: any): string | null {
   const w = worksBySlug.get(a.workSlug);
   if (w && w.hasDetail) return `/works/${a.workSlug}/`;
   return null;
+}
+function workImageAlt(w: any): string {
+  return [w.titleZh, w.titleEn].map((part) => part?.trim()).filter(Boolean).join(' ');
 }
 
 // Schema.org Person — 讓 Google 搜尋結果顯示獎項、職稱
@@ -152,9 +155,14 @@ const combinedSchema = {
           <Tag class={`hero-award-item ${a.status}${href ? ' is-linked' : ''}`} {...(href ? { href } : {})}>
             <div class="award-bg" aria-hidden="true">
               <img
-                src={versionedUrl(resolveAwardPoster(a))}
+                src={optimizedCoverUrl(resolveAwardPoster(a), 720)}
+                srcset={optimizedCoverSrcSet(resolveAwardPoster(a), [360, 720])}
+                sizes="400px"
+                width="720"
+                height="405"
                 alt=""
-                loading="lazy"
+                loading="eager"
+                fetchpriority="high"
                 style={`object-position: ${a.posterX ?? 50}% ${a.posterY ?? 50}%; transform: scale(${(a.posterScale ?? 100) / 100});`}
               />
             </div>
@@ -194,7 +202,15 @@ const combinedSchema = {
           <span class="featured-num" aria-hidden="true">{i + 1}</span>
           {w.cover ? (
             <div class="featured-thumb featured-thumb--image">
-              <img src={versionedUrl(w.cover)} alt={`${w.titleZh} ${w.titleEn}`.trim()} loading="lazy" />
+              <img
+                src={optimizedCoverUrl(w.cover, 360)}
+                srcset={optimizedCoverSrcSet(w.cover, [360])}
+                sizes="170px"
+                width="360"
+                height="533"
+                alt={workImageAlt(w)}
+                loading="lazy"
+              />
             </div>
           ) : (
             <div class={`thumb featured-thumb ${thumbClass(w.slug)}`} data-short={w.titleZh.slice(0, 4)}></div>

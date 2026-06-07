@@ -15,6 +15,7 @@ interface Props {
   description?: string;
   ogImage?: string;
   ogImageAlt?: string;
+  ogType?: string;
   schemaJsonLd?: object;
   keywords?: string;
   noindex?: boolean;
@@ -25,6 +26,7 @@ const {
   description = '林姿嫺 Tzushien Lin，電影／劇集剪輯指導，兩度榮獲金鐘獎戲劇類最佳剪輯獎（《茶金》、《牽紙鷂的手》），並以《有生之年》入圍。代表作品包括《我們與惡的距離 II》、《拜六禮拜》、《那張照片裡的我們》、《人浮於愛》、《夏日最後的祕密》等。原本那間剪輯工作室 LTH Film Studio 創辦人。',
   ogImage = '/og.png',
   ogImageAlt = '林姿嫺 Tzushien Lin — 剪輯指導 Film & Series Editor',
+  ogType = 'website',
   schemaJsonLd,
   keywords = '林姿嫺,Tzushien Lin,剪輯指導,剪輯師,金鐘獎,最佳剪輯,茶金,牽紙鷂的手,有生之年,我們與惡的距離,拜六禮拜,那張照片裡的我們,人浮於愛,原本那間剪輯工作室,LTH Film Studio,台灣剪輯師,電影剪輯,劇集剪輯,Taiwan Film Editor,Drama Series Editor,Golden Bell Awards',
   noindex = false,
@@ -51,6 +53,8 @@ const absOgImage = new URL(ogImage, Astro.site).toString();
   <meta name="keywords" content={keywords} />
   <meta name="author" content="林姿嫺 Tzushien Lin" />
   <link rel="canonical" href={canonicalUrl} />
+  <link rel="alternate" hreflang="zh-TW" href={canonicalUrl} />
+  <link rel="alternate" hreflang="x-default" href={canonicalUrl} />
   {(isPreviewHost || noindex) && <meta name="robots" content="noindex, nofollow" />}
   <meta name="format-detection" content="telephone=no" />
 
@@ -61,7 +65,7 @@ const absOgImage = new URL(ogImage, Astro.site).toString();
   <meta name="theme-color" content="#0a0908" />
 
   <!-- Open Graph -->
-  <meta property="og:type" content="website" />
+  <meta property="og:type" content={ogType} />
   <meta property="og:url" content={canonicalUrl} />
   <meta property="og:title" content={title} />
   <meta property="og:description" content={description} />
