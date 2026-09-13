@@ -1,6 +1,12 @@
-// Verify CF Access JWT directly from CF_Authorization cookie.
-// Used as a fallback because manual Self-Hosted Access Apps don't reliably
-// inject cf-access-authenticated-user-email into Pages Functions.
+// Verify the Cloudflare Access JWT ourselves.
+// Deployment URLs like xxxx.lth-portfolio.pages.dev are not behind Access, so this check is
+// the only guard there: the certs URL, issuer and audience are pinned instead of trusting
+// whatever the token claims, and the edge-injected email header is not trusted on its own.
+
+const TEAM_DOMAIN = 'https://lthfilmstudio.cloudflareaccess.com';
+const CERTS_URL = `${TEAM_DOMAIN}/cdn-cgi/access/certs`;
+// Access application AUD for lthfilmstudio.com /admin (not a secret)
+const ACCESS_AUD = '9c167bb0743ff1a64159275667c923963c2899a55cd0ad754cd3d5e6099a14aa';
 
 function decodeBase64Url(s: string): string {
   const padded = s.replace(/-/g, '+').replace(/_/g, '/').padEnd(Math.ceil(s.length / 4) * 4, '=');
@@ -21,17 +27,16 @@ interface JWKS {
   keys: Array<{ kid: string; kty: string; n: string; e: string; alg?: string }>;
 }
 
-const jwksCache = new Map<string, { fetched: number; data: JWKS }>();
+let jwksCache: { fetched: number; data: JWKS } | null = null;
 const JWKS_TTL_MS = 60 * 60 * 1000;
 
-async function getJwks(iss: string): Promise<JWKS | null> {
-  const cached = jwksCache.get(iss);
-  if (cached && Date.now() - cached.fetched < JWKS_TTL_MS) return cached.data;
+async function getJwks(): Promise<JWKS | null> {
+  if (jwksCache && Date.now() - jwksCache.fetched < JWKS_TTL_MS) return jwksCache.data;
   try {
-    const res = await fetch(`${iss}/cdn-cgi/access/certs`);
+    const res = await fetch(CERTS_URL);
     if (!res.ok) return null;
     const data = (await res.json()) as JWKS;
-    jwksCache.set(iss, { fetched: Date.now(), data });
+    jwksCache = { fetched: Date.now(), data };
     return data;
   } catch {
     return null;
@@ -39,12 +44,7 @@ async function getJwks(iss: string): Promise<JWKS | null> {
 }
 
 export async function getAccessEmail(request: Request): Promise<string | null> {
-  // Prefer Edge-injected header if present.
-  const headerEmail = request.headers.get('cf-access-authenticated-user-email');
-  if (headerEmail) return headerEmail;
-
-  // Fallback: verify CF_Authorization cookie ourselves.
-  const jwt = getCookie(request, 'CF_Authorization');
+  const jwt = getCookie(request, 'CF_Authorization') || request.headers.get('cf-access-jwt-assertion');
   if (!jwt) return null;
 
   const parts = jwt.split('.');
@@ -52,7 +52,7 @@ export async function getAccessEmail(request: Request): Promise<string | null> {
   const [headerB64, payloadB64, sigB64] = parts;
 
   let header: { kid?: string; alg?: string };
-  let payload: { email?: string; iss?: string; exp?: number };
+  let payload: { email?: string; iss?: string; aud?: string | string[]; exp?: number };
   try {
     header = JSON.parse(decodeBase64Url(headerB64));
     payload = JSON.parse(decodeBase64Url(payloadB64));
@@ -60,10 +60,13 @@ export async function getAccessEmail(request: Request): Promise<string | null> {
     return null;
   }
 
-  if (!payload.email || !payload.iss || !payload.exp || !header.kid) return null;
+  const aud = Array.isArray(payload.aud) ? payload.aud : [payload.aud];
+  if (header.alg !== 'RS256' || !header.kid) return null;
+  if (payload.iss !== TEAM_DOMAIN || !aud.includes(ACCESS_AUD)) return null;
+  if (!payload.email || !payload.exp) return null;
   if (payload.exp < Math.floor(Date.now() / 1000)) return null;
 
-  const jwks = await getJwks(payload.iss);
+  const jwks = await getJwks();
   if (!jwks) return null;
   const key = jwks.keys.find((k) => k.kid === header.kid);
   if (!key) return null;
