@@ -312,7 +312,7 @@ const profile = profileData;
 
     <script define:vars={{ initialProfile: profile }}>
       let profile = JSON.parse(JSON.stringify(initialProfile));
-      const baseline = JSON.stringify(profile);
+      let baseline = JSON.stringify(profile);
 
       const dirtyStatus = document.getElementById('dirty-status');
       const saveBtn = document.getElementById('save-btn');
@@ -446,8 +446,9 @@ const profile = profileData;
             'ok',
             8000,
           );
-          // 更新 baseline
-          location.reload();
+          // 更新 baseline（不重整：靜態頁要等 CF Pages 重建完才會是新內容）
+          baseline = JSON.stringify(profile);
+          checkDirty();
         } catch (e) {
           showToast(`❌ 存檔失敗：${e.message}`, 'err', 8000);
           saveBtn.disabled = false;
