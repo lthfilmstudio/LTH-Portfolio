@@ -40,6 +40,11 @@ export interface Work {
   director: string;
   writers: string;
   description: string;
+  /** 獎項短句：卡片下方的得獎／入圍行（選填） */
+  honorWinZh?: string;
+  honorWinEn?: string;
+  honorNomZh?: string;
+  honorNomEn?: string;
   cover: string;
   covers: string[];
   links: WorkLink[];

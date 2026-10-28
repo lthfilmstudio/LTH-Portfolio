@@ -1,0 +1,24 @@
+---
+import type { Work } from '../data/works';
+
+// 卡片片名下方的得獎／入圍短句（後台 /admin/works「獎項短句」欄位）
+interface Props {
+  work: Work;
+}
+const { work } = Astro.props;
+const lines = [
+  { kind: 'win', zh: work.honorWinZh, en: work.honorWinEn },
+  { kind: 'nom', zh: work.honorNomZh, en: work.honorNomEn },
+].filter((l) => l.zh || l.en);
+---
+
+{lines.length > 0 && (
+  <span class="work-honors">
+    {lines.map((l) => (
+      <span class={`work-honor work-honor--${l.kind}`}>
+        {l.zh && <span class="zh">{l.zh}</span>}
+        {l.en && <span class="en">{l.en}</span>}
+      </span>
+    ))}
+  </span>
+)}

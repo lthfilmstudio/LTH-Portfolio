@@ -2,6 +2,7 @@
 import type { Work } from '../data/works';
 import { CATEGORY_LABELS, firstExternalLink, getWorkCategoryOrder } from '../data/works';
 import { optimizedCoverSrcSet, optimizedCoverUrl } from '../data/cover-version';
+import WorkHonors from './WorkHonors.astro';
 
 interface Props {
   work: Work;
@@ -61,5 +62,6 @@ const orderStyle = work.categories
       {work.director && <span class="work-director">{work.director}</span>}
       {work.year && <span class="work-year">{work.year}</span>}
     </div>
+    <WorkHonors work={work} />
   </div>
 </a>

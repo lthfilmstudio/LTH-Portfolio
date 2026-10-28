@@ -57,6 +57,10 @@ type Work = {
   director?: string;
   writers?: string;
   description?: string;
+  honorWinZh?: string;
+  honorWinEn?: string;
+  honorNomZh?: string;
+  honorNomEn?: string;
   cover?: string;
   coverOriginal?: string;
   covers?: string[];
@@ -91,7 +95,7 @@ function validateWork(w: any, idx: number): string | null {
   if (!isString(w.primaryCategory) || !w.categories.includes(w.primaryCategory))
     return `work[${idx}] (${w.slug}): primaryCategory must be in categories`;
 
-  for (const f of ['director', 'writers', 'description', 'cover', 'coverOriginal']) {
+  for (const f of ['director', 'writers', 'description', 'honorWinZh', 'honorWinEn', 'honorNomZh', 'honorNomEn', 'cover', 'coverOriginal']) {
     if (w[f] !== undefined && !isString(w[f]))
       return `work[${idx}] (${w.slug}): ${f} must be string`;
   }
@@ -247,6 +251,9 @@ function normalize(w: Work): Work {
   if (w.director) out.director = w.director;
   if (w.writers) out.writers = w.writers;
   if (w.description) out.description = w.description;
+  for (const f of ['honorWinZh', 'honorWinEn', 'honorNomZh', 'honorNomEn'] as const) {
+    if (w[f]?.trim()) out[f] = w[f]!.trim();
+  }
   if (w.cover) out.cover = w.cover;
   if (w.coverOriginal) out.coverOriginal = w.coverOriginal;
   if (w.covers && w.covers.length) out.covers = w.covers;

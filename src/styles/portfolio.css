@@ -237,3 +237,35 @@
   aspect-ratio: 16 / 9;
 }
 
+
+/* 獎項短句（WorkHonors）— Selected Works 與作品集卡片共用 */
+.work-honors {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  margin-top: 0.5rem;
+}
+
+.work-honor {
+  display: flex;
+  flex-direction: column;
+  gap: 0.05rem;
+  line-height: 1.35;
+}
+
+.work-honor .zh {
+  font-family: 'Noto Serif TC', serif;
+  font-size: 0.66rem;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+}
+
+.work-honor .en {
+  font-family: 'Cormorant Garamond', serif;
+  font-style: italic;
+  font-size: 0.66rem;
+  letter-spacing: 0.02em;
+  color: var(--accent-dim);
+}
+
+.work-honor--nom .zh { color: var(--accent-dim); }

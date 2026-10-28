@@ -12,6 +12,10 @@ type Work = {
   director?: string;
   writers?: string;
   description?: string;
+  honorWinZh?: string;
+  honorWinEn?: string;
+  honorNomZh?: string;
+  honorNomEn?: string;
   cover?: string;
   coverOriginal?: string;
   covers?: string[];
@@ -1090,6 +1094,27 @@ const LINK_TYPES = [
           </fieldset>
 
           <fieldset>
+            <legend>獎項短句</legend>
+            <div class="hint">顯示在首頁 Selected Works 與作品集卡片的片名下方。留空就不顯示。</div>
+            <div class="field">
+              <label>得獎（中）</label>
+              <input type="text" id="f-honorWinZh" placeholder="獲 金鐘獎 剪輯・女配角" value="${escapeHtml(d.honorWinZh || '')}" />
+            </div>
+            <div class="field">
+              <label>得獎（英）</label>
+              <input type="text" id="f-honorWinEn" placeholder="Golden Bell Winner · Editing" value="${escapeHtml(d.honorWinEn || '')}" />
+            </div>
+            <div class="field">
+              <label>入圍（中）</label>
+              <input type="text" id="f-honorNomZh" placeholder="入圍 戲劇節目等 14 項" value="${escapeHtml(d.honorNomZh || '')}" />
+            </div>
+            <div class="field">
+              <label>入圍（英）</label>
+              <input type="text" id="f-honorNomEn" placeholder="14 nominations incl. Best Drama" value="${escapeHtml(d.honorNomEn || '')}" />
+            </div>
+          </fieldset>
+
+          <fieldset>
             <legend>海報</legend>
             <div class="cover-block ${wide ? 'is-wide' : ''}">
               <div class="preview">
@@ -1208,6 +1233,9 @@ const LINK_TYPES = [
         get('f-director').addEventListener('input', (e) => { drawerDraft.director = e.target.value; });
         get('f-writers').addEventListener('input', (e) => { drawerDraft.writers = e.target.value; });
         get('f-description').addEventListener('input', (e) => { drawerDraft.description = e.target.value; });
+        ['honorWinZh', 'honorWinEn', 'honorNomZh', 'honorNomEn'].forEach((f) => {
+          get('f-' + f).addEventListener('input', (e) => { drawerDraft[f] = e.target.value; });
+        });
         get('f-hasDetail').addEventListener('change', (e) => { drawerDraft.hasDetail = e.target.checked; });
 
         // categories checkboxes
