@@ -52,6 +52,9 @@ const personSchema = {
   knowsLanguage: ['zh-TW', 'nan-TW', 'en', 'hak-TW', 'th'],
 };
 
+// 個人簡介裡的 *片名* 顯示成斜體（後台 /admin/profile 直接寫星號）
+const italicParts = (s: string) => s.split('*').map((text, i) => ({ text, em: i % 2 === 1 }));
+
 // Nalin 精選代表作 — 來源 src/data/selected.json，由 /admin/selected 後台維護
 const selectedWorks = (selectedSlugs as string[])
   .map((s) => works.find((w) => w.slug === s))
@@ -118,10 +121,10 @@ const combinedSchema = {
 
   <div class="hero-left">
     <div class="hero-profile">
-      <p class="lead-zh">{profile.leadZh}</p>
-      <p class="lead-en">{profile.leadEn}</p>
-      <p class="sub-zh">{profile.subZh}</p>
-      <p class="sub-en">{profile.subEn}</p>
+      <p class="lead-zh">{italicParts(profile.leadZh).map((p) => (p.em ? <em>{p.text}</em> : p.text))}</p>
+      <p class="lead-en">{italicParts(profile.leadEn).map((p) => (p.em ? <em>{p.text}</em> : p.text))}</p>
+      <p class="sub-zh">{italicParts(profile.subZh).map((p) => (p.em ? <em>{p.text}</em> : p.text))}</p>
+      <p class="sub-en">{italicParts(profile.subEn).map((p) => (p.em ? <em>{p.text}</em> : p.text))}</p>
     </div>
 
     {profile.languages && profile.languages.length > 0 && (
